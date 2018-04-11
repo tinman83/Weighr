@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Weighr.Models;
 using Windows.Devices.Gpio;
+using WeighrDAL.Components;
+using WeighrDAL.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -42,7 +44,7 @@ namespace Weighr
         public Scale()
         {
             this.InitializeComponent();
-
+            initialiseTables();
             bool IsInitialised = InitialiseGpio();
 
             if (IsInitialised)
@@ -57,6 +59,34 @@ namespace Weighr
             //ProductDetails product = new ProductDetails();
             //product_weight = product.GetProductWeight();
             //tblWeightDisplay.Text = current_weight.ToString();
+
+        }
+
+        private void initialiseTables()
+        {
+            ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
+
+            var config = ScaleConfigComp.GetScaleConfig(1);
+
+            ScaleConfig scaleCon = new ScaleConfig(){Gradient = -0.00000497,YIntercept = -1.15,MaximumCapacity = 100, MinimumDivision = 1,Resolution = 200};
+
+            if (config == null)
+            {
+                ScaleConfigComp.AddScaleConfig(scaleCon);
+            }
+            else
+            {
+                scaleCon.ScaleConfigId = 1;
+                ScaleConfigComp.UpdateScaleConfig(scaleCon);
+            }
+
+            ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
+            //ScaleSetting setting=new ScaleSetting()
+            //{
+                
+            //}
+
+
 
         }
 
