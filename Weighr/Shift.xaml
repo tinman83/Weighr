@@ -1,0 +1,100 @@
+﻿<Page
+    x:Class="Weighr.Shift"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Weighr"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            
+        </Grid.ColumnDefinitions>
+        
+        <RelativePanel>
+            <TextBlock Name="PageTitle" Margin="35,10,0,0" FontSize="36" Text="Current Shift Information"/>
+            <TextBlock Margin="35,10,0,0" Name="tbxTargetUnits" Text="Shift Target Units: 150" RelativePanel.Below="PageTitle" />
+            <Button Content="Clear Target Units" 
+                    Name="ClearTargetUnits"
+                    RelativePanel.Below="tbxTargetUnits"
+                    Margin="35,10,0,0"/>
+            
+            <TextBlock Name="tbxProducedUnits" 
+                       Text="Shift Produced Units: 80"
+                       RelativePanel.RightOf="tbxTargetUnits"
+                       RelativePanel.Below="PageTitle"
+                       Margin="70,10,0,0"/>
+            
+            <Button Content="Clear Produced Units" 
+                    Name="ClearProducedUnits"
+                    RelativePanel.Below="tbxProducedUnits"
+                    RelativePanel.RightOf="ClearTargetUnits"
+                    Margin="70,10,0,0"/>
+
+            <TextBlock Name="tbxUnitsDifference" 
+                       Margin="35,10,0,0"
+                       Text="Difference: 70"
+                       RelativePanel.Below="PageTitle"
+                       RelativePanel.RightOf="tbxProducedUnits"/>
+
+
+            <TextBlock Margin="35,30,0,0" 
+                       Name="tbxTargetWeight" 
+                       Text="Shift Target Weight: 1500" 
+                       RelativePanel.Below="ClearTargetUnits" />
+            <Button Content="Clear Target Weight" 
+                    Name="ClearTargetWeight"
+                    RelativePanel.Below="tbxTargetWeight"
+                    Margin="35,10,0,0"/>
+            <TextBlock Name="tbxProducedWeight" 
+                       Text="Shift Produced Weight"
+                       RelativePanel.Below="ClearProducedUnits"
+                       RelativePanel.RightOf="tbxTargetWeight"
+                       Margin="50,30,0,0"/>
+            <Button Name="ClearProducedWeight"
+                    Content="Clear Produced Weight"
+                    RelativePanel.Below="tbxProducedWeight"
+                    RelativePanel.RightOf="ClearTargetWeight"
+                    Margin="70,10,0,0"/>
+
+            <TextBlock Name="SecondTitle" 
+                       Text="Start New Shift"
+                       RelativePanel.Below="ClearTargetWeight"
+                       Margin="35,30,0,0"
+                       FontSize="36"/>
+            
+            <TextBox Name="tbxNewtarget"
+                     RelativePanel.Below="SecondTitle"
+                     Margin="35,10,0,0"
+                     PlaceholderText="Enter Number of Target Units"
+                     />
+
+            <Button Name="btnEnterNewTarget"
+                    RelativePanel.Below="tbxNewtarget"
+                    Margin="35,10,0,0"
+                    Content="Start New Shift"/>
+
+
+
+
+
+        </RelativePanel>
+
+        
+        
+
+        
+    </Grid>
+</Page>

@@ -1,0 +1,71 @@
+﻿<Page
+    x:Class="Weighr.Product"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Weighr"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Margin="10,0,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Update Product Details" FontSize="36" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
+        
+        <TextBlock Grid.Row="1" Text="Product Code" VerticalAlignment="Center"/>
+        
+        <ComboBox Width="250" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="ProductComboBox" SelectionChanged="ProductComboBox_SelectionChanged">
+            <ComboBoxItem Content="PRODUCT001" IsSelected="True"/>
+            <ComboBoxItem Content="PRODUCT002" />
+            <ComboBoxItem Content="PRODUCT003" />
+        </ComboBox>
+
+        <TextBlock Grid.Row="2" Text="Density" VerticalAlignment="Center"/>
+        <ComboBox Name="DensityComboBox" Width="250" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" SelectionChanged="DensityComboBox_SelectionChanged">
+            <ComboBoxItem Content="1.0" IsSelected="True"/>
+            <ComboBoxItem Content="2.0" />
+            <ComboBoxItem Content="3.0" />
+        </ComboBox>
+
+        <TextBlock Grid.Row="3" Text="Target Weight" VerticalAlignment="Center"/>
+        
+        <ComboBox Name="TargetWeightComboBox" Width="250" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10" SelectionChanged="TargetWeightComboBox_SelectionChanged">
+            <ComboBoxItem Content="12" IsSelected="True"/>
+            <ComboBoxItem Content="20" />
+            <ComboBoxItem Content="30" />
+        </ComboBox>
+        
+
+        <TextBlock Grid.Row="4" Text="Upper Limit" VerticalAlignment="Center"/>
+       
+        <ComboBox Name="UpperLimitComboBox" Width="250" Grid.Row="4" Grid.Column="1" Margin="0,0,0,10" SelectionChanged="UpperLimitComboBox_SelectionChanged">
+            <ComboBoxItem Content="1%" IsSelected="True"/>
+            <ComboBoxItem Content="2%" />
+            <ComboBoxItem Content="5%" />
+        </ComboBox>
+
+        <TextBlock Grid.Row="5" Text="Lower Limit" VerticalAlignment="Center"/>
+       
+        <ComboBox Name="LowerLimitComboBox" Width="250" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10" SelectionChanged="LowerLimitComboBox_SelectionChanged">
+            <ComboBoxItem Content="1%" IsSelected="True"/>
+            <ComboBoxItem Content="2%" />
+            <ComboBoxItem Content="5%" />
+        </ComboBox>
+
+        <Button Name="btnUpdateProduct" Grid.Row="6" Grid.Column="1" Content="Update" Margin="0,0,0,10" VerticalAlignment="top" Click="btnUpdateProduct_Click"/>
+    </Grid>
+</Page>

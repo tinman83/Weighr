@@ -1,0 +1,79 @@
+﻿<Page
+    x:Class="Weighr.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Weighr"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Margin="10,0,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Update Settings" FontSize="36" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
+
+        <TextBlock Grid.Row="1" Text="Display Units" VerticalAlignment="Center"/>
+        <ComboBox Width="250" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="DisplayUnitsComboBox" SelectionChanged="DisplayUnitsComboBox_SelectionChanged">
+            <ComboBoxItem Content="kg" IsSelected="True"/>
+            <ComboBoxItem Content="t" />
+           
+        </ComboBox>
+
+        <TextBlock Grid.Row="2" Text="Decimal Point Position" VerticalAlignment="Center"/>
+        <ComboBox Width="250" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10"  Name="DecimalPointComboBox" SelectionChanged="DecimalPointComboBox_SelectionChanged">
+            <ComboBoxItem Content="None, 12345" IsSelected="True"/>
+            <ComboBoxItem Content="10^1, 1234.5" />
+            <ComboBoxItem Content="10^2, 123.45" />
+            <ComboBoxItem Content="10^3, 12.345" />
+        </ComboBox>
+
+        <TextBlock Grid.Row="3" Text="Zero Range" VerticalAlignment="Center"/>
+        <ComboBox Width="250" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10"  Name="ZeroRangeComboBox" SelectionChanged="ZeroRangeComboBox_SelectionChanged">
+            <ComboBoxItem Content="+-2% of Max" IsSelected="True"/>
+            <ComboBoxItem Content="+-10% of Max" />
+        </ComboBox>
+
+
+        <TextBlock Grid.Row="4" Text="Power On Zero" VerticalAlignment="Center"/>
+        <ComboBox Width="250" Grid.Row="4" Grid.Column="1" Margin="0,0,0,10"  Name="PowerOnZeroComboBox" SelectionChanged="PowerOnZeroComboBox_SelectionChanged">
+            <ComboBoxItem Content="None" IsSelected="True"/>
+            <ComboBoxItem Content="Zero on power on" />
+        </ComboBox>
+
+        <TextBlock Grid.Row="5" Text="Print Mode" VerticalAlignment="Center"/>
+        <ComboBox Width="250" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"  Name="PrintModeComboBox" SelectionChanged="PrintModeComboBox_SelectionChanged">
+            <ComboBoxItem Content="Manual" IsSelected="True"/>
+            <ComboBoxItem Content="Auto" />
+        </ComboBox>
+
+        <TextBlock Grid.Row="6" Text="Zero Track Width" VerticalAlignment="Center"/>
+        <ComboBox Width="250" Grid.Row="6" Grid.Column="1" Margin="0,0,0,10"  Name="ZeroTrackWidthComboBox" SelectionChanged="ZeroTrackWidthComboBox_SelectionChanged">
+            <ComboBoxItem Content="None" IsSelected="True"/>
+            <ComboBoxItem Content="1.5d/ 1 sec" />
+            <ComboBoxItem Content="1.5d/ 2 sec" />
+        </ComboBox>
+
+        
+    </Grid>
+</Page>
