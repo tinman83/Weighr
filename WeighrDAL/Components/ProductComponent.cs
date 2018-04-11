@@ -36,6 +36,17 @@ namespace WeighrDAL.Components
 
             }
         }
+
+        public Product GetProductById(int productId)
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.Products
+                    .Where(p => p.ProductId == productId).FirstOrDefault();
+
+            }
+        }
+
         public List<Product> GetProducts()
         {
             using (var db = new WeighrContext())
