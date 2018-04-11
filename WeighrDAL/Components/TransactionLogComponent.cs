@@ -35,5 +35,16 @@ namespace WeighrDAL.Components
 
             }
         }
+
+        public List<TransactionLog> GetTransactionLogsByProductCode(string productCode)
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.TransactionLogs
+                    .Where(t=>t.ProductCode==productCode)
+                    .ToList();
+
+            }
+        }
     }
 }
