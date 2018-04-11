@@ -56,6 +56,17 @@ namespace WeighrDAL.Components
             }
         }
 
+        public List<Product> GetProductsByProductCode(string productCode)
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.Products
+                    .Where(p=>p.ProductCode==productCode)
+                    .ToList();
+
+            }
+        }
+
 
     }
 }
