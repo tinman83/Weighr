@@ -16,6 +16,8 @@ using Weighr.Models;
 using Windows.Devices.Gpio;
 using WeighrDAL.Components;
 using WeighrDAL.Models;
+using System.Threading;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,97 +39,55 @@ namespace Weighr
         private GpioPin dataPin;
         private GpioPin ledPin;
 
-        /// <summary>
-        /// Used to signal that the device is properly initialized and ready to use
-        /// </summary>
-        private bool available = false;
+        double scale_gradient, y_intercept;
+        decimal minimum_division, maximum_capacity, resolution;
+
+        IList<ScaleConfigComponent> scale_configurations = new List<ScaleConfigComponent>();
+        IList<ScaleSettingComponent> scale_settings = new List<ScaleSettingComponent>();
+
         public Scale()
         {
             this.InitializeComponent();
-            initialiseTables();
-            bool IsInitialised = InitialiseGpio();
+            GetScaleConfigurations();
+            GetScaleSettings();
+            //Get scale configuration
+            //Get scale settings
 
-            if (IsInitialised)
-            {
-                GetWeight();
-            }
+            Thread oThread = new Thread(new ThreadStart(weightReaderHandler));
+            oThread.Start();
 
-            //Retrive Calibration Settings
-            //CalibrationSettings settings = new CalibrationSettings();
-            //settings.GetCalibrationSettings(1);
-            ////Retrive Product Details
-            //ProductDetails product = new ProductDetails();
-            //product_weight = product.GetProductWeight();
-            //tblWeightDisplay.Text = current_weight.ToString();
 
         }
 
-        private void initialiseTables()
+        public void GetScaleConfigurations()
         {
             ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
 
             var config = ScaleConfigComp.GetScaleConfig(1);
 
-            ScaleConfig scaleCon = new ScaleConfig(){Gradient = -0.00000497,YIntercept = -1.15,MaximumCapacity = 100, MinimumDivision = 1,Resolution = 200};
-
-            if (config == null)
-            {
-                ScaleConfigComp.AddScaleConfig(scaleCon);
-            }
-            else
-            {
-                scaleCon.ScaleConfigId = 1;
-                ScaleConfigComp.UpdateScaleConfig(scaleCon);
-            }
-
-            ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
-            //ScaleSetting setting=new ScaleSetting()
-            //{
-                
-            //}
-
-
-
+            scale_gradient = config.Gradient;
+            y_intercept = config.YIntercept;
+            minimum_division = config.MinimumDivision;
+            maximum_capacity = config.MaximumCapacity;
+            resolution = config.Resolution;     
         }
 
-        private bool InitialiseGpio()
+        public void GetScaleSettings()
         {
-            GpioController gpio = GpioController.GetDefault();
+            //ScaleSettingComponent ScaleSettingComp = new ScaleSettingComponent();
 
-            if (null == gpio)
-            {
-                available = false;
-                return false;
-            }
-            /*
-                * Initialize the clock pin and set to "Low"
-                *
-                * Instantiate the clock pin object
-                * Write the GPIO pin value of low on the pin
-                * Set the GPIO pin drive mode to output
-                */
-            clockPin = gpio.OpenPin(clockPinNumber, GpioSharingMode.Exclusive);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.SetDriveMode(GpioPinDriveMode.Output);
+            //var setting = ScaleSettingComp.GetScaleSetting(1);
 
-            ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
-            ledPin.SetDriveMode(GpioPinDriveMode.Output);
-
-            /*
-                * Initialize the data pin and set to "Low"
-                * 
-                * Instantiate the data pin object
-                * Set the GPIO pin drive mode to input for reading
-                */
-            dataPin = gpio.OpenPin(dataPinNumber, GpioSharingMode.Exclusive);
-            dataPin.SetDriveMode(GpioPinDriveMode.Input);
-
-            available = true;
-            return true;
+            //scale_gradient = setting.;
+            //y_intercept = config.YIntercept;
+            //minimum_division = config.MinimumDivision;
+            //maximum_capacity = config.MaximumCapacity;
+            //resolution = config.Resolution;
         }
 
 
-        public void GetWeight()
+
+        public void weightReaderHandler()
         {
             while (true)
             {
@@ -223,6 +183,8 @@ namespace Weighr
             return value;
         }
 
+
+
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
             //record initial scale weight
@@ -240,12 +202,7 @@ namespace Weighr
 
         private void btnZeroScale_Click(object sender, RoutedEventArgs e)
         {
-            LoadcellOffset = current_weight + LoadcellOffset;
-            CalibrationSettings settings = new CalibrationSettings();
-            bool result = settings.ZeroScale(1, LoadcellOffset);
-
-            CalibrationSettings newsettings = new CalibrationSettings();
-            newsettings.GetCalibrationSettings(1);
+            
         }
 
         private void btnTareScale_Click(object sender, RoutedEventArgs e)

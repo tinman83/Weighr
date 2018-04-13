@@ -14,6 +14,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Devices.Gpio;
+using WeighrDAL.Models;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -24,13 +27,43 @@ namespace Weighr
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public decimal product_weight;
+        public decimal current_weight;
+        public decimal LoadcellOffset;
+
+        private int clockPinNumber = 23;
+        private int dataPinNumber = 24;
+        private int ledPinNumber = 12;
+        private GpioPin clockPin;
+        private GpioPin dataPin;
+        private GpioPin ledPin;
+
+        /// <summary>
+        /// Used to signal that the device is properly initialized and ready to use
+        /// </summary>
+        private bool available = false;
+
+        
         public MainPage()
         {
             this.InitializeComponent();
             BackButton.Visibility = Visibility.Collapsed;
-            MyFrame.Navigate(typeof(Scale));
-            TitleTextBlock.Text = "Scale";
-            Scale.IsSelected = true;
+            initialiseTables();
+            bool IsInitialised = InitialiseGpio();
+
+            if (IsInitialised)
+            {
+
+               
+
+                //
+                MyFrame.Navigate(typeof(Scale));
+                TitleTextBlock.Text = "Scale";
+                Scale.IsSelected = true;
+               
+            }
+
+            
             //Initialise settings to defaults
         }
 
@@ -50,6 +83,8 @@ namespace Weighr
             TitleTextBlock.Text = "Scale";
             Scale.IsSelected = true;
         }
+
+
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -90,5 +125,74 @@ namespace Weighr
                 TitleTextBlock.Text = "Calibration";
             }
         }
+
+        private void initialiseTables()
+        {
+            ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
+
+            var config = ScaleConfigComp.GetScaleConfig(1);
+
+            ScaleConfig scaleCon = new ScaleConfig() { Gradient = -0.00000497, YIntercept = -1.15, MaximumCapacity = 100, MinimumDivision = 1, Resolution = 200 };
+
+            if (config == null)
+            {
+                ScaleConfigComp.AddScaleConfig(scaleCon);
+            }
+            else
+            {
+                scaleCon.ScaleConfigId = 1;
+                ScaleConfigComp.UpdateScaleConfig(scaleCon);
+            }
+
+            //ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
+            //var setting = ScaleSettigComp.GetScaleSetting(1);
+
+            //ScaleSetting scale_setting=new ScaleSetting() { }
+            ////{
+
+            //}
+
+
+
+        }
+
+        private bool InitialiseGpio()
+        {
+            GpioController gpio = GpioController.GetDefault();
+
+            if (null == gpio)
+            {
+                available = false;
+                return false;
+            }
+            /*
+                * Initialize the clock pin and set to "Low"
+                *
+                * Instantiate the clock pin object
+                * Write the GPIO pin value of low on the pin
+                * Set the GPIO pin drive mode to output
+                */
+            clockPin = gpio.OpenPin(clockPinNumber, GpioSharingMode.Exclusive);
+            clockPin.Write(GpioPinValue.Low);
+            clockPin.SetDriveMode(GpioPinDriveMode.Output);
+
+            ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
+            ledPin.SetDriveMode(GpioPinDriveMode.Output);
+
+            /*
+                * Initialize the data pin and set to "Low"
+                * 
+                * Instantiate the data pin object
+                * Set the GPIO pin drive mode to input for reading
+                */
+            dataPin = gpio.OpenPin(dataPinNumber, GpioSharingMode.Exclusive);
+            dataPin.SetDriveMode(GpioPinDriveMode.Input);
+
+            available = true;
+            return true;
+        }
+
+
+        
     }
 }
