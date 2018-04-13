@@ -11,6 +11,7 @@ namespace WeighrDAL.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public long TransactionLogId { get; set; }
+        public Guid rowguid { get; set; }
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }

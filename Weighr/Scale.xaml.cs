@@ -17,7 +17,7 @@ using Windows.Devices.Gpio;
 using WeighrDAL.Components;
 using WeighrDAL.Models;
 using System.Threading;
-
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -42,6 +42,9 @@ namespace Weighr
         double scale_gradient, y_intercept;
         decimal minimum_division, maximum_capacity, resolution;
 
+        private Boolean checkWeightProcess = false;
+        private Boolean runprocess = true;
+
         IList<ScaleConfigComponent> scale_configurations = new List<ScaleConfigComponent>();
         IList<ScaleSettingComponent> scale_settings = new List<ScaleSettingComponent>();
 
@@ -52,7 +55,7 @@ namespace Weighr
             GetScaleSettings();
             //Get scale configuration
             //Get scale settings
-
+ 
             Thread oThread = new Thread(new ThreadStart(weightReaderHandler));
             oThread.Start();
 
@@ -85,28 +88,48 @@ namespace Weighr
             //resolution = config.Resolution;
         }
 
-
-
         public void weightReaderHandler()
         {
             while (true)
             {
-                Int32 result = ReadData();
-                double calc_result = ((-0.00000497) * result) - 1.15;
-                tblWeightDisplay.Text = calc_result.ToString();
+                if (runprocess == false) { break; }
+                try
+                {
+                    Int32 result = ReadData();
+                    double calc_result = ((-0.00000497) * result) - 1.15;
 
-                if (calc_result < 2.00)
-                {
-                    ledPin.Write(GpioPinValue.High);
+                    if (checkWeightProcess == true) {
+                        UpdateWeightUI((calc_result).ToString());
+                    }
+                    
+                    if (calc_result < 2.00)
+                    {
+                        ledPin.Write(GpioPinValue.High);
+                    }
+                    else
+                    {
+                        ledPin.Write(GpioPinValue.Low);
+                    }
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    ledPin.Write(GpioPinValue.Low);
+
+                    throw ex;
                 }
+                
 
 
 
             }
+        }
+        private async void UpdateWeightUI(string weightResult)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
+            {
+                tblWeightDisplay.Text = weightResult;
+            });
         }
 
         private int ReadData()
@@ -187,6 +210,8 @@ namespace Weighr
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
+            btnEnter.IsEnabled = false;
+            checkWeightProcess = true;
             //record initial scale weight
             //start necessary valves and reading continously
             //if weight reaches target - free fall stop
@@ -198,6 +223,11 @@ namespace Weighr
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
             //print record
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            checkWeightProcess = false;
         }
 
         private void btnZeroScale_Click(object sender, RoutedEventArgs e)
