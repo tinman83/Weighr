@@ -67,6 +67,41 @@ namespace WeighrDAL.Components
             }
         }
 
+        public Product GetCurrentProduct()
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.Products
+                    .Where(p => p.isCurrent == true).FirstOrDefault();
+
+            }
+        }
+
+        public Product SetCurrentProduct(string productCode)
+        {
+            using (var db = new WeighrContext())
+            {
+                var previousCurrent= db.Products
+                    .Where(p => p.isCurrent == true).FirstOrDefault();
+
+                if (previousCurrent != null)
+                {
+                    previousCurrent.isCurrent = false;
+                    db.Products.Update(previousCurrent);
+                }
+                    
+
+                var current= db.Products
+                    .Where(p => p.ProductCode == productCode).FirstOrDefault();
+
+                current.isCurrent = true;
+                db.Products.Update(current);
+                db.SaveChanges();
+
+                return current;
+            }
+        }
+
 
     }
 }

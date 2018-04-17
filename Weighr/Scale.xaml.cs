@@ -119,8 +119,6 @@ namespace Weighr
                 }
                 
 
-
-
             }
         }
         private async void UpdateWeightUI(string weightResult)
