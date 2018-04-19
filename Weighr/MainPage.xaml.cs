@@ -31,12 +31,35 @@ namespace Weighr
         public decimal current_weight;
         public decimal LoadcellOffset;
 
-        private int clockPinNumber = 23;
-        private int dataPinNumber = 24;
-        private int ledPinNumber = 12;
-        private GpioPin clockPin;
-        private GpioPin dataPin;
-        private GpioPin ledPin;
+        //private int clockPinNumber = 23;
+        //private int dataPinNumber = 24;
+        //private int ledPinNumber = 12;
+
+        //private int runPinNumber = 25;
+        //private int stopPinNumber = 8;
+        //private int estopPinNumber = 7;
+        //private int pressurePinNumber = 16;
+        //private int normalFeedPinNumber = 20;
+        //private int dribbleFeedPinNumber = 21;
+        //private int underWeightPinNumber = 26;
+        //private int overWeightPinNumber = 19;
+        //private int normalWeightPinNumber = 13;
+
+
+
+        //private GpioPin clockPin;
+        //private GpioPin dataPin;
+        //private GpioPin ledPin;
+
+        //private GpioPin runPin;
+        //private GpioPin stopPin;
+        //private GpioPin estopPin;
+        //private GpioPin pressurePin;
+        //private GpioPin normalFeedPin;
+        //private GpioPin dribbleFeedPin;
+        //private GpioPin underWeightPin;
+        //private GpioPin overWeightPin;
+        //private GpioPin normalWeightPin;
 
         /// <summary>
         /// Used to signal that the device is properly initialized and ready to use
@@ -49,19 +72,17 @@ namespace Weighr
             this.InitializeComponent();
             BackButton.Visibility = Visibility.Collapsed;
             initialiseTables();
-            bool IsInitialised = InitialiseGpio();
+            //bool IsInitialised = InitialiseGpio();
 
-            if (IsInitialised)
-            {
+            //if (IsInitialised)
+            //{
 
-               
-
-                //
-                MyFrame.Navigate(typeof(Scale));
+            //
+            MyFrame.Navigate(typeof(Scale));
                 TitleTextBlock.Text = "Scale";
                 Scale.IsSelected = true;
                
-            }
+            //}
 
             
             //Initialise settings to defaults
@@ -128,6 +149,7 @@ namespace Weighr
 
         private void initialiseTables()
         {
+            /*** Initialise Calibration Settings***/
             ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
 
             var config = ScaleConfigComp.GetScaleConfig(1);
@@ -144,55 +166,89 @@ namespace Weighr
                 ScaleConfigComp.UpdateScaleConfig(scaleCon);
             }
 
-            //ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
-            //var setting = ScaleSettigComp.GetScaleSetting(1);
+            /*** Initialise Scale Settings***/
+            ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
+            var setting = ScaleSettigComp.GetScaleSetting(1);
 
-            //ScaleSetting scale_setting=new ScaleSetting() { }
-            ////{
-
-            //}
-
-
-
-        }
-
-        private bool InitialiseGpio()
-        {
-            GpioController gpio = GpioController.GetDefault();
-
-            if (null == gpio)
+            ScaleSetting scale_setting = new ScaleSetting() { DisplayUnits = "Kg", DecimalPointPosition = 2 };
+            
+            if(setting == null)
             {
-                available = false;
-                return false;
+                ScaleSettigComp.AddScaleSetting(scale_setting);
             }
-            /*
-                * Initialize the clock pin and set to "Low"
-                *
-                * Instantiate the clock pin object
-                * Write the GPIO pin value of low on the pin
-                * Set the GPIO pin drive mode to output
-                */
-            clockPin = gpio.OpenPin(clockPinNumber, GpioSharingMode.Exclusive);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.SetDriveMode(GpioPinDriveMode.Output);
+            else
+            {
+                scale_setting.ScaleSettingId = 1;
+                ScaleSettigComp.UpdateScaleSetting(scale_setting);
+            }
 
-            ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
-            ledPin.SetDriveMode(GpioPinDriveMode.Output);
 
-            /*
-                * Initialize the data pin and set to "Low"
-                * 
-                * Instantiate the data pin object
-                * Set the GPIO pin drive mode to input for reading
-                */
-            dataPin = gpio.OpenPin(dataPinNumber, GpioSharingMode.Exclusive);
-            dataPin.SetDriveMode(GpioPinDriveMode.Input);
 
-            available = true;
-            return true;
         }
 
 
-        
+        //private bool InitialiseGpio()
+        //{
+        //    GpioController gpio = GpioController.GetDefault();
+
+        //    if (null == gpio)
+        //    {
+        //        available = false;
+        //        return false;
+        //    }
+        //    /*
+        //        * Initialize the clock pin and set to "Low"
+        //        *
+        //        * Instantiate the clock pin object
+        //        * Write the GPIO pin value of low on the pin
+        //        * Set the GPIO pin drive mode to output
+        //        */
+        //    clockPin = gpio.OpenPin(clockPinNumber, GpioSharingMode.Exclusive);
+        //    clockPin.Write(GpioPinValue.Low);
+        //    clockPin.SetDriveMode(GpioPinDriveMode.Output);
+
+        //    ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
+        //    ledPin.SetDriveMode(GpioPinDriveMode.Output);
+
+        //    normalFeedPin = gpio.OpenPin(normalFeedPinNumber, GpioSharingMode.Exclusive);
+        //    normalFeedPin.SetDriveMode(GpioPinDriveMode.Output);
+
+        //    dribbleFeedPin = gpio.OpenPin(dribbleFeedPinNumber, GpioSharingMode.Exclusive);
+        //    dribbleFeedPin.SetDriveMode(GpioPinDriveMode.Output);
+
+        //    underWeightPin = gpio.OpenPin(underWeightPinNumber, GpioSharingMode.Exclusive);
+        //    underWeightPin.SetDriveMode(GpioPinDriveMode.Output);
+
+        //    overWeightPin = gpio.OpenPin(overWeightPinNumber, GpioSharingMode.Exclusive);
+        //    overWeightPin.SetDriveMode(GpioPinDriveMode.Output);
+
+        //    normalWeightPin = gpio.OpenPin(normalWeightPinNumber, GpioSharingMode.Exclusive);
+        //    normalWeightPin.SetDriveMode(GpioPinDriveMode.Output);
+
+
+
+        //    /*
+        //        * Initialize the data pin and set to "Low"
+        //        * 
+        //        * Instantiate the data pin object
+        //        * Set the GPIO pin drive mode to input for reading
+        //        */
+        //    dataPin = gpio.OpenPin(dataPinNumber, GpioSharingMode.Exclusive);
+        //    dataPin.SetDriveMode(GpioPinDriveMode.Input);
+
+        //    runPin = gpio.OpenPin(runPinNumber, GpioSharingMode.Exclusive);
+        //    runPin.SetDriveMode(GpioPinDriveMode.Input);
+
+        //    stopPin = gpio.OpenPin(stopPinNumber, GpioSharingMode.Exclusive);
+        //    stopPin.SetDriveMode(GpioPinDriveMode.Input);
+
+        //    estopPin = gpio.OpenPin(estopPinNumber, GpioSharingMode.Exclusive);
+        //    estopPin.SetDriveMode(GpioPinDriveMode.Input);
+
+        //    available = true;
+        //    return true;
+        //}
+
+
     }
 }

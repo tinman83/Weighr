@@ -43,5 +43,20 @@ namespace WeighrDAL.Components
 
             }
         }
+
+        public ScaleConfig ZeroScale(decimal offset)
+        {
+            using (var db = new WeighrContext())
+            {
+
+                var current = db.ScaleConfigs.FirstOrDefault();
+                // current.offset = offset;
+
+                db.ScaleConfigs.Update(current);
+                db.SaveChanges();
+
+                return current;
+            }
+        }
     }
 }

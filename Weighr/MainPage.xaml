@@ -40,12 +40,12 @@
                     FontSize="36"
                     Content="&#xE1A3;"/>
 
-            <TextBox Name="SearchTextBox"
+            <Button Name="SearchTextBox"
                         RelativePanel.LeftOf="SearchButton"
                         Height="48"
                         Width="200"
                         FontSize="24"
-                        PlaceholderText="Search"
+                        Content="Print"
                      />
         </RelativePanel>
 
