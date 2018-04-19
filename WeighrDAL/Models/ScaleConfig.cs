@@ -12,5 +12,6 @@ namespace WeighrDAL.Models
         public decimal MinimumDivision { get; set; }
         public decimal MaximumCapacity { get; set; }
         public decimal Resolution { get; set; }
+        public decimal offset { get; set; }
     }
 }

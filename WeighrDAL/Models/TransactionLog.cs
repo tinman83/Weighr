@@ -26,6 +26,8 @@ namespace WeighrDAL.Models
         public int WeightStatus { get; set; }  // -1=UnderWeight , 0=Normal , 1=OverWeight
         public string DeviceId { get; set; }
         public string WeightType { get; set; } //NET OR GROSS
+        public bool Uploaded { get; set; }
+        public DateTime DateUploaded { get; set; }
 
     }
 }
