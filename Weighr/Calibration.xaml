@@ -30,21 +30,6 @@
 
         <TextBlock Text="Calibration Settings" FontSize="30" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
 
-        <TextBlock Grid.Row="1" Text="Minimum Division" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="MinimumDivisionComboBox" SelectionChanged="MinimumDivisionComboBox_SelectionChanged">
-            <ComboBoxItem Content="1" IsSelected="True"/>
-            <ComboBoxItem Content="2" />
-            <ComboBoxItem Content="5" />
-            <ComboBoxItem Content="10" />
-            <ComboBoxItem Content="20" />
-            <ComboBoxItem Content="50" />
-        </ComboBox>
-
-        <TextBlock Grid.Row="2" Text="Maximum Capacity" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Width="250" Margin="0,0,0,10" Name="tbxMaximumCapacity" HorizontalAlignment="Left"/>
-
-        <Button Name="btnUpdateCalibrationSettings" Content="Update Settings" Grid.Row="3" Grid.Column="1"></Button>
-        
         <TextBlock Name="tblCalibrationSteps" Grid.Row="4"  Text="Calibration Steps" FontSize="24" Grid.ColumnSpan="3" Margin="0,20,0,20"/>
 
        

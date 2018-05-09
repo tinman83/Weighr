@@ -8,11 +8,13 @@ namespace WeighrDAL.Models
     {
         public int ScaleSettingId { get; set; }
         public string DisplayUnits { get; set; }
-        public int DecimalPointPosition { get; set; }
+        public double DisplayUnitsWeight { get; set; }
+        public int DecimalPointPrecision { get; set; }
         public string DecimalPointPositionName { get; set; }
-        public decimal ZeroRange { get; set; }
-        public bool PowerOnZero { get; set; } // 0=None, 1=Zero On Power
+        public double ZeroRange { get; set; }
         public bool PrintMode { get; set; } // 0=Manual , 1=Auto
-        public decimal ZeroTrackWidth { get; set; }
+
+        public double MinimumDivision { get; set; }
+        public double MaximumCapacity { get; set; }
     }
 }

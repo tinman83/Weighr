@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Weighr.Models;
+using WeighrDAL.Components;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,49 +24,24 @@ namespace Weighr
     /// </summary>
     public sealed partial class Product : Page
     {
+        List<WeighrDAL.Models.Product> _ProductsList = new List<WeighrDAL.Models.Product>();
+        Product _product = new Product();
         public Product()
         {
             this.InitializeComponent();
         }
 
-        private void ProductComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ProductComponent productComp = new ProductComponent();
+
+            _ProductsList = productComp.GetProducts();
         }
 
-        private void DensityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btnSaveProduct_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void TargetWeightComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void UpperLimitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void LowerLimitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void btnUpdateProduct_Click(object sender, RoutedEventArgs e)
-        {
-            //ProductDetails product = new ProductDetails();
-            //product.UpdateConfiguredProduct();
-
-/*
-            configured_product.ConfigureProduct();
-            
-            ProductComboBox
-            DensityComboBox
-TargetWeightComboBox
-UpperLimitComboBox
-LowerLimitComboBox*/
         }
     }
 }

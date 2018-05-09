@@ -61,37 +61,35 @@ namespace Weighr
         private GpioPin overWeightPin;
         private GpioPin normalWeightPin;
 
-        double scale_gradient, y_intercept,calc_result, normal_feed_cutoff_percentage = 0.8, weight_display,threshold=20;
-        decimal minimum_division, maximum_capacity, resolution,current_target_weight, current_upper_limit, current_lower_limit;
-        decimal current_product_density;
-        string display_units, current_product_code, curent_product_name;
-        string current_status;
-        int decimal_position,divider, weight, current_product_id;
+        double _scale_gradient, _y_intercept,_calc_result, _normal_feed_cutoff_percentage = 0.8, _weight_display,_threshold=20;
+        decimal _minimum_division, _maximum_capacity, _resolution,_current_target_weight, _current_upper_limit, _current_lower_limit;
+        decimal _current_product_density;
+        string _display_units, _current_product_code, _curent_product_name;
+        string _current_status;
+        int _decimal_position,_divider, _weight, _current_product_id;
 
-        private Boolean checkWeightProcess = false;
-        private Boolean runprocess = true, normal_cutoff_reached = false, final_setpoint_reached = false;
+        private Boolean _checkWeightProcess = false;
+        private Boolean _runprocess = true, _normal_cutoff_reached = false, _final_setpoint_reached = false;
 
         IList<ScaleConfigComponent> scale_configurations = new List<ScaleConfigComponent>();
         IList<ScaleSettingComponent> scale_settings = new List<ScaleSettingComponent>();
 
         private DispatcherTimer timer;
 
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            //threshold = Convert.ToDouble(tbxTest.Text);
-        }
-
-        //private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        //{
-        //    decimal val = Convert.ToDecimal(e.NewValue);
-        //    string msg = val.ToString();
-        //    tblSliderDisplay.Text = msg;
-        //}
-
-        private bool available = false;
+      
+        private bool _available = false;
         public Scale()
         {
             this.InitializeComponent();
+            
+            //Thread oThread = new Thread(new ThreadStart(weightReaderHandler));
+            //oThread.Start();
+
+
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             GetScaleConfigurations();
             GetScaleSettings();
             bool IsInitialised = InitialiseGpio();
@@ -101,24 +99,33 @@ namespace Weighr
             timer.Tick += timer_Tick;
             timer.Start();
 
-
-            //Thread oThread = new Thread(new ThreadStart(weightReaderHandler));
-            //oThread.Start();
-
-
         }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            //threshold = Convert.ToDouble(tbxTest.Text);
+        }
+
+
+
+        //private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        //{
+        //    decimal val = Convert.ToDecimal(e.NewValue);
+        //    string msg = val.ToString();
+        //    tblSliderDisplay.Text = msg;
+        //}
 
         private void timer_Tick(object sender, object e)
         {
             //read scale and update ui
             Int32 result = ReadData();
-            calc_result = ((scale_gradient) * result) + y_intercept;
+            _calc_result = ((_scale_gradient) * result) + _y_intercept;
             //weight = Convert.ToInt32(calc_result * 100);
             //weight_display = weight / 100;
             //tblWeightDisplay.Text = weight_display.ToString();
-            tblWeightDisplay.Text = calc_result.ToString("0.##"); // returns "0"  when decimalVar == 0
+            tblWeightDisplay.Text = _calc_result.ToString("0.##"); // returns "0"  when decimalVar == 0
 
-            if(calc_result >= threshold)
+            if(_calc_result >= _threshold)
             {
                 ledPin.Write(GpioPinValue.High);
             }
@@ -215,11 +222,11 @@ namespace Weighr
 
             var config = ScaleConfigComp.GetScaleConfig(1);
 
-            scale_gradient = config.Gradient;
-            y_intercept = config.YIntercept;
-            minimum_division = config.MinimumDivision;
-            maximum_capacity = config.MaximumCapacity;
-            resolution = config.Resolution;     
+            _scale_gradient = config.Gradient;
+            _y_intercept = config.YIntercept;
+            _minimum_division = config.MinimumDivision;
+            _maximum_capacity = config.MaximumCapacity;
+            _resolution = config.Resolution;     
         }
 
         public void GetScaleSettings()
@@ -228,26 +235,26 @@ namespace Weighr
 
             var setting = ScaleSettingComp.GetScaleSetting(1);
 
-            display_units = setting.DisplayUnits;
-            decimal_position = setting.DecimalPointPosition;
+            _display_units = setting.DisplayUnits;
+            _decimal_position = setting.DecimalPointPrecision;
 
-            if(decimal_position == 0)
+            if(_decimal_position == 0)
             {
-                divider = 1;
+                _divider = 1;
             }
-            else if(decimal_position == 1)
+            else if(_decimal_position == 1)
             {
-                divider = 10;
+                _divider = 10;
 
             }
-            else if(decimal_position == 2)
+            else if(_decimal_position == 2)
             {
-                divider = 100;
+                _divider = 100;
             }
 
             else
             {
-                divider = 1000;
+                _divider = 1000;
             }
             //y_intercept = config.YIntercept;
             //minimum_division = config.MinimumDivision;
@@ -259,13 +266,13 @@ namespace Weighr
         {
             while (true)
             {
-                if (runprocess == false) { break; }
+                if (_runprocess == false) { break; }
                 try
                 {
                     Int32 result = ReadData();
                     double calc_result = ((-0.00000497) * result) - 1.15;
 
-                    if (checkWeightProcess == true) {
+                    if (_checkWeightProcess == true) {
                         UpdateWeightUI((calc_result).ToString());
                     }
                     
@@ -383,9 +390,9 @@ namespace Weighr
             var new_settings = ScaleConfigComp.ZeroScale(LoadcellOffset);
             //  LoadcellOffset = new_settings.Offset;
 
-            normal_cutoff_reached = false;
-            final_setpoint_reached = false;
-            runprocess = true;
+            _normal_cutoff_reached = false;
+            _final_setpoint_reached = false;
+            _runprocess = true;
           
 
 
@@ -397,13 +404,13 @@ namespace Weighr
         
             var product = ProductComp.GetCurrentProduct();
 
-            current_product_id = product.ProductId;
-            current_product_code = product.ProductCode;
-            current_product_density = product.Density;
-            curent_product_name = product.Name;
-            current_target_weight = product.TargetWeight;
-            current_upper_limit = product.UpperLimit;
-            current_lower_limit = product.LowerLimit;
+            _current_product_id = product.ProductId;
+            _current_product_code = product.ProductCode;
+            _current_product_density = product.Density;
+            _curent_product_name = product.Name;
+            _current_target_weight = product.TargetWeight;
+            _current_upper_limit = product.UpperLimit;
+            _current_lower_limit = product.LowerLimit;
 
 
 
@@ -442,7 +449,7 @@ namespace Weighr
 
             if (null == gpio)
             {
-                available = false;
+                _available = false;
                 return false;
             }
             /*
@@ -494,7 +501,7 @@ namespace Weighr
             estopPin = gpio.OpenPin(estopPinNumber, GpioSharingMode.Exclusive);
             estopPin.SetDriveMode(GpioPinDriveMode.Input);
 
-            available = true;
+            _available = true;
             return true;
         }
     }

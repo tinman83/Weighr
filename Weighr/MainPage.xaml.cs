@@ -170,7 +170,10 @@ namespace Weighr
             ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
             var setting = ScaleSettigComp.GetScaleSetting(1);
 
-            ScaleSetting scale_setting = new ScaleSetting() { DisplayUnits = "Kg", DecimalPointPosition = 2 };
+            ScaleSetting scale_setting = new ScaleSetting() {
+                DisplayUnits = "Kgs",
+                DecimalPointPrecision = 2
+            };
             
             if(setting == null)
             {

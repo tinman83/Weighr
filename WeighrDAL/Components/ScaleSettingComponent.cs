@@ -26,6 +26,17 @@ namespace WeighrDAL.Components
             }
         }
 
+        public ScaleSetting GetScaleSettingDefault()
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.ScaleSettings
+                    .OrderByDescending(s=>s.ScaleSettingId)
+                    .Take(1).FirstOrDefault();
+
+            }
+        }
+
         public ScaleSetting GetScaleSetting(int scaleSettingId)
         {
             using (var db = new WeighrContext())
