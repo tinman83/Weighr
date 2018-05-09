@@ -40,12 +40,12 @@ namespace Weighr
         private int runPinNumber = 25;
         private int stopPinNumber = 8;
         private int estopPinNumber = 7;
-        private int pressurePinNumber = 16;
-        private int normalFeedPinNumber = 20;
-        private int dribbleFeedPinNumber = 21;
-        private int underWeightPinNumber = 26;
-        private int overWeightPinNumber = 19;
-        private int normalWeightPinNumber = 13;
+        private int pressurePinNumber = 12;
+        private int normalFeedPinNumber = 16;
+        private int dribbleFeedPinNumber = 20;
+        private int underWeightPinNumber = 21;
+        private int overWeightPinNumber = 26;
+        private int normalWeightPinNumber = 19;
 
         private GpioPin clockPin;
         private GpioPin dataPin;
@@ -65,6 +65,7 @@ namespace Weighr
         decimal minimum_division, maximum_capacity, resolution,current_target_weight, current_upper_limit, current_lower_limit;
         decimal current_product_density;
         string display_units, current_product_code, curent_product_name;
+        string current_status;
         int decimal_position,divider, weight, current_product_id;
 
         private Boolean checkWeightProcess = false;
@@ -77,8 +78,15 @@ namespace Weighr
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            threshold = Convert.ToDouble(tbxTest.Text);
+            //threshold = Convert.ToDouble(tbxTest.Text);
         }
+
+        //private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        //{
+        //    decimal val = Convert.ToDecimal(e.NewValue);
+        //    string msg = val.ToString();
+        //    tblSliderDisplay.Text = msg;
+        //}
 
         private bool available = false;
         public Scale()
@@ -89,7 +97,7 @@ namespace Weighr
             bool IsInitialised = InitialiseGpio();
             //GetCurrentProductDetails();
             timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 5); // Interval of the timer
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
             timer.Tick += timer_Tick;
             timer.Start();
 
@@ -413,7 +421,7 @@ namespace Weighr
 
         private void btnZeroScale_Click(object sender, RoutedEventArgs e)
         {
-            threshold = Convert.ToDouble(tbxTest.Text);
+            //threshold = Convert.ToDouble(tbxTest.Text);
         }
 
         private void btnTareScale_Click(object sender, RoutedEventArgs e)

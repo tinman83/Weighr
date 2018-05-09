@@ -45,8 +45,9 @@
                         Height="48"
                         Width="200"
                         FontSize="24"
-                        Content="Print"
-                     />
+                        Content="WEIGHR"
+                     /> 
+
         </RelativePanel>
 
         <SplitView Grid.Row="1" 
