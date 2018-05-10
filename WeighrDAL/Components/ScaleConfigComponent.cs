@@ -26,12 +26,13 @@ namespace WeighrDAL.Components
             }
         }
 
-        public ScaleConfig GetScaleConfig(int scaleConfigId)
+        public ScaleConfig GetScaleConfig()
         {
             using (var db = new WeighrContext())
             {
                 return db.ScaleConfigs
-                    .Where(p => p.ScaleConfigId == scaleConfigId).FirstOrDefault();
+                    .Take(1)
+                    .FirstOrDefault();
 
             }
         }

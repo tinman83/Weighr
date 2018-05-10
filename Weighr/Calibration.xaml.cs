@@ -13,6 +13,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Weighr.Models;
+using Weighr.Helpers;
+using WeighrDAL.Models;
+using WeighrDAL.Components;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,10 +26,13 @@ namespace Weighr
     /// </summary>
     public sealed partial class Calibration : Page
     {
-        public decimal UserMinimumValue;
-        public decimal LoadcellValueAtMinimum;
-        public decimal LoadcellOffset, RawMinimumValue;
-        public decimal UserMaximumValue, RawMaximumValue, Gradient, YIntercept;
+        public double _UserMinimumValue;
+        public double _LoadcellValueAtMinimum;
+        public double _LoadcellOffset;
+        public double _RawMinimumValue;
+        public double _UserMaximumValue, _RawMaximumValue;
+        public double _Gradient, _YIntercept;
+
         public Calibration()
         {
             this.InitializeComponent();
@@ -34,34 +40,44 @@ namespace Weighr
             tblCalibrationSteps.Text = "Step 1 - Unload Scale, Enter Minimum Value then Click CALIBRATE ZERO.";
         }
 
-        private void MinimumDivisionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SetMinimumButton_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void btnSetMinimum_Click(object sender, RoutedEventArgs e)
-        {
+            if (SetMinimumTextBox.Text == "") { return; }
             //read Loadcell to get Raw Minimum Value
-            UserMinimumValue = Convert.ToDecimal(tbxSetMinimum.Text); //Capture User Minimum
-            LoadcellOffset = 0;//set offset to zero
-            //store value in database
-            tblCalibrationSteps.Text = "Step 2 - Load Scale, Enter Load Weight then Click CALIBRATE SPAN.";
+            _UserMinimumValue = Convert.ToDouble(SetMinimumTextBox.Text); //Capture User Minimum
+            _RawMinimumValue = GpioUtility.ReadData();
+            _LoadcellOffset = 0;//set offset to zero
         }
 
-        private void btnSetMaximum_Click(object sender, RoutedEventArgs e)
+        private void SetMaximumButton_Click(object sender, RoutedEventArgs e)
         {
+            if (SetMaximumTextBox.Text == "") { return; }
             //read Loadcell to get Raw Maximum Value
-            UserMaximumValue = Convert.ToDecimal(tbxSetMaximum.Text); //Capture User Maximum
-            //store value in database
-            Gradient = (UserMaximumValue - UserMinimumValue) / (RawMaximumValue - RawMinimumValue);
+            _UserMaximumValue = Convert.ToDouble(SetMaximumTextBox.Text); //Capture User Maximum
+            _RawMinimumValue = GpioUtility.ReadData();
+
+        }
+
+        private void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            _Gradient = (_UserMaximumValue - _UserMinimumValue) / (_RawMaximumValue - _RawMinimumValue);
 
             //y = mx +c  => c = y - mx
-            YIntercept = UserMinimumValue - (Gradient * RawMinimumValue);
+            _YIntercept = _UserMinimumValue - (_Gradient * _RawMinimumValue);
 
-            CalibrationSettings settings = new CalibrationSettings();
-            bool result = settings.StoreCalibrationSettings(RawMinimumValue, UserMaximumValue, RawMaximumValue, UserMaximumValue, Gradient, YIntercept, LoadcellOffset);
+            ScaleConfigComponent scaleConfigComp = new ScaleConfigComponent();
+            var scaleConfig = scaleConfigComp.GetScaleConfig();
 
-            tblCalibrationSteps.Text = "Calibration Successful";
+            scaleConfig.Gradient = _Gradient;
+            scaleConfig.YIntercept = _YIntercept;
+            scaleConfig.offset = _LoadcellOffset;
+
+            scaleConfigComp.UpdateScaleConfig(scaleConfig);
+
+            messageCalibrationResult.Text = "Calibration Successful";
         }
+
+
     }
 }

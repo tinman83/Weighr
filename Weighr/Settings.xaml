@@ -22,6 +22,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -66,10 +67,14 @@
 
         <TextBlock Grid.Row="8" Text="Maximum Capacity (Kgs)" VerticalAlignment="Center"/>
         <TextBox Grid.Row="8" Grid.Column="1" Width="250" Margin="0,0,0,10" Name="MaximumCapacityTextBox" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        
-        <Button Name="btnSaveSettings" Grid.Row="9" Grid.Column="1" Click="btnSaveSettings_Click">Save</Button>
 
-        <TextBlock Name="ErrorMessage" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Text="Print Mode" VerticalAlignment="Center" Foreground="Red"/>
+        <TextBlock Text="Density" Grid.Row="9" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
+        <Slider Grid.Row="9" Grid.Column="1" StepFrequency="0.1" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="0,0,0,10"  x:Name="densitySlider" Width="250" ValueChanged="Slider_ValueChanged"/>
+        <TextBlock Name="tblSliderDisplay" Grid.Row="9" Grid.Column="2" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
+        
+        <Button Name="btnSaveSettings" Grid.Row="10" Grid.Column="1" Click="btnSaveSettings_Click">Save</Button>
+
+        <TextBlock Name="ErrorMessage" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" Text="Print Mode" VerticalAlignment="Center" Foreground="Red"/>
 
     </Grid>
 </Page>

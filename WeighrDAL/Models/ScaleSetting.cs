@@ -16,5 +16,7 @@ namespace WeighrDAL.Models
 
         public double MinimumDivision { get; set; }
         public double MaximumCapacity { get; set; }
+
+        public double Density { get; set; }
     }
 }

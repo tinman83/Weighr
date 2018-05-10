@@ -67,6 +67,7 @@ namespace Weighr
             PrintModeComboBox.SelectedValue = printMode;
             MinimumDivisionTextBox.Text = _scaleSetting.MinimumDivision.ToString();
             MinimumDivisionTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
+            densitySlider.Value = _scaleSetting.Density;
 
         }
 
@@ -84,6 +85,7 @@ namespace Weighr
 
             _scaleSetting.MinimumDivision = double.Parse(MinimumDivisionTextBox.Text);
             _scaleSetting.MaximumCapacity = double.Parse(MaximumCapacityTextBox.Text);
+            _scaleSetting.Density = densitySlider.Value;
 
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 
@@ -112,5 +114,11 @@ namespace Weighr
             return true;
         }
 
+        private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            decimal val = Convert.ToDecimal(e.NewValue);
+            string msg = val.ToString();
+            tblSliderDisplay.Text = msg;
+        }
     }
 }

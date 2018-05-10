@@ -18,6 +18,7 @@ using WeighrDAL.Components;
 using WeighrDAL.Models;
 using System.Threading;
 using Windows.UI.Core;
+using Weighr.Helpers;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -33,34 +34,6 @@ namespace Weighr
         public decimal current_weight;
         public decimal LoadcellOffset;
 
-        private int clockPinNumber = 23;
-        private int dataPinNumber = 24;
-        private int ledPinNumber = 12;
-
-        private int runPinNumber = 25;
-        private int stopPinNumber = 8;
-        private int estopPinNumber = 7;
-        private int pressurePinNumber = 12;
-        private int normalFeedPinNumber = 16;
-        private int dribbleFeedPinNumber = 20;
-        private int underWeightPinNumber = 21;
-        private int overWeightPinNumber = 26;
-        private int normalWeightPinNumber = 19;
-
-        private GpioPin clockPin;
-        private GpioPin dataPin;
-        private GpioPin ledPin;
-
-        private GpioPin runPin;
-        private GpioPin stopPin;
-        private GpioPin estopPin;
-        private GpioPin pressurePin;
-        private GpioPin normalFeedPin;
-        private GpioPin dribbleFeedPin;
-        private GpioPin underWeightPin;
-        private GpioPin overWeightPin;
-        private GpioPin normalWeightPin;
-
         double _scale_gradient, _y_intercept,_calc_result, _normal_feed_cutoff_percentage = 0.8, _weight_display,_threshold=20;
         decimal _minimum_division, _maximum_capacity, _resolution,_current_target_weight, _current_upper_limit, _current_lower_limit;
         decimal _current_product_density;
@@ -71,13 +44,16 @@ namespace Weighr
         private Boolean _checkWeightProcess = false;
         private Boolean _runprocess = true, _normal_cutoff_reached = false, _final_setpoint_reached = false;
 
-        IList<ScaleConfigComponent> scale_configurations = new List<ScaleConfigComponent>();
-        IList<ScaleSettingComponent> scale_settings = new List<ScaleSettingComponent>();
+        private ScaleSetting _scaleSetting = new ScaleSetting();
+        private ScaleConfig _scaleConfig = new ScaleConfig();
+
+        List<WeighrDAL.Models.Product> _ProductsList = new List<WeighrDAL.Models.Product>();
+        WeighrDAL.Models.Product _currentProduct = new WeighrDAL.Models.Product();
 
         private DispatcherTimer timer;
 
       
-        private bool _available = false;
+        
         public Scale()
         {
             this.InitializeComponent();
@@ -92,7 +68,10 @@ namespace Weighr
         {
             GetScaleConfigurations();
             GetScaleSettings();
-            bool IsInitialised = InitialiseGpio();
+            ProductComponent productComp = new ProductComponent();
+            _ProductsList = productComp.GetProducts();
+
+            bool IsInitialised = GpioUtility.InitialiseGpio();
             //GetCurrentProductDetails();
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
@@ -101,43 +80,32 @@ namespace Weighr
 
         }
 
+        private void ProductsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string productCode = ProductsComboBox.SelectedValue.ToString();
+            LoadProductByProductCode(productCode);
+        }
+
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             //threshold = Convert.ToDouble(tbxTest.Text);
         }
 
-
-
-        //private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        //{
-        //    decimal val = Convert.ToDecimal(e.NewValue);
-        //    string msg = val.ToString();
-        //    tblSliderDisplay.Text = msg;
-        //}
-
         private void timer_Tick(object sender, object e)
         {
             //read scale and update ui
-            Int32 result = ReadData();
-            _calc_result = ((_scale_gradient) * result) + _y_intercept;
+            Int32 result = GpioUtility.ReadData();
+            _calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept);
             //weight = Convert.ToInt32(calc_result * 100);
             //weight_display = weight / 100;
             //tblWeightDisplay.Text = weight_display.ToString();
             tblWeightDisplay.Text = _calc_result.ToString("0.##"); // returns "0"  when decimalVar == 0
 
-            if(_calc_result >= _threshold)
-            {
-                ledPin.Write(GpioPinValue.High);
-            }
-            else
-            {
-                ledPin.Write(GpioPinValue.Low);
-            }
         }
 
         //public void ReadandUpdateUI()
         //{
-           
+
         //        //read scale and update ui
         //        Int32 result = ReadData();
         //        calc_result = ((scale_gradient) * result) + y_intercept;
@@ -147,10 +115,13 @@ namespace Weighr
 
         //        if (runprocess == true)
         //        {
-        //        normalFeedPin.Write(GpioPinValue.High);  //open normal feed valve
-        //        dribbleFeedPin.Write(GpioPinValue.High);  //open dribble feed valve
+
+        //        GpioUtility.openNormalFeedValve();  //open normal feed valve 
+        //        GpioUtility.openDribbleFeedValve(); //open dribble feed valve
+
         //        runprocess = false;
         //        checkWeightProcess = true;
+
         //        }
 
         //        if (checkWeightProcess == true)
@@ -160,7 +131,7 @@ namespace Weighr
         //            //display filling status
         //            if (weight_display >= (current_target_weight * Convert.ToDecimal(normal_feed_cutoff_percentage)))  //normal feed cutoff reached?
         //              {
-        //                normalFeedPin.Write(GpioPinValue.Low);  //close normal feed valve
+        //                GpioUtility.closeNormalFeedValve();  //close normal feed valve
         //                normal_cutoff_reached = true;
         //              }
         //           }
@@ -169,7 +140,7 @@ namespace Weighr
         //            //display filling status
         //            if(weight_display >= current_target_weight)
         //            {
-        //                dribbleFeedPin.Write(GpioPinValue.Low);  //close dribble feed valve
+        //                GpioUtility.closeDribbleFeedValve();  //close dribble feed valve
         //                final_setpoint_reached = true;
         //            }
 
@@ -179,7 +150,7 @@ namespace Weighr
         //          {
         //            //display filling status
         //            checkWeightProcess = false;
-                    
+
         //            if (weight_display > ((current_target_weight * current_upper_limit) + current_target_weight))   //if overpacked
         //            {
         //                overWeightPin.Write(GpioPinValue.High);  //switch on overweight light
@@ -213,88 +184,24 @@ namespace Weighr
 
         //        }         
 
-         
+
         //}
 
         public void GetScaleConfigurations()
         {
             ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
 
-            var config = ScaleConfigComp.GetScaleConfig(1);
-
-            _scale_gradient = config.Gradient;
-            _y_intercept = config.YIntercept;
-            _minimum_division = config.MinimumDivision;
-            _maximum_capacity = config.MaximumCapacity;
-            _resolution = config.Resolution;     
+            _scaleConfig = ScaleConfigComp.GetScaleConfig();
+     
         }
 
         public void GetScaleSettings()
         {
             ScaleSettingComponent ScaleSettingComp = new ScaleSettingComponent();
+            _scaleSetting = ScaleSettingComp.GetScaleSetting();
 
-            var setting = ScaleSettingComp.GetScaleSetting(1);
-
-            _display_units = setting.DisplayUnits;
-            _decimal_position = setting.DecimalPointPrecision;
-
-            if(_decimal_position == 0)
-            {
-                _divider = 1;
-            }
-            else if(_decimal_position == 1)
-            {
-                _divider = 10;
-
-            }
-            else if(_decimal_position == 2)
-            {
-                _divider = 100;
-            }
-
-            else
-            {
-                _divider = 1000;
-            }
-            //y_intercept = config.YIntercept;
-            //minimum_division = config.MinimumDivision;
-            //maximum_capacity = config.MaximumCapacity;
-            //resolution = config.Resolution;
         }
 
-        public void weightReaderHandler()
-        {
-            while (true)
-            {
-                if (_runprocess == false) { break; }
-                try
-                {
-                    Int32 result = ReadData();
-                    double calc_result = ((-0.00000497) * result) - 1.15;
-
-                    if (_checkWeightProcess == true) {
-                        UpdateWeightUI((calc_result).ToString());
-                    }
-                    
-                    if (calc_result < 2.00)
-                    {
-                        ledPin.Write(GpioPinValue.High);
-                    }
-                    else
-                    {
-                        ledPin.Write(GpioPinValue.Low);
-                    }
-
-                }
-                catch (Exception ex)
-                {
-
-                    throw ex;
-                }
-                
-
-            }
-        }
         private async void UpdateWeightUI(string weightResult)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
@@ -303,82 +210,6 @@ namespace Weighr
                 tblWeightDisplay.Text = weightResult;
             });
         }
-
-        private int ReadData()
-        {
-            uint value = 0;
-            byte[] data = new byte[4];
-
-            // Wait for chip to become ready
-            for (; GpioPinValue.Low != dataPin.Read();) ;
-
-            // Clock in data
-            data[1] = ShiftInByte();
-            data[2] = ShiftInByte();
-            data[3] = ShiftInByte();
-
-            // Clock in gain of 128 for next reading
-            clockPin.Write(GpioPinValue.High);
-            clockPin.Write(GpioPinValue.Low);
-
-            // Replicate the most significant bit to pad out a 32-bit signed integer
-            if (0x80 == (data[1] & 0x80))
-            {
-                data[0] = 0xFF;
-            }
-            else
-            {
-                data[0] = 0x00;
-            }
-
-            // Construct a 32-bit signed integer
-            value = (uint)((data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3]);
-
-            // Datasheet indicates the value is returned as a two's complement value
-            // https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf
-
-            // flip all the bits
-            value = ~value;
-
-            // ... and add 1
-            return (int)(++value);
-        }
-
-        private byte ShiftInByte()
-        {
-            byte value = 0x00;
-
-            // Convert "GpioPinValue.High" and "GpioPinValue.Low" to 1 and 0, respectively.
-            // NOTE: Loop is unrolled for performance
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 7);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 6);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 5);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 4);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 3);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 2);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)((byte)(dataPin.Read()) << 1);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.Write(GpioPinValue.High);
-            value |= (byte)dataPin.Read();
-            clockPin.Write(GpioPinValue.Low);
-
-            return value;
-        }
-
-
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
@@ -443,66 +274,14 @@ namespace Weighr
             //bool result = calibrate.NetGrossScale();
         }
 
-        private bool InitialiseGpio()
+        private void LoadProductByProductCode(string productCode)
         {
-            GpioController gpio = GpioController.GetDefault();
+            ProductComponent productComp = new ProductComponent();
 
-            if (null == gpio)
-            {
-                _available = false;
-                return false;
-            }
-            /*
-                * Initialize the clock pin and set to "Low"
-                *
-                * Instantiate the clock pin object
-                * Write the GPIO pin value of low on the pin
-                * Set the GPIO pin drive mode to output
-                */
-            clockPin = gpio.OpenPin(clockPinNumber, GpioSharingMode.Exclusive);
-            clockPin.Write(GpioPinValue.Low);
-            clockPin.SetDriveMode(GpioPinDriveMode.Output);
+           _currentProduct = productComp.GetProduct(productCode);
 
-            ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
-            ledPin.SetDriveMode(GpioPinDriveMode.Output);
-
-            normalFeedPin = gpio.OpenPin(normalFeedPinNumber, GpioSharingMode.Exclusive);
-            normalFeedPin.SetDriveMode(GpioPinDriveMode.Output);
-
-            dribbleFeedPin = gpio.OpenPin(dribbleFeedPinNumber, GpioSharingMode.Exclusive);
-            dribbleFeedPin.SetDriveMode(GpioPinDriveMode.Output);
-
-            underWeightPin = gpio.OpenPin(underWeightPinNumber, GpioSharingMode.Exclusive);
-            underWeightPin.SetDriveMode(GpioPinDriveMode.Output);
-
-            overWeightPin = gpio.OpenPin(overWeightPinNumber, GpioSharingMode.Exclusive);
-            overWeightPin.SetDriveMode(GpioPinDriveMode.Output);
-
-            normalWeightPin = gpio.OpenPin(normalWeightPinNumber, GpioSharingMode.Exclusive);
-            normalWeightPin.SetDriveMode(GpioPinDriveMode.Output);
-
-
-
-            /*
-                * Initialize the data pin and set to "Low"
-                * 
-                * Instantiate the data pin object
-                * Set the GPIO pin drive mode to input for reading
-                */
-            dataPin = gpio.OpenPin(dataPinNumber, GpioSharingMode.Exclusive);
-            dataPin.SetDriveMode(GpioPinDriveMode.Input);
-
-            runPin = gpio.OpenPin(runPinNumber, GpioSharingMode.Exclusive);
-            runPin.SetDriveMode(GpioPinDriveMode.Input);
-
-            stopPin = gpio.OpenPin(stopPinNumber, GpioSharingMode.Exclusive);
-            stopPin.SetDriveMode(GpioPinDriveMode.Input);
-
-            estopPin = gpio.OpenPin(estopPinNumber, GpioSharingMode.Exclusive);
-            estopPin.SetDriveMode(GpioPinDriveMode.Input);
-
-            _available = true;
-            return true;
         }
+
+
     }
 }

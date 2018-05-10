@@ -19,12 +19,18 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <!--Row 0 Column 0-->
-        <TextBlock Name="tblStatus"   VerticalAlignment="top" HorizontalAlignment="left" Margin="35,20,0,0" FontSize="14" Text="Weight / Kg"></TextBlock>
+
+        <TextBlock  Text="Select Product" VerticalAlignment="Top" Margin="10,0,0,10"/>
+        <ComboBox MinWidth="300"   Margin="10,0,0,10"  Name="ProductsComboBox" 
+                  ItemsSource="{x:Bind _ProductsList}"
+                  SelectedValuePath="ProductCode"
+                  DisplayMemberPath="ProductName" VerticalAlignment="Center" SelectionChanged="ProductsComboBox_SelectionChanged">
+        </ComboBox>
+        
         <TextBlock Name="tblWeigherStatus" Grid.Column="1"  VerticalAlignment="top" HorizontalAlignment="right" Margin="0,20,35,0" FontSize="14" Text="Current Status"></TextBlock>
 
         <!--Row 1 Column 0-->
-        <TextBlock Name="tblWeightDisplay" Grid.Row="1"  FontSize="200" FontFamily="Bebas" HorizontalAlignment="left" VerticalAlignment="top" Margin="35,91,-701,-356" Grid.ColumnSpan="2" Grid.RowSpan="2" >0078,96</TextBlock>
+        <TextBlock Name="tblWeightDisplay" Grid.Row="1"  FontSize="150" FontFamily="Bebas" HorizontalAlignment="left" VerticalAlignment="top" Margin="35,91,-701,-356" Grid.ColumnSpan="2" Grid.RowSpan="2" >0078,96</TextBlock>
         <!--Row 2 Column 0
         <TextBlock Name="tblSliderDisplay" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="35,0,0,60" FontSize="18"></TextBlock>
         <Slider Grid.Row="2" StepFrequency="0.1" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="35,0,0,20"  x:Name="densitySlider" Width="200" ValueChanged="Slider_ValueChanged"/>-->
