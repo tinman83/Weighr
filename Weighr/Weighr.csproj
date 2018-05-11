@@ -98,6 +98,7 @@
     <Compile Include="Calibration.xaml.cs">
       <DependentUpon>Calibration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DBHelper.cs" />
     <Compile Include="Helpers\GpioUtility.cs" />
     <Compile Include="Helpers\Utility.cs" />
     <Compile Include="MainPage.xaml.cs">

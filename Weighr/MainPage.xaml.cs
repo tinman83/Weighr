@@ -52,8 +52,9 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //bool IsInitialised = GpioUtility.InitialiseGpio();
-            InitialiseTables();
+            bool IsInitialised = GpioUtility.InitialiseGpio();
+            DBHelper dbhelper = new DBHelper();
+            dbhelper.InitialiseTables();
         }
 
         private void HamgurgerButton_Click(object sender, RoutedEventArgs e)
@@ -115,53 +116,7 @@ namespace Weighr
             }
         }
 
-        private void InitialiseTables()
-        {
-            /*** Initialise Calibration Settings***/
-            ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
-
-            var config = ScaleConfigComp.GetScaleConfig();
-
-            ScaleConfig scaleCon = new ScaleConfig() { Gradient = -0.00000497, Resolution = 200, YIntercept = -1.15,offset=0};
-
-            if (config == null)
-            {
-                ScaleConfigComp.AddScaleConfig(scaleCon);
-            }
-            else
-            {
-                scaleCon.ScaleConfigId = 1;
-                ScaleConfigComp.UpdateScaleConfig(scaleCon);
-            }
-
-            /*** Initialise Scale Settings***/
-            ScaleSettingComponent ScaleSettigComp = new ScaleSettingComponent();
-            var setting = ScaleSettigComp.GetScaleSetting();
-
-            ScaleSetting scale_setting = new ScaleSetting() {
-                DisplayUnits = "Kgs",
-                DecimalPointPrecision = 2,
-                Density = 1,
-                DisplayUnitsWeight = 1,
-                MaximumCapacity = 100,
-                MinimumDivision = 1,  
-                PrintMode = false,
-                ZeroRange=2
-            };
-            
-            if(setting == null)
-            {
-                ScaleSettigComp.AddScaleSetting(scale_setting);
-            }
-            else
-            {
-                scale_setting.ScaleSettingId = 1;
-                ScaleSettigComp.UpdateScaleSetting(scale_setting);
-            }
-
-
-
-        }
+       
 
     }
 }
