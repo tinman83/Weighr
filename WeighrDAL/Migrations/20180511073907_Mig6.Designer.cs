@@ -11,9 +11,10 @@ using WeighrDAL;
 namespace WeighrDAL.Migrations
 {
     [DbContext(typeof(WeighrContext))]
-    partial class WeighrContextModelSnapshot : ModelSnapshot
+    [Migration("20180511073907_Mig6")]
+    partial class Mig6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
