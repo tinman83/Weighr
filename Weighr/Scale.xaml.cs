@@ -52,8 +52,6 @@ namespace Weighr
 
         private DispatcherTimer timer;
 
-      
-        
         public Scale()
         {
             this.InitializeComponent();
@@ -97,12 +95,22 @@ namespace Weighr
             //read scale and update ui
             Int32 result = GpioUtility.ReadData();
             _calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept);
-            //weight = Convert.ToInt32(calc_result * 100);
-            //weight_display = weight / 100;
-            //tblWeightDisplay.Text = weight_display.ToString();
+
             tblWeightDisplay.Text = _calc_result.ToString("0.##"); // returns "0"  when decimalVar == 0
 
-        }
+           // _runprocess=GpioUtility.isRunButtonPressed();
+            if (_runprocess == true)
+            {
+
+                GpioUtility.openNormalFeedValve();  //open normal feed valve 
+                GpioUtility.openDribbleFeedValve(); //open dribble feed valve
+
+                _runprocess = false;
+                _checkWeightProcess = true;
+
+            }
+
+         }
 
         //public void ReadandUpdateUI()
         //{

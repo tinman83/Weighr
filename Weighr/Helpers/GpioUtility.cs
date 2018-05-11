@@ -39,7 +39,19 @@ namespace Weighr.Helpers
         private static GpioPin normalWeightPin;
         private static bool _available = false;
 
+        public static bool isRunButtonPressed()
+        {
+            GpioPinValue pinValue = runPin.Read();
+            if (pinValue == GpioPinValue.High)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
+        }
         public static bool InitialiseGpio()
         {
             GpioController gpio = GpioController.GetDefault();
