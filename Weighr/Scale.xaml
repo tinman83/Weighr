@@ -22,9 +22,7 @@
 
         <TextBlock  Text="Select Product" VerticalAlignment="Top" Margin="10,0,0,10"/>
         <ComboBox MinWidth="300"   Margin="10,0,0,10"  Name="ProductsComboBox" 
-                  ItemsSource="{x:Bind _ProductsList}"
-                  SelectedValuePath="ProductCode"
-                  DisplayMemberPath="ProductName" VerticalAlignment="Center" SelectionChanged="ProductsComboBox_SelectionChanged">
+                  ItemsSource="{Binding}" DisplayMemberPath="Name" VerticalAlignment="Center" SelectionChanged="ProductsComboBox_SelectionChanged">
         </ComboBox>
         
         <TextBlock Name="tblWeigherStatus" Grid.Column="1"  VerticalAlignment="top" HorizontalAlignment="right" Margin="0,20,35,0" FontSize="14" Text="Current Status"></TextBlock>

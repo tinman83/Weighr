@@ -11,8 +11,8 @@ using WeighrDAL;
 namespace WeighrDAL.Migrations
 {
     [DbContext(typeof(WeighrContext))]
-    [Migration("20180411090523_Mig2")]
-    partial class Mig2
+    [Migration("20180511095033_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,6 +79,8 @@ namespace WeighrDAL.Migrations
 
                     b.Property<decimal>("Density");
 
+                    b.Property<double>("Inflight");
+
                     b.Property<decimal>("LowerLimit");
 
                     b.Property<string>("Name");
@@ -88,6 +90,8 @@ namespace WeighrDAL.Migrations
                     b.Property<decimal>("TargetWeight");
 
                     b.Property<decimal>("UpperLimit");
+
+                    b.Property<bool>("isCurrent");
 
                     b.HasKey("ProductId");
 
@@ -101,13 +105,11 @@ namespace WeighrDAL.Migrations
 
                     b.Property<double>("Gradient");
 
-                    b.Property<decimal>("MaximumCapacity");
-
-                    b.Property<decimal>("MinimumDivision");
-
                     b.Property<decimal>("Resolution");
 
                     b.Property<double>("YIntercept");
+
+                    b.Property<double>("offset");
 
                     b.HasKey("ScaleConfigId");
 
@@ -119,19 +121,23 @@ namespace WeighrDAL.Migrations
                     b.Property<int>("ScaleSettingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("DecimalPointPosition");
-
                     b.Property<string>("DecimalPointPositionName");
+
+                    b.Property<int>("DecimalPointPrecision");
+
+                    b.Property<double>("Density");
 
                     b.Property<string>("DisplayUnits");
 
-                    b.Property<bool>("PowerOnZero");
+                    b.Property<double>("DisplayUnitsWeight");
+
+                    b.Property<double>("MaximumCapacity");
+
+                    b.Property<double>("MinimumDivision");
 
                     b.Property<bool>("PrintMode");
 
-                    b.Property<decimal>("ZeroRange");
-
-                    b.Property<decimal>("ZeroTrackWidth");
+                    b.Property<double>("ZeroRange");
 
                     b.HasKey("ScaleSettingId");
 
@@ -185,21 +191,31 @@ namespace WeighrDAL.Migrations
 
                     b.Property<decimal>("ActualWeight");
 
+                    b.Property<DateTime>("DateUploaded");
+
                     b.Property<string>("DeviceId");
 
                     b.Property<string>("OrderNumber");
 
                     b.Property<string>("ProductCode");
 
+                    b.Property<int>("ProductId");
+
                     b.Property<int>("ShiftId");
 
                     b.Property<DateTime>("TransactionDate");
+
+                    b.Property<string>("Units");
+
+                    b.Property<bool>("Uploaded");
 
                     b.Property<decimal>("WeightDifference");
 
                     b.Property<int>("WeightStatus");
 
                     b.Property<string>("WeightType");
+
+                    b.Property<Guid>("rowguid");
 
                     b.HasKey("TransactionLogId");
 

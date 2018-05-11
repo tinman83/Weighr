@@ -35,30 +35,31 @@
         <TextBlock Text="Update Settings" FontSize="36" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
 
         <TextBlock Grid.Row="1" Text="Display Units" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="DisplayUnitsComboBox">
+        <ComboBox Width="250" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="DisplayUnitsComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="Grams" />
-            <ComboBoxItem Content="Kgs" IsSelected="True"/>
+            <ComboBoxItem Content="Kgs"/>
             <ComboBoxItem Content="Tonnes" />
            
         </ComboBox>
 
         <TextBlock Grid.Row="2" Text="Decimal Point Precision" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10"  Name="DecimalPointPrecisionComboBox">
+        <ComboBox Width="250" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10"  Name="DecimalPointPrecisionComboBox"
+                  SelectedValuePath="Content">
             <ComboBoxItem Content="0" />
             <ComboBoxItem Content="1" />
-            <ComboBoxItem Content="2" IsSelected="True"/>
+            <ComboBoxItem Content="2" />
             <ComboBoxItem Content="3" />
         </ComboBox>
 
         <TextBlock Grid.Row="3" Text="Zero Range (% of Max)" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10"  Name="ZeroRangeComboBox" >
-            <ComboBoxItem Content="2" IsSelected="True"/>
+        <ComboBox Width="250" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10"  Name="ZeroRangeComboBox" SelectedValuePath="Content">
+            <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="10" />
         </ComboBox>
 
         <TextBlock Grid.Row="5" Text="Print Mode" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"  Name="PrintModeComboBox">
-            <ComboBoxItem Content="Manual" IsSelected="True"/>
+        <ComboBox Width="250" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"  Name="PrintModeComboBox" SelectedValuePath="Content">
+            <ComboBoxItem Content="Manual" />
             <ComboBoxItem Content="Auto" />
         </ComboBox>
 

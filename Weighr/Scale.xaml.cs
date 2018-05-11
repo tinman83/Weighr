@@ -70,13 +70,14 @@ namespace Weighr
             GetScaleSettings();
             ProductComponent productComp = new ProductComponent();
             _ProductsList = productComp.GetProducts();
+            ProductsComboBox.ItemsSource = _ProductsList;
 
-            bool IsInitialised = GpioUtility.InitialiseGpio();
+            //bool IsInitialised = GpioUtility.InitialiseGpio();
             //GetCurrentProductDetails();
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
             timer.Tick += timer_Tick;
-            timer.Start();
+            //timer.Start();
 
         }
 

@@ -29,16 +29,21 @@ namespace Weighr
         public Product()
         {
             this.InitializeComponent();
+            
         }
 
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadProductsList();
+        }
+
+        private void LoadProductsList()
         {
             ProductComponent productComp = new ProductComponent();
 
             _ProductsList = productComp.GetProducts();
+            ProductsComboBox.ItemsSource = _ProductsList;
         }
-
         private void btnSaveProduct_Click(object sender, RoutedEventArgs e)
         {
             if (ValidateSaveProduct() == false) { return; }
@@ -69,6 +74,7 @@ namespace Weighr
             }
 
             ClearProduct();
+            LoadProductsList();
 
         }
 
@@ -94,12 +100,6 @@ namespace Weighr
             InflightTextBox.Text = _product.Inflight.ToString();
         }
 
-        private void ProductsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string productCode = ProductsComboBox.SelectedValue.ToString();
-            LoadProductByProductCode(productCode);
-        }
-
         private void ClearProduct()
         {
 
@@ -116,6 +116,24 @@ namespace Weighr
         private void btnNewProduct_Click(object sender, RoutedEventArgs e)
         {
             ClearProduct();
+            LoadProductsList();
+        }
+
+        private void ProductsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _product = (WeighrDAL.Models.Product)ProductsComboBox.SelectedItem;
+            if (_product != null)
+            {
+                ProductCodeTextBox.Text = _product.ProductCode;
+                ProductNameTextBox.Text = _product.Name;
+                DensityTextBox.Text = _product.Density.ToString();
+                TargetWeightTextBox.Text = _product.TargetWeight.ToString();
+                UpperLimitTextBox.Text = _product.UpperLimit.ToString();
+                LowerLimitTextBox.Text = _product.LowerLimit.ToString();
+                InflightTextBox.Text = _product.Inflight.ToString();
+            }
+             
+
         }
     }
 }

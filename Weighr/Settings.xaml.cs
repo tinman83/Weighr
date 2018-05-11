@@ -59,14 +59,14 @@ namespace Weighr
             _scaleSetting = scaleSettingComp.GetScaleSettingDefault();
 
             DisplayUnitsComboBox.SelectedIndex = GetUnitIndex(_scaleSetting.DisplayUnits);
-            DecimalPointPrecisionComboBox.SelectedValue = _scaleSetting.DecimalPointPrecision;
-            ZeroRangeComboBox.SelectedValue = _scaleSetting.ZeroRange;
+            DecimalPointPrecisionComboBox.SelectedValue = _scaleSetting.DecimalPointPrecision.ToString();
+            ZeroRangeComboBox.SelectedValue = _scaleSetting.ZeroRange.ToString();
 
             string printMode;
             if (_scaleSetting.PrintMode == false) { printMode = "Manual"; } else { printMode = "Auto"; }
             PrintModeComboBox.SelectedValue = printMode;
             MinimumDivisionTextBox.Text = _scaleSetting.MinimumDivision.ToString();
-            MinimumDivisionTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
+            MaximumCapacityTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
             densitySlider.Value = _scaleSetting.Density;
 
         }
@@ -81,8 +81,17 @@ namespace Weighr
             _scaleSetting.DisplayUnits = DisplayUnitsComboBox.SelectedValue.ToString();
             _scaleSetting.DecimalPointPrecision = int.Parse(DecimalPointPrecisionComboBox.SelectedValue.ToString());
             _scaleSetting.ZeroRange = double.Parse(ZeroRangeComboBox.SelectedValue.ToString());
-            _scaleSetting.PrintMode = bool.Parse(PrintModeComboBox.SelectedValue.ToString());
 
+            string mode = PrintModeComboBox.SelectedValue.ToString();
+            if (mode == "Auto")
+            {
+                _scaleSetting.PrintMode =false;
+            }
+            else
+            {
+                _scaleSetting.PrintMode = false;
+            }
+            
             _scaleSetting.MinimumDivision = double.Parse(MinimumDivisionTextBox.Text);
             _scaleSetting.MaximumCapacity = double.Parse(MaximumCapacityTextBox.Text);
             _scaleSetting.Density = densitySlider.Value;

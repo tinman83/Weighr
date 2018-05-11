@@ -35,7 +35,16 @@ namespace Weighr
 
             using (var db = new WeighrContext())
             {
-                db.Database.Migrate();
+                try
+                {
+                    db.Database.Migrate();
+                }
+                catch (Exception)
+                {
+                    db.Database.EnsureDeleted();
+                    db.Database.Migrate();
+
+                }
             }
         }
 
