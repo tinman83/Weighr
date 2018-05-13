@@ -65,9 +65,12 @@ namespace Weighr
             string printMode;
             if (_scaleSetting.PrintMode == false) { printMode = "Manual"; } else { printMode = "Auto"; }
             PrintModeComboBox.SelectedValue = printMode;
-            MinimumDivisionTextBox.Text = _scaleSetting.MinimumDivision.ToString();
-            MaximumCapacityTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
+            MinimumDivisionComboBox.SelectedValue = _scaleSetting.MinimumDivision.ToString();
+            MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
             densitySlider.Value = _scaleSetting.Density;
+            UpperLimitComboBox.SelectedValue = _scaleSetting.UpperLimit.ToString();
+            LowerLimitComboBox.SelectedValue = _scaleSetting.LowerLimit.ToString();
+            InflightComboBox.SelectedValue = _scaleSetting.Inflight.ToString();
 
         }
 
@@ -92,9 +95,12 @@ namespace Weighr
                 _scaleSetting.PrintMode = false;
             }
             
-            _scaleSetting.MinimumDivision = double.Parse(MinimumDivisionTextBox.Text);
-            _scaleSetting.MaximumCapacity = double.Parse(MaximumCapacityTextBox.Text);
+            _scaleSetting.MinimumDivision = double.Parse(MinimumDivisionComboBox.SelectedValue.ToString());
+            _scaleSetting.MaximumCapacity = MaximumCapacitySlider.Value;
             _scaleSetting.Density = densitySlider.Value;
+            _scaleSetting.UpperLimit = decimal.Parse(UpperLimitComboBox.SelectedValue.ToString());
+            _scaleSetting.LowerLimit = decimal.Parse(LowerLimitComboBox.SelectedValue.ToString());
+            _scaleSetting.Inflight = double.Parse(InflightComboBox.SelectedValue.ToString());
 
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 
@@ -105,20 +111,20 @@ namespace Weighr
 
         private bool ValidateSettingsInput()
         {
-            double num;
+            //double num;
 
-            if (MinimumDivisionTextBox.Text == "") { ErrorMessage.Text = "Please enter Minimum division value"; return false; }
+            //if (MinimumDivisionTextBox.Text == "") { ErrorMessage.Text = "Please enter Minimum division value"; return false; }
             
-            if (!double.TryParse(MinimumDivisionTextBox.Text, out num))
-            {
-                ErrorMessage.Text = "Please enter Numeric Minimum division value"; return false;
-            }
+            //if (!double.TryParse(MinimumDivisionTextBox.Text, out num))
+            //{
+            //    ErrorMessage.Text = "Please enter Numeric Minimum division value"; return false;
+            //}
 
-            if (MaximumCapacityTextBox.Text == "") { ErrorMessage.Text = "Please enter  Maximum Capacity value"; return false; }
-            if (!double.TryParse(MaximumCapacityTextBox.Text, out num))
-            {
-                ErrorMessage.Text = "Please enter Numeric Maximum Capacity value"; return false;
-            }
+            //if (MaximumCapacityTextBox.Text == "") { ErrorMessage.Text = "Please enter  Maximum Capacity value"; return false; }
+            //if (!double.TryParse(MaximumCapacityTextBox.Text, out num))
+            //{
+            //    ErrorMessage.Text = "Please enter Numeric Maximum Capacity value"; return false;
+            //}
 
             return true;
         }

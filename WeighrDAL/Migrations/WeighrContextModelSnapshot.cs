@@ -130,11 +130,17 @@ namespace WeighrDAL.Migrations
 
                     b.Property<double>("DisplayUnitsWeight");
 
+                    b.Property<double>("Inflight");
+
+                    b.Property<decimal>("LowerLimit");
+
                     b.Property<double>("MaximumCapacity");
 
                     b.Property<double>("MinimumDivision");
 
                     b.Property<bool>("PrintMode");
+
+                    b.Property<decimal>("UpperLimit");
 
                     b.Property<double>("ZeroRange");
 

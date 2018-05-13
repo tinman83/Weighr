@@ -76,6 +76,17 @@ namespace WeighrDAL.Components
 
             }
         }
+        public Product GetLastAddedProduct()
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.Products
+                    .OrderByDescending(p=>p.ProductId)
+                    .Take(1)
+                    .FirstOrDefault();
+
+            }
+        }
 
         public Product SetCurrentProduct(string productCode)
         {

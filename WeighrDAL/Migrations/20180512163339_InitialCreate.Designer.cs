@@ -11,7 +11,7 @@ using WeighrDAL;
 namespace WeighrDAL.Migrations
 {
     [DbContext(typeof(WeighrContext))]
-    [Migration("20180511095033_InitialCreate")]
+    [Migration("20180512163339_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,11 +131,17 @@ namespace WeighrDAL.Migrations
 
                     b.Property<double>("DisplayUnitsWeight");
 
+                    b.Property<double>("Inflight");
+
+                    b.Property<decimal>("LowerLimit");
+
                     b.Property<double>("MaximumCapacity");
 
                     b.Property<double>("MinimumDivision");
 
                     b.Property<bool>("PrintMode");
+
+                    b.Property<decimal>("UpperLimit");
 
                     b.Property<double>("ZeroRange");
 

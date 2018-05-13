@@ -102,9 +102,12 @@ namespace WeighrDAL.Migrations
                     Density = table.Column<double>(nullable: false),
                     DisplayUnits = table.Column<string>(nullable: true),
                     DisplayUnitsWeight = table.Column<double>(nullable: false),
+                    Inflight = table.Column<double>(nullable: false),
+                    LowerLimit = table.Column<decimal>(nullable: false),
                     MaximumCapacity = table.Column<double>(nullable: false),
                     MinimumDivision = table.Column<double>(nullable: false),
                     PrintMode = table.Column<bool>(nullable: false),
+                    UpperLimit = table.Column<decimal>(nullable: false),
                     ZeroRange = table.Column<double>(nullable: false)
                 },
                 constraints: table =>

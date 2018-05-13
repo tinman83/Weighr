@@ -43,7 +43,10 @@ namespace Weighr.Helpers
                 MaximumCapacity = 100,
                 MinimumDivision = 1,
                 PrintMode = false,
-                ZeroRange = 2
+                ZeroRange = 2,
+                UpperLimit=2,
+                LowerLimit=2,
+                Inflight=0.5
             };
 
             if (setting == null)
@@ -68,10 +71,10 @@ namespace Weighr.Helpers
                     ProductCode = "PROA",
                     Name = "Product A",
                     Density = 0,
-                    Inflight = 0,
+                    Inflight = 0.5,
                     isCurrent = false,
-                    LowerLimit = 0,
-                    UpperLimit = 0,
+                    LowerLimit = 2,
+                    UpperLimit = 2,
                     TargetWeight = 3
                 };
 
