@@ -21,6 +21,7 @@ using Windows.UI.Core;
 using Weighr.Helpers;
 
 
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Weighr
@@ -28,6 +29,8 @@ namespace Weighr
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+
+
     public sealed partial class Scale : Page
     {
         public decimal product_weight;
@@ -35,14 +38,15 @@ namespace Weighr
         public decimal LoadcellOffset;
 
         double _scale_gradient, _y_intercept,_calc_result, _normal_feed_cutoff_percentage = 0.8, _weight_display,_threshold=20;
-        decimal _minimum_division, _maximum_capacity, _resolution,_current_target_weight, _current_upper_limit, _current_lower_limit;
+        decimal _minimum_division, _maximum_capacity, _resolution,_current_target_weight, _current_upper_limit, _current_lower_limit, _normal_cutoff_weight, _final_setpoint_weight;
         decimal _current_product_density;
         string _display_units, _current_product_code, _curent_product_name;
         string _current_status;
         int _decimal_position,_divider, _weight, _current_product_id;
 
         private Boolean _checkWeightProcess = false;
-        private Boolean _runprocess = true, _normal_cutoff_reached = false, _final_setpoint_reached = false;
+        private Boolean _runprocess = false, _normal_cutoff_reached = false, _final_setpoint_reached = false;
+        private Boolean startProcessLocked = false;
 
         private ScaleSetting _scaleSetting = new ScaleSetting();
         private ScaleConfig _scaleConfig = new ScaleConfig();
@@ -69,6 +73,10 @@ namespace Weighr
             ProductComponent productComp = new ProductComponent();
             _ProductsList = productComp.GetProducts();
             ProductsComboBox.ItemsSource = _ProductsList;
+
+            _normal_cutoff_weight = (_currentProduct.TargetWeight)*Convert.ToDecimal(0.8) ;
+            _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
+            
 
             //bool IsInitialised = GpioUtility.InitialiseGpio();
             //GetCurrentProductDetails();
@@ -98,15 +106,85 @@ namespace Weighr
 
             tblWeightDisplay.Text = _calc_result.ToString("0.##"); // returns "0"  when decimalVar == 0
 
+            
+
            // _runprocess=GpioUtility.isRunButtonPressed();
-            if (_runprocess == true)
+            if (_runprocess == true || GpioUtility.isRunButtonPressed() == true)
             {
+                if(startProcessLocked)    //checked if starting is locked
+                {
+                    if(_checkWeightProcess == true)  //if check weight in progress
+                    {
+                        if (_normal_cutoff_reached == false)   //check if normal cuoff is reached
+                        {
+                            //display filling status
+                            if (_calc_result >= Convert.ToDouble(_normal_cutoff_weight))  //normal feed cutoff reached?
+                            {
+                                GpioUtility.closeNormalFeedValve();  //close normal feed valve
+                                _normal_cutoff_reached = true;
+                            }
+                        }
 
-                GpioUtility.openNormalFeedValve();  //open normal feed valve 
-                GpioUtility.openDribbleFeedValve(); //open dribble feed valve
+                        else if (_final_setpoint_reached == false)
+                        {
+                            //display filling status
+                            if (_calc_result >= Convert.ToDouble(_final_setpoint_weight))
+                            {
+                                GpioUtility.closeDribbleFeedValve();  //close dribble feed valve
+                                _final_setpoint_reached = true;
+                            }
 
-                _runprocess = false;
-                _checkWeightProcess = true;
+                        }
+
+                        else
+                        {
+                            //display filling status
+                            _checkWeightProcess = false;
+
+                            if (_calc_result > Convert.ToDouble(((_currentProduct.TargetWeight) + _currentProduct.UpperLimit)))   //if overpacked
+                            {
+                                GpioUtility.switchOnOverWeightLight();
+                            }
+
+                            else if (_calc_result < Convert.ToDouble(((_currentProduct.TargetWeight) - _currentProduct.LowerLimit)))    //if underpacke
+                            {
+                                GpioUtility.switchOnUnderWeightLight();
+                            }
+
+                            else
+                            {
+                                GpioUtility.switchOnNormalWeightLight();
+                            }
+                            TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
+                            TransactionLog trans_log = new TransactionLog() { ProductId = _currentProduct.ProductId, ProductCode = _currentProduct.ProductCode, ActualWeight = Convert.ToDecimal(_calc_result), TransactionDate = DateTime.Now, WeightDifference = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight };
+                            TransactionLogComp.AddTransactionLog(trans_log);
+                            //
+
+                        }
+
+                       // rctFillingGraphic.Height = Convert.ToInt32((_calc_result / Convert.ToDouble(_currentProduct.TargetWeight)) * 200);
+
+                    }
+                    else  //reset the whole process
+                    {
+                        startProcessLocked = false;
+                        _normal_cutoff_reached = false;
+                        _final_setpoint_reached = false;
+                        _runprocess = false;
+                        rctFillingGraphic.Height = 0;
+
+                    }
+
+                }
+                else    //start process
+                {
+                    GpioUtility.openNormalFeedValve();  //open normal feed valve 
+                    GpioUtility.openDribbleFeedValve(); //open dribble feed valve
+
+                    startProcessLocked = true;
+                    _checkWeightProcess = true;
+                }
+                
 
             }
 
@@ -222,16 +300,7 @@ namespace Weighr
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-            btnEnter.IsEnabled = false;
-           
-            /** scale zeroing **/
-            //LoadcellOffset = weight_display + LoadcellOffset;
-            ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
-            var new_settings = ScaleConfigComp.ZeroScale(LoadcellOffset);
-            //  LoadcellOffset = new_settings.Offset;
-
-            _normal_cutoff_reached = false;
-            _final_setpoint_reached = false;
+                    
             _runprocess = true;
           
 

@@ -38,6 +38,7 @@ namespace Weighr
         private bool available = false;
 
         
+        
         public MainPage()
         {
             this.InitializeComponent();
