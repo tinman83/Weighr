@@ -41,7 +41,7 @@ namespace Weighr.Helpers
                 Density = 1,
                 DisplayUnitsWeight = 1,
                 MaximumCapacity = 100,
-                MinimumDivision = 1,
+                MinimumDivision = 0.5,
                 PrintMode = false,
                 ZeroRange = 2,
                 UpperLimit=2,
@@ -69,7 +69,7 @@ namespace Weighr.Helpers
                 WeighrDAL.Models.Product productA = new WeighrDAL.Models.Product()
                 {
                     ProductCode = "PROA",
-                    Name = "Product A",
+                    Name = "Product A - 3Kg",
                     Density = 0,
                     Inflight = 0.5,
                     isCurrent = false,
@@ -81,26 +81,26 @@ namespace Weighr.Helpers
                 WeighrDAL.Models.Product productB = new WeighrDAL.Models.Product()
                 {
                     ProductCode = "PROB",
-                    Name = "Product B",
+                    Name = "Product B - 20Kg",
                     Density = 0,
                     Inflight = 0,
                     isCurrent = false,
-                    LowerLimit = 0,
-                    UpperLimit = 0,
-                    TargetWeight = 2
+                    LowerLimit = 2,
+                    UpperLimit = 2,
+                    TargetWeight = 20
                 };
 
 
                 WeighrDAL.Models.Product productC = new WeighrDAL.Models.Product()
                 {
                     ProductCode = "PROC",
-                    Name = "Product C",
+                    Name = "Product C - 10Kg",
                     Density = 0,
                     Inflight = 0,
                     isCurrent = false,
-                    LowerLimit = 0,
-                    UpperLimit = 0,
-                    TargetWeight = 1
+                    LowerLimit = 2,
+                    UpperLimit = 2,
+                    TargetWeight = 10
                 };
 
                 productComp.AddProduct(productA);

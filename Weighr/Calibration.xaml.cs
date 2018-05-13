@@ -44,7 +44,15 @@ namespace Weighr
         {
             if (SetMinimumTextBox.Text == "") { return; }
             //read Loadcell to get Raw Minimum Value
-            _UserMinimumValue = Convert.ToDouble(SetMinimumTextBox.Text); //Capture User Minimum
+            if (SetMinimumTextBox.Text == "0")
+            {
+                _UserMinimumValue = 0.00;
+            }
+            else
+            {
+               _UserMinimumValue = double.Parse(SetMinimumTextBox.Text); //Capture User Minimum
+            }
+            
             _RawMinimumValue = GpioUtility.ReadData();
             _LoadcellOffset = 0;//set offset to zero
         }

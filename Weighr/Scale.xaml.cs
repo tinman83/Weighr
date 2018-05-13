@@ -37,7 +37,7 @@ namespace Weighr
         public decimal current_weight;
         public decimal LoadcellOffset;
 
-        double _scale_gradient, _y_intercept,_calc_result, _normal_feed_cutoff_percentage = 0.8, _weight_display,_threshold=20;
+        double _scale_gradient, _y_intercept,_calc_result, _normal_feed_cutoff_percentage = 0.8, _weight_display,_threshold=20,_priorWeight=0;
         decimal _minimum_division, _maximum_capacity, _resolution,_current_target_weight, _current_upper_limit, _current_lower_limit, _normal_cutoff_weight, _final_setpoint_weight;
         decimal _current_product_density;
         string _display_units, _current_product_code, _curent_product_name;
@@ -74,12 +74,13 @@ namespace Weighr
             _ProductsList = productComp.GetProducts();
             ProductsComboBox.ItemsSource = _ProductsList;
 
+            _currentProduct = productComp.GetLastAddedProduct();
+
+            ProductsComboBox.SelectedValue = _currentProduct.ProductCode;
+
             _normal_cutoff_weight = (_currentProduct.TargetWeight)*Convert.ToDecimal(0.8) ;
             _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
             
-
-            //bool IsInitialised = GpioUtility.InitialiseGpio();
-            //GetCurrentProductDetails();
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
             timer.Tick += timer_Tick;
@@ -103,11 +104,12 @@ namespace Weighr
             //read scale and update ui
             Int32 result = GpioUtility.ReadData();
             _calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept);
+            _calc_result = _calc_result * _scaleSetting.Density;
+            _calc_result = _calc_result - (_calc_result % _scaleSetting.MinimumDivision);
 
-            tblWeightDisplay.Text = _calc_result.ToString("0.##"); // returns "0"  when decimalVar == 0
-
+             tblWeightDisplay.Text = _calc_result.ToString("0.00"); // returns "0"  when decimalVar == 0
             
-
+            
            // _runprocess=GpioUtility.isRunButtonPressed();
             if (_runprocess == true || GpioUtility.isRunButtonPressed() == true)
             {

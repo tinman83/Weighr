@@ -29,22 +29,22 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Update Settings" FontSize="36" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
 
-        <TextBlock Grid.Row="1" Text="Display Units" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="DisplayUnitsComboBox" SelectedValuePath="Content">
+        <TextBlock Grid.Row="1" FontSize="12" Text="Display Units" VerticalAlignment="Center"/>
+        <ComboBox Width="200" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"  Name="DisplayUnitsComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="Grams" />
             <ComboBoxItem Content="Kgs"/>
             <ComboBoxItem Content="Tonnes" />
            
         </ComboBox>
 
-        <TextBlock Grid.Row="2" Text="Decimal Point Precision" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10"  Name="DecimalPointPrecisionComboBox"
+        <TextBlock Grid.Row="2" FontSize="12" Text="Decimal Point" VerticalAlignment="Center"/>
+        <ComboBox Width="200" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10"  Name="DecimalPointPrecisionComboBox"
                   SelectedValuePath="Content">
             <ComboBoxItem Content="0" />
             <ComboBoxItem Content="1" />
@@ -52,20 +52,21 @@
             <ComboBoxItem Content="3" />
         </ComboBox>
 
-        <TextBlock Grid.Row="3" Text="Zero Range (% of Max)" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10"  Name="ZeroRangeComboBox" SelectedValuePath="Content">
+        <TextBlock Grid.Row="3" FontSize="12" Text="Zero Range %" VerticalAlignment="Center"/>
+        <ComboBox Width="200" Grid.Row="3" Grid.Column="1" Margin="0,0,0,10"  Name="ZeroRangeComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="10" />
         </ComboBox>
 
-        <TextBlock Grid.Row="5" Text="Print Mode" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"  Name="PrintModeComboBox" SelectedValuePath="Content">
+        <TextBlock Grid.Row="4" FontSize="12" Text="Print Mode" VerticalAlignment="Center"/>
+        <ComboBox Width="200" Grid.Row="4" Grid.Column="1" Margin="0,0,0,10"  Name="PrintModeComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="Manual" />
             <ComboBoxItem Content="Auto" />
         </ComboBox>
 
-        <TextBlock Grid.Row="7" Text="Minimum Division (Kgs)" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="7" Grid.Column="1" Margin="0,0,0,10"  Name="MinimumDivisionComboBox" SelectedValuePath="Content">
+        <TextBlock Grid.Row="5" FontSize="12" Text="Min Division (Kgs)" VerticalAlignment="Center"/>
+        <ComboBox Width="200" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"  Name="MinimumDivisionComboBox" SelectedValuePath="Content">
+            <ComboBoxItem Content="0.5" />
             <ComboBoxItem Content="1" />
             <ComboBoxItem Content="2" />
             <ComboBoxItem Content="5" />
@@ -74,15 +75,15 @@
             <ComboBoxItem Content="50" />
         </ComboBox>
 
-        <TextBlock Grid.Row="8" Text="Maximum Capacity (Kgs)" VerticalAlignment="Center"/>
-        <Slider Grid.Row="8" Grid.Column="1" StepFrequency="10" Maximum="1000" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="0,0,0,10"  x:Name="MaximumCapacitySlider" Width="250" />
-        <TextBlock Name="tblMaximumCapacity" Grid.Row="8" Grid.Column="2" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
-        
-        <TextBlock Text="Density" Grid.Row="9" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
-        <Slider Grid.Row="9" Grid.Column="1" StepFrequency="0.1" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="0,0,0,10"  x:Name="densitySlider" Width="250" ValueChanged="Slider_ValueChanged"/>
-        <TextBlock Name="tblSliderDisplay" Grid.Row="9" Grid.Column="2" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" FontSize="12" Text="Max Capacity (Kgs)" VerticalAlignment="Center"/>
+        <Slider Grid.Row="2" Grid.Column="3" StepFrequency="10" Maximum="1000" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="0,0,0,10"  x:Name="MaximumCapacitySlider" Width="200" ValueChanged="MaximumCapacitySlider_ValueChanged" />
+        <TextBlock Name="tblMaximumCapacity" Grid.Row="3" Grid.Column="3" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Upper Limit (%)" VerticalAlignment="Center"/>
+        <TextBlock Text="Density" Grid.Row="4" Grid.Column="2" FontSize="12" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
+        <Slider Grid.Row="4" Grid.Column="3" StepFrequency="0.1" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="0,0,0,10"  x:Name="densitySlider" Width="200" ValueChanged="Slider_ValueChanged"/>
+        <TextBlock Name="tblSliderDisplay" Grid.Row="5" Grid.Column="3" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
+
+        <!--<TextBlock Grid.Row="1" Grid.Column="2" Text="Upper Limit (%)" VerticalAlignment="Center"/>
         <ComboBox Width="250" Grid.Row="1" Grid.Column="3" Margin="0,0,0,10"  Name="UpperLimitComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="1" />
             <ComboBoxItem Content="2" />
@@ -96,10 +97,10 @@
             <ComboBoxItem Content="2" />
             <ComboBoxItem Content="5" />
             <ComboBoxItem Content="10" />
-        </ComboBox>
+        </ComboBox>-->
 
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="Inflight" VerticalAlignment="Center"/>
-        <ComboBox Width="250" Grid.Row="3" Grid.Column="3" Margin="0,0,0,10"  Name="InflightComboBox" SelectedValuePath="Content">
+        <TextBlock Grid.Row="1" Grid.Column="2" FontSize="12" Text="Inflight (Kgs)" VerticalAlignment="Center"/>
+        <ComboBox Width="200" Grid.Row="1" Grid.Column="3" Margin="0,0,0,10"  Name="InflightComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="0.25" />
             <ComboBoxItem Content="0.50" />
             <ComboBoxItem Content="0.75" />
@@ -108,9 +109,9 @@
             <ComboBoxItem Content="2.00" />
         </ComboBox>
 
-        <Button Name="btnSaveSettings" Grid.Row="10" Grid.Column="1" Click="btnSaveSettings_Click">Save</Button>
+        <Button Name="btnSaveSettings" Grid.Row="6" Grid.Column="1" Click="btnSaveSettings_Click">Save</Button>
 
-        <TextBlock Name="ErrorMessage" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" Text="Print Mode" VerticalAlignment="Center" Foreground="Red"/>
+        <TextBlock Name="ErrorMessage" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="" VerticalAlignment="Center" Foreground="Red"/>
 
     </Grid>
 </Page>

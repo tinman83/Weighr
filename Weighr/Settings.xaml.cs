@@ -68,8 +68,8 @@ namespace Weighr
             MinimumDivisionComboBox.SelectedValue = _scaleSetting.MinimumDivision.ToString();
             MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
             densitySlider.Value = _scaleSetting.Density;
-            UpperLimitComboBox.SelectedValue = _scaleSetting.UpperLimit.ToString();
-            LowerLimitComboBox.SelectedValue = _scaleSetting.LowerLimit.ToString();
+            //UpperLimitComboBox.SelectedValue = _scaleSetting.UpperLimit.ToString();
+            //LowerLimitComboBox.SelectedValue = _scaleSetting.LowerLimit.ToString();
             InflightComboBox.SelectedValue = _scaleSetting.Inflight.ToString();
 
         }
@@ -98,9 +98,9 @@ namespace Weighr
             _scaleSetting.MinimumDivision = double.Parse(MinimumDivisionComboBox.SelectedValue.ToString());
             _scaleSetting.MaximumCapacity = MaximumCapacitySlider.Value;
             _scaleSetting.Density = densitySlider.Value;
-            _scaleSetting.UpperLimit = decimal.Parse(UpperLimitComboBox.SelectedValue.ToString());
-            _scaleSetting.LowerLimit = decimal.Parse(LowerLimitComboBox.SelectedValue.ToString());
-            _scaleSetting.Inflight = double.Parse(InflightComboBox.SelectedValue.ToString());
+           // _scaleSetting.UpperLimit = decimal.Parse(UpperLimitComboBox.SelectedValue.ToString());
+           // _scaleSetting.LowerLimit = decimal.Parse(LowerLimitComboBox.SelectedValue.ToString());
+            //_scaleSetting.Inflight = double.Parse(InflightComboBox.SelectedValue.ToString());
 
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 
@@ -114,7 +114,7 @@ namespace Weighr
             //double num;
 
             //if (MinimumDivisionTextBox.Text == "") { ErrorMessage.Text = "Please enter Minimum division value"; return false; }
-            
+
             //if (!double.TryParse(MinimumDivisionTextBox.Text, out num))
             //{
             //    ErrorMessage.Text = "Please enter Numeric Minimum division value"; return false;
@@ -126,14 +126,23 @@ namespace Weighr
             //    ErrorMessage.Text = "Please enter Numeric Maximum Capacity value"; return false;
             //}
 
+            if (InflightComboBox.SelectedValue == null) { ErrorMessage.Text = "Please select inflight"; return false; }
+            
             return true;
         }
 
         private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             decimal val = Convert.ToDecimal(e.NewValue);
-            string msg = val.ToString();
+            string msg = "Density: " + val.ToString("0.00");
             tblSliderDisplay.Text = msg;
+        }
+
+        private void MaximumCapacitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            decimal val = Convert.ToDecimal(e.NewValue);
+            string msg = "Max Capacity: " +val.ToString("0.00");
+            tblMaximumCapacity.Text = msg;
         }
     }
 }

@@ -18,11 +18,11 @@ namespace Weighr.Helpers
         private static int stopPinNumber = 8;
         private static int estopPinNumber = 7;
         private static int pressurePinNumber = 12;
-        private static int normalFeedPinNumber = 16;
-        private static int dribbleFeedPinNumber = 20;
-        private static int underWeightPinNumber = 21;
-        private static int overWeightPinNumber = 26;
-        private static int normalWeightPinNumber = 19;
+        private static int normalFeedPinNumber = 20;
+        private static int dribbleFeedPinNumber = 19;
+        private static int underWeightPinNumber = 16;
+        private static int overWeightPinNumber = 13;
+        private static int normalWeightPinNumber = 6;
 
         private static GpioPin clockPin;
         private static GpioPin dataPin;
@@ -42,7 +42,7 @@ namespace Weighr.Helpers
         public static bool isRunButtonPressed()
         {
             GpioPinValue pinValue = runPin.Read();
-            if (pinValue == GpioPinValue.High)
+            if (pinValue == GpioPinValue.Low)
             {
                 return true;
             }
@@ -110,46 +110,66 @@ namespace Weighr.Helpers
             estopPin = gpio.OpenPin(estopPinNumber, GpioSharingMode.Exclusive);
             estopPin.SetDriveMode(GpioPinDriveMode.Input);
 
+            closeNormalFeedValve();
+            closeDribbleFeedValve();
+            switchOffOverweightLight();
+            switchOffUnderweightLight();
+            switchOffNormalweightLight();
+
             _available = true;
             return true;
         }
 
         public static void openNormalFeedValve()
         {
-            normalFeedPin.Write(GpioPinValue.High);
+            normalFeedPin.Write(GpioPinValue.Low);
         }
         public static void closeNormalFeedValve()
         {
-            normalFeedPin.Write(GpioPinValue.Low); 
+            normalFeedPin.Write(GpioPinValue.High); 
         }
         public static void openDribbleFeedValve()
         {
-            dribbleFeedPin.Write(GpioPinValue.High);
+            dribbleFeedPin.Write(GpioPinValue.Low);
         }
         public static void closeDribbleFeedValve()
         {
-            dribbleFeedPin.Write(GpioPinValue.Low); 
+            dribbleFeedPin.Write(GpioPinValue.High); 
         }
 
+        public static void switchOffOverweightLight()
+        {
+            overWeightPin.Write(GpioPinValue.High);
+        }
+
+        public static void switchOffUnderweightLight()
+        {
+            underWeightPin.Write(GpioPinValue.High);
+        }
+
+        public static void switchOffNormalweightLight()
+        {
+            normalWeightPin.Write(GpioPinValue.High);
+        }
         public static void switchOnOverWeightLight()
         {
-            overWeightPin.Write(GpioPinValue.High);  //switch on overweight light
-            underWeightPin.Write(GpioPinValue.Low);
-            normalWeightPin.Write(GpioPinValue.Low);
+            overWeightPin.Write(GpioPinValue.Low);  //switch on overweight light
+            underWeightPin.Write(GpioPinValue.High);
+            normalWeightPin.Write(GpioPinValue.High);
         }
 
         public static void switchOnNormalWeightLight()
         {
-            normalWeightPin.Write(GpioPinValue.High);  //switch on normal weight light
-            overWeightPin.Write(GpioPinValue.Low);
-            underWeightPin.Write(GpioPinValue.Low);
+            normalWeightPin.Write(GpioPinValue.Low);  //switch on normal weight light
+            overWeightPin.Write(GpioPinValue.High);
+            underWeightPin.Write(GpioPinValue.High);
         }
 
         public static void switchOnUnderWeightLight()
         {
-            underWeightPin.Write(GpioPinValue.High);  //switch on underweight light
-            overWeightPin.Write(GpioPinValue.Low);
-            normalWeightPin.Write(GpioPinValue.Low);
+            underWeightPin.Write(GpioPinValue.Low);  //switch on underweight light
+            overWeightPin.Write(GpioPinValue.High);
+            normalWeightPin.Write(GpioPinValue.High);
         }
         public static int ReadData()
         {
