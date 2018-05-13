@@ -130,6 +130,27 @@ namespace Weighr.Helpers
         {
             dribbleFeedPin.Write(GpioPinValue.Low); 
         }
+
+        public static void switchOnOverWeightLight()
+        {
+            overWeightPin.Write(GpioPinValue.High);  //switch on overweight light
+            underWeightPin.Write(GpioPinValue.Low);
+            normalWeightPin.Write(GpioPinValue.Low);
+        }
+
+        public static void switchOnNormalWeightLight()
+        {
+            normalWeightPin.Write(GpioPinValue.High);  //switch on normal weight light
+            overWeightPin.Write(GpioPinValue.Low);
+            underWeightPin.Write(GpioPinValue.Low);
+        }
+
+        public static void switchOnUnderWeightLight()
+        {
+            underWeightPin.Write(GpioPinValue.High);  //switch on underweight light
+            overWeightPin.Write(GpioPinValue.Low);
+            normalWeightPin.Write(GpioPinValue.Low);
+        }
         public static int ReadData()
         {
             uint value = 0;
