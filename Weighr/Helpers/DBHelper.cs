@@ -70,7 +70,7 @@ namespace Weighr.Helpers
                 {
                     ProductCode = "PROA",
                     Name = "Product A - 3Kg",
-                    Density = 0,
+                    Density = 1,
                     Inflight = 0.5,
                     isCurrent = false,
                     LowerLimit = 2,
@@ -82,8 +82,8 @@ namespace Weighr.Helpers
                 {
                     ProductCode = "PROB",
                     Name = "Product B - 20Kg",
-                    Density = 0,
-                    Inflight = 0,
+                    Density = 1,
+                    Inflight = 0.5,
                     isCurrent = false,
                     LowerLimit = 2,
                     UpperLimit = 2,

@@ -26,5 +26,7 @@ namespace Weighr
         {
             this.InitializeComponent();
         }
+
+
     }
 }

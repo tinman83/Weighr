@@ -103,178 +103,94 @@ namespace Weighr
         {
             //read scale and update ui
             Int32 result = GpioUtility.ReadData();
-            _calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept);
-            _calc_result = _calc_result * _scaleSetting.Density;
+            _calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - _scaleConfig.offset);
             _calc_result = _calc_result - (_calc_result % _scaleSetting.MinimumDivision);
+            tblWeightDisplay.Text = _calc_result.ToString("0.00"); // returns "0"  when decimalVar == 0
 
-             tblWeightDisplay.Text = _calc_result.ToString("0.00"); // returns "0"  when decimalVar == 0
-            
-            
-           // _runprocess=GpioUtility.isRunButtonPressed();
+
+            // _runprocess=GpioUtility.isRunButtonPressed();
             if (_runprocess == true || GpioUtility.isRunButtonPressed() == true)
             {
-                if(startProcessLocked)    //checked if starting is locked
-                {
-                    if(_checkWeightProcess == true)  //if check weight in progress
-                    {
-                        if (_normal_cutoff_reached == false)   //check if normal cuoff is reached
-                        {
-                            //display filling status
-                            if (_calc_result >= Convert.ToDouble(_normal_cutoff_weight))  //normal feed cutoff reached?
-                            {
-                                GpioUtility.closeNormalFeedValve();  //close normal feed valve
-                                _normal_cutoff_reached = true;
-                            }
-                        }
 
-                        else if (_final_setpoint_reached == false)
-                        {
-                            //display filling status
-                            if (_calc_result >= Convert.ToDouble(_final_setpoint_weight))
-                            {
-                                GpioUtility.closeDribbleFeedValve();  //close dribble feed valve
-                                _final_setpoint_reached = true;
-                            }
-
-                        }
-
-                        else
-                        {
-                            //display filling status
-                            _checkWeightProcess = false;
-
-                            if (_calc_result > Convert.ToDouble(((_currentProduct.TargetWeight) + _currentProduct.UpperLimit)))   //if overpacked
-                            {
-                                GpioUtility.switchOnOverWeightLight();
-                            }
-
-                            else if (_calc_result < Convert.ToDouble(((_currentProduct.TargetWeight) - _currentProduct.LowerLimit)))    //if underpacke
-                            {
-                                GpioUtility.switchOnUnderWeightLight();
-                            }
-
-                            else
-                            {
-                                GpioUtility.switchOnNormalWeightLight();
-                            }
-                            TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
-                            TransactionLog trans_log = new TransactionLog() { ProductId = _currentProduct.ProductId, ProductCode = _currentProduct.ProductCode, ActualWeight = Convert.ToDecimal(_calc_result), TransactionDate = DateTime.Now, WeightDifference = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight };
-                            TransactionLogComp.AddTransactionLog(trans_log);
-                            //
-
-                        }
-
-                       // rctFillingGraphic.Height = Convert.ToInt32((_calc_result / Convert.ToDouble(_currentProduct.TargetWeight)) * 200);
-
-                    }
-                    else  //reset the whole process
-                    {
-                        startProcessLocked = false;
-                        _normal_cutoff_reached = false;
-                        _final_setpoint_reached = false;
-                        _runprocess = false;
-                        rctFillingGraphic.Height = 0;
-
-                    }
-
-                }
-                else    //start process
-                {
                     GpioUtility.openNormalFeedValve();  //open normal feed valve 
                     GpioUtility.openDribbleFeedValve(); //open dribble feed valve
 
                     startProcessLocked = true;
                     _checkWeightProcess = true;
-                }
-                
+                    _runprocess = false;
+
 
             }
 
-         }
+            if (startProcessLocked)    //checked if starting is locked
+            {
+                if (_checkWeightProcess == true)  //if check weight in progress
+                {
+                    if (_normal_cutoff_reached == false)   //check if normal cuoff is reached
+                    {
+                        //display filling status
+                        if (_calc_result >= Convert.ToDouble(_normal_cutoff_weight))  //normal feed cutoff reached?
+                        {
+                            GpioUtility.closeNormalFeedValve();  //close normal feed valve
+                            _normal_cutoff_reached = true;
+                        }
+                    }
 
-        //public void ReadandUpdateUI()
-        //{
+                    else if (_final_setpoint_reached == false)
+                    {
+                        //display filling status
+                        if (_calc_result >= Convert.ToDouble(_final_setpoint_weight))
+                        {
+                            GpioUtility.closeDribbleFeedValve();  //close dribble feed valve
+                            _final_setpoint_reached = true;
+                        }
 
-        //        //read scale and update ui
-        //        Int32 result = ReadData();
-        //        calc_result = ((scale_gradient) * result) + y_intercept;
-        //        weight = Convert.ToInt32(calc_result * 100);
-        //        weight_display = weight / 100;
-        //        tblWeightDisplay.Text = weight_display.ToString();
+                    }
 
-        //        if (runprocess == true)
-        //        {
+                    else
+                    {
+                        //display filling status
+                        _checkWeightProcess = false;
 
-        //        GpioUtility.openNormalFeedValve();  //open normal feed valve 
-        //        GpioUtility.openDribbleFeedValve(); //open dribble feed valve
+                        if (_calc_result > Convert.ToDouble(((_currentProduct.TargetWeight) + _currentProduct.UpperLimit)))   //if overpacked
+                        {
+                            GpioUtility.switchOnOverWeightLight();
+                        }
 
-        //        runprocess = false;
-        //        checkWeightProcess = true;
+                        else if (_calc_result < Convert.ToDouble(((_currentProduct.TargetWeight) - _currentProduct.LowerLimit)))    //if underpacke
+                        {
+                            GpioUtility.switchOnUnderWeightLight();
+                        }
 
-        //        }
+                        else
+                        {
+                            GpioUtility.switchOnNormalWeightLight();
+                        }
+                        TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
+                        TransactionLog trans_log = new TransactionLog() { ProductId = _currentProduct.ProductId, ProductCode = _currentProduct.ProductCode, ActualWeight = Convert.ToDecimal(_calc_result), TransactionDate = DateTime.Now, WeightDifference = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight };
+                        TransactionLogComp.AddTransactionLog(trans_log);
+                        //
 
-        //        if (checkWeightProcess == true)
-        //        {
-        //           if (normal_cutoff_reached == false)
-        //           {
-        //            //display filling status
-        //            if (weight_display >= (current_target_weight * Convert.ToDecimal(normal_feed_cutoff_percentage)))  //normal feed cutoff reached?
-        //              {
-        //                GpioUtility.closeNormalFeedValve();  //close normal feed valve
-        //                normal_cutoff_reached = true;
-        //              }
-        //           }
-        //           else if(final_setpoint_reached == false)
-        //           {
-        //            //display filling status
-        //            if(weight_display >= current_target_weight)
-        //            {
-        //                GpioUtility.closeDribbleFeedValve();  //close dribble feed valve
-        //                final_setpoint_reached = true;
-        //            }
+                    }
 
-        //           }
+                    // rctFillingGraphic.Height = Convert.ToInt32((_calc_result / Convert.ToDouble(_currentProduct.TargetWeight)) * 200);
 
-        //          else
-        //          {
-        //            //display filling status
-        //            checkWeightProcess = false;
+                }
+                else  //reset the whole process
+                {
+                    startProcessLocked = false;
+                    _normal_cutoff_reached = false;
+                    _final_setpoint_reached = false;
+                    _runprocess = false;
+                    rctFillingGraphic.Height = 0;
 
-        //            if (weight_display > ((current_target_weight * current_upper_limit) + current_target_weight))   //if overpacked
-        //            {
-        //                overWeightPin.Write(GpioPinValue.High);  //switch on overweight light
-        //                underWeightPin.Write(GpioPinValue.Low);
-        //                normalWeightPin.Write(GpioPinValue.Low);
-        //            }
+                }
 
-        //            else if (weight_display < (current_target_weight - (current_target_weight * current_lower_limit) ))   //if underpacke
-        //            {
-        //                underWeightPin.Write(GpioPinValue.High);  //switch on underweight light
-        //                overWeightPin.Write(GpioPinValue.Low);
-        //                normalWeightPin.Write(GpioPinValue.Low);
-        //            }
+            }
 
-        //            else
-        //            {
-        //                normalWeightPin.Write(GpioPinValue.High);  //switch on normal weight light
-        //                overWeightPin.Write(GpioPinValue.Low);
-        //                underWeightPin.Write(GpioPinValue.Low);
-        //            }
-        //            TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
-        //            TransactionLog trans_log = new TransactionLog() { ProductId = current_product_id, ProductCode = current_product_code, ActualWeight = weight_display, TransactionDate = DateTime.Now, WeightDifference = weight_display-current_target_weight };
-        //            TransactionLogComp.AddTransactionLog(trans_log);
-        //            //
+        }
 
-        //        }
-
-        //        rctFillingGraphic.Height = Convert.ToDouble((weight_display / current_target_weight) * 200);
-
-
-
-        //        }         
-
-
-        //}
+       
 
         public void GetScaleConfigurations()
         {
@@ -339,18 +255,24 @@ namespace Weighr
 
         private void btnZeroScale_Click(object sender, RoutedEventArgs e)
         {
-            //threshold = Convert.ToDouble(tbxTest.Text);
+            ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
+
+            ScaleConfig scaleCon = new ScaleConfig() { offset = (_calc_result - _scaleConfig.offset) };
+            scaleCon.ScaleConfigId = 1;
+            ScaleConfigComp.UpdateScaleConfig(scaleCon);
+            
+
         }
 
         private void btnTareScale_Click(object sender, RoutedEventArgs e)
         {
-            Calibration calibrate = new Calibration();
+            //Calibration calibrate = new Calibration();
             //bool result = calibrate.TareScale();
         }
 
         private void btnNetGross_Click(object sender, RoutedEventArgs e)
         {
-            Calibration calibrate = new Calibration();
+            //Calibration calibrate = new Calibration();
             //bool result = calibrate.NetGrossScale();
         }
 

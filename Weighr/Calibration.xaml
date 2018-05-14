@@ -20,6 +20,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -28,31 +32,32 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Calibration Settings" FontSize="30" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
+        <TextBlock Text="Calibration Steps" FontSize="30" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
 
-        <TextBlock Name="tblCalibrationSteps" Grid.Row="4"  Text="Calibration Steps" FontSize="24" Grid.ColumnSpan="3" Margin="0,20,0,20"/>
+        <!--<TextBlock Name="tblCalibrationSteps" Grid.Row="4"  Text="Calibration Steps" FontSize="24" Grid.ColumnSpan="3" Margin="0,20,0,20"/>-->
 
        
 
-        <TextBlock VerticalAlignment="Center" Grid.Row="6" Text="Step 1: Unload scale"/>
-        <TextBlock VerticalAlignment="Center" Grid.Row="7" Text="Step 2: Enter minimum value then press Calibrate Zero Button"/>
-        <Button Grid.Row="7" Grid.Column="2" Content="CALIBRATE ZERO" Name="SetMinimumButton" Margin="0,0,0,10" HorizontalAlignment="left" Click="SetMinimumButton_Click"></Button>
-        <TextBox Grid.Row="7" Grid.Column="1" Width="250" Name="SetMinimumTextBox" Margin="0,0,0,10" HorizontalAlignment="left" Grid.ColumnSpan="2"></TextBox>
+        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2"  Grid.Row="6" Text="Step 1: Unload scale"/>
+        <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" Grid.ColumnSpan="3" Grid.Row="7" Text="Step 2: Enter minimum value then press Calibrate Zero Button"/>
+        <Button Grid.Row="8" Grid.Column="1" Content="CALIBRATE ZERO" Name="SetMinimumButton" Margin="50,10,0,10" HorizontalAlignment="left" Click="SetMinimumButton_Click"></Button>
+        <TextBox Grid.Row="8" Grid.Column="0" Width="180" Name="SetMinimumTextBox" Margin="10,10,0,10" HorizontalAlignment="left" Grid.ColumnSpan="2"></TextBox>
         
 <!--
         <TextBlock VerticalAlignment="Center" Grid.Row="7" Text="Step 2:"/>
         <Button Grid.Row="7" Grid.Column="1" Content="CALIBRATE ZERO" Name="btnCalibrateZero" Margin="0,0,0,10" HorizontalAlignment="left"></Button>
 -->
-        <TextBlock VerticalAlignment="Center" Grid.Row="8" Text="Step 3: Enter maximum value then press Calibrate Span Button"/>
+        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="3" Grid.Row="10" Text="Step 4: Enter weight value then press Calibrate Span Button"/>
+        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Grid.Row="9" Grid.ColumnSpan="2" Text="Step 3: Load weight on scale"/>
         
-        <Button Grid.Row="8" Grid.Column="2" Content="CALIBRATE SPAN" Name="SetMaximumButton" Margin="0,0,0,10" HorizontalAlignment="left" Click="SetMaximumButton_Click"></Button>
-        <TextBox Grid.Row="8" Grid.Column="1" Width="250" Name="SetMaximumTextBox" Margin="0,0,0,10" HorizontalAlignment="Left" Grid.ColumnSpan="2"></TextBox>
+        <Button Grid.Row="11" Grid.Column="1" Content="CALIBRATE SPAN" Name="SetMaximumButton" Margin="50,10,0,10" HorizontalAlignment="left" Click="SetMaximumButton_Click"></Button>
+        <TextBox Grid.Row="11" Grid.Column="0" Width="180" Name="SetMaximumTextBox" Margin="10,10,0,10" HorizontalAlignment="Left" Grid.ColumnSpan="2"></TextBox>
 
-        <TextBlock VerticalAlignment="Center" Grid.Row="9" Text="Step 4: Press Finish Button"/>
+        <TextBlock VerticalAlignment="Center" Margin="10,10,0,0" Grid.Row="12" Text="Step 4: Press Finish Button"/>
 
-        <Button Grid.Row="9" Grid.Column="2" Content="FINISH" Name="FinishButton" Margin="0,0,0,10" HorizontalAlignment="left" Click="FinishButton_Click"></Button>
+        <Button Grid.Row="13" Grid.Column="0" Content="FINISH" Name="FinishButton" Margin="10,10,0,10" HorizontalAlignment="left" Click="FinishButton_Click"></Button>
 
-        <TextBlock Name="messageCalibrationResult" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" FontSize="24" Margin="0,20,0,20" Foreground="Green"/>
+        <TextBlock Name="messageCalibrationResult" Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2" FontSize="24" Margin="0,20,0,20" Foreground="Green"/>
         <!--
         <TextBlock VerticalAlignment="Center" Grid.Row="9" Text="Step 4:"/>
         <Button Grid.Row="9" Grid.Column="1" Content="CALIBRATE SPAN" Name="btnCalibrateSpan" Margin="0,0,0,10" HorizontalAlignment="left"></Button>

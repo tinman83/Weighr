@@ -14,8 +14,8 @@ namespace Weighr.Helpers
         private static int dataPinNumber = 24;
         private static int ledPinNumber = 12;
 
-        private static int runPinNumber = 25;
-        private static int stopPinNumber = 8;
+        private static int runPinNumber = 21;
+        private static int stopPinNumber = 26;
         private static int estopPinNumber = 7;
         private static int pressurePinNumber = 12;
         private static int normalFeedPinNumber = 20;

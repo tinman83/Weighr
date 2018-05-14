@@ -77,23 +77,23 @@
                         </StackPanel>
                     </ListBoxItem>
 
-                    <ListBoxItem Name="Shift">
+                    <!--<ListBoxItem Name="Shift">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                        FontSize="36"
                                        Text="&#xE72C;"/>
                             <TextBlock FontSize="24" Margin="20,0,0,0">Shift</TextBlock>
                         </StackPanel>
-                    </ListBoxItem>
+                    </ListBoxItem>-->
 
-                    <ListBoxItem Name="Reports">
+                    <!--<ListBoxItem Name="Reports">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                        FontSize="36"
                                        Text="&#xE77F;"/>
                             <TextBlock FontSize="24" Margin="20,0,0,0">Reports</TextBlock>
                         </StackPanel>
-                    </ListBoxItem>
+                    </ListBoxItem>-->
 
                     <ListBoxItem Name="Settings">
                         <StackPanel Orientation="Horizontal">

@@ -97,18 +97,18 @@ namespace Weighr
                 MyFrame.Navigate(typeof(Settings));
                 TitleTextBlock.Text = "Settings";
             }
-            else if (Shift.IsSelected)
-            {
-                BackButton.Visibility = Visibility.Visible;
-                MyFrame.Navigate(typeof(Shift));
-                TitleTextBlock.Text = "Shift";
-            }
-            else if (Reports.IsSelected)
-            {
-                BackButton.Visibility = Visibility.Visible;
-                MyFrame.Navigate(typeof(Reports));
-                TitleTextBlock.Text = "Reports";
-            }
+            //else if (Shift.IsSelected)
+            //{
+            //    BackButton.Visibility = Visibility.Visible;
+            //    MyFrame.Navigate(typeof(Shift));
+            //    TitleTextBlock.Text = "Shift";
+            //}
+            //else if (Reports.IsSelected)
+            //{
+            //    BackButton.Visibility = Visibility.Visible;
+            //    MyFrame.Navigate(typeof(Reports));
+            //    TitleTextBlock.Text = "Reports";
+            //}
             else if (Calibration.IsSelected)
             {
                 BackButton.Visibility = Visibility.Visible;
