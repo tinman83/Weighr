@@ -12,17 +12,18 @@ namespace Weighr.Helpers
 
         private static int clockPinNumber = 23;
         private static int dataPinNumber = 24;
-        private static int ledPinNumber = 12;
+       // private static int ledPinNumber = 12;
 
         private static int runPinNumber = 21;
         private static int stopPinNumber = 26;
         private static int estopPinNumber = 7;
-        private static int pressurePinNumber = 12;
+        //private static int pressurePinNumber = 12;
         private static int normalFeedPinNumber = 20;
         private static int dribbleFeedPinNumber = 19;
-        private static int underWeightPinNumber = 16;
-        private static int overWeightPinNumber = 13;
+        private static int underWeightPinNumber = 13;
+        private static int overWeightPinNumber = 16;
         private static int normalWeightPinNumber = 6;
+        private static int airSupplyPinNumber = 12;
 
         private static GpioPin clockPin;
         private static GpioPin dataPin;
@@ -31,18 +32,33 @@ namespace Weighr.Helpers
         private static GpioPin runPin;
         private static GpioPin stopPin;
         private static GpioPin estopPin;
-        private static GpioPin pressurePin;
+        //private static GpioPin pressurePin;
         private static GpioPin normalFeedPin;
         private static GpioPin dribbleFeedPin;
         private static GpioPin underWeightPin;
         private static GpioPin overWeightPin;
         private static GpioPin normalWeightPin;
+        private static GpioPin airSupplyPin;
         private static bool _available = false;
 
         public static bool isRunButtonPressed()
         {
             GpioPinValue pinValue = runPin.Read();
             if (pinValue == GpioPinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public static bool isEstopButtonPressed()
+        {
+            GpioPinValue pinValue = stopPin.Read();
+            if (pinValue == GpioPinValue.High)
             {
                 return true;
             }
@@ -72,8 +88,8 @@ namespace Weighr.Helpers
             clockPin.Write(GpioPinValue.Low);
             clockPin.SetDriveMode(GpioPinDriveMode.Output);
 
-            ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
-            ledPin.SetDriveMode(GpioPinDriveMode.Output);
+            //ledPin = gpio.OpenPin(ledPinNumber, GpioSharingMode.Exclusive);
+            //ledPin.SetDriveMode(GpioPinDriveMode.Output);
 
             normalFeedPin = gpio.OpenPin(normalFeedPinNumber, GpioSharingMode.Exclusive);
             normalFeedPin.SetDriveMode(GpioPinDriveMode.Output);
@@ -89,6 +105,9 @@ namespace Weighr.Helpers
 
             normalWeightPin = gpio.OpenPin(normalWeightPinNumber, GpioSharingMode.Exclusive);
             normalWeightPin.SetDriveMode(GpioPinDriveMode.Output);
+
+            airSupplyPin = gpio.OpenPin(airSupplyPinNumber, GpioSharingMode.Exclusive);
+            airSupplyPin.SetDriveMode(GpioPinDriveMode.Output);
 
 
 
@@ -112,6 +131,7 @@ namespace Weighr.Helpers
 
             closeNormalFeedValve();
             closeDribbleFeedValve();
+            closeAirSupplyValve();
             switchOffOverweightLight();
             switchOffUnderweightLight();
             switchOffNormalweightLight();
@@ -135,6 +155,16 @@ namespace Weighr.Helpers
         public static void closeDribbleFeedValve()
         {
             dribbleFeedPin.Write(GpioPinValue.High); 
+        }
+
+        public static void closeAirSupplyValve()
+        {
+            airSupplyPin.Write(GpioPinValue.High);
+        }
+
+        public static void openAirSupplyValve()
+        {
+            airSupplyPin.Write(GpioPinValue.Low);
         }
 
         public static void switchOffOverweightLight()

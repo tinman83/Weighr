@@ -60,7 +60,7 @@ namespace Weighr
             _product.TargetWeight = Decimal.Parse(TargetWeightTextBox.Text);
             _product.UpperLimit = Decimal.Parse(UpperLimitTextBox.Text);
             _product.LowerLimit = Decimal.Parse(LowerLimitTextBox.Text);
-            _product.Inflight = double.Parse(InflightTextBox.Text);
+            _product.Inflight = Decimal.Parse(InflightTextBox.Text);
 
             ProductComponent productComp = new ProductComponent();
 

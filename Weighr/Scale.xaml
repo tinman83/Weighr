@@ -5,6 +5,7 @@
     xmlns:local="using:Weighr"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d" Unloaded="Page_Unloaded" Loaded="Page_Loaded">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -25,17 +26,22 @@
                   ItemsSource="{Binding}" DisplayMemberPath="Name" SelectedValuePath="ProductCode" VerticalAlignment="Center" Height="40" SelectionChanged="ProductsComboBox_SelectionChanged">
         </ComboBox>
         
-        <TextBlock Name="tblWeigherStatus" Grid.Column="1"  VerticalAlignment="top" HorizontalAlignment="right" Margin="0,20,35,0" FontSize="14" Text="Current Status"></TextBlock>
+        <TextBlock Name="tblWeigherStatus" Grid.Column="1"  VerticalAlignment="top" HorizontalAlignment="right" Margin="0,20,35,0" FontSize="20" Text="Current Status"></TextBlock>
 
         <!--Row 1 Column 0-->
-        <TextBlock Name="tblWeightDisplay" Grid.Row="1"  FontSize="150" FontFamily="Bebas" HorizontalAlignment="left" VerticalAlignment="top" Margin="35,91,-701,-356" Grid.ColumnSpan="2" Grid.RowSpan="2" >0078,96</TextBlock>
+        <TextBlock Name="tblWeightDisplay" Grid.Row="1"  FontSize="150" FontFamily="Bebas" HorizontalAlignment="left" VerticalAlignment="top" Margin="50,20,0,0" Grid.ColumnSpan="2" Grid.RowSpan="2" >0078,96</TextBlock>
         <!--Row 2 Column 0
         <TextBlock Name="tblSliderDisplay" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="35,0,0,60" FontSize="18"></TextBlock>
         <Slider Grid.Row="2" StepFrequency="0.1" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="35,0,0,20"  x:Name="densitySlider" Width="200" ValueChanged="Slider_ValueChanged"/>-->
         
         <!-- Row 1 Column 3-->
-        <Rectangle Name="rctFilling" Grid.Row="1" Fill="SteelBlue" Grid.Column="1"  HorizontalAlignment="center" VerticalAlignment="Center"  Height="200" Width="200"  Margin="60.6,41.8,51,21.8" ></Rectangle>
-        <Rectangle Name="rctFillingGraphic" Grid.Row="1" Fill="Orange" Grid.Column="1"  HorizontalAlignment="center" VerticalAlignment="Bottom"  Width="200"  Margin="60.6,41.8,51,0" ></Rectangle>
+        <controls:RadialGauge x:Name="RadialGaugeControl" Margin="25,10,20,15"  Value="70" Minimum="0" 
+    Maximum="100" Grid.Column="1" Grid.Row="1" TickSpacing="20" ScaleWidth="26" Unit="Units" TickBrush="Gainsboro"
+    ScaleTickBrush="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    UnitBrush="Black" ValueBrush="Black" NeedleWidth="5" TickLength="18">
+        </controls:RadialGauge>
+        <!--<Rectangle Name="rctFilling" Grid.Row="1" Fill="SteelBlue" Grid.Column="1"  HorizontalAlignment="center" VerticalAlignment="Center"  Height="200" Width="200"  Margin="60.6,41.8,51,21.8" ></Rectangle>
+        <Rectangle Name="rctFillingGraphic" Grid.Row="1" Fill="Orange" Grid.Column="1"  HorizontalAlignment="center" VerticalAlignment="Bottom"  Width="200"  Margin="60.6,41.8,51,0" ></Rectangle>-->
         <!-- Row 2  Column 1
         <Rectangle Grid.Row="2" Grid.Column="1"  HorizontalAlignment="center" Fill="Green" Width="200" Margin="60.6,30.2,51,30.2" />-->
 

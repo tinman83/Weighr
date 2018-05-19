@@ -7,9 +7,9 @@ namespace WeighrDAL.Models
    public class ScaleConfig
     {
         public int ScaleConfigId { get; set; }
-        public Double Gradient { get; set; }
-        public Double YIntercept { get; set; }
+        public decimal Gradient { get; set; }
+        public decimal YIntercept { get; set; }
         public decimal Resolution { get; set; }
-        public double offset { get; set; }
+        public decimal offset { get; set; }
     }
 }

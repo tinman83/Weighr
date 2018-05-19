@@ -66,8 +66,11 @@ namespace Weighr
             if (_scaleSetting.PrintMode == false) { printMode = "Manual"; } else { printMode = "Auto"; }
             PrintModeComboBox.SelectedValue = printMode;
             MinimumDivisionComboBox.SelectedValue = _scaleSetting.MinimumDivision.ToString();
-            MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
-            densitySlider.Value = _scaleSetting.Density;
+            //MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
+            //densitySlider.Value = _scaleSetting.Density;
+
+            tblMaximumCapacity.Text = "Current Max Cap: " + _scaleSetting.MaximumCapacity.ToString();
+            tblSliderDisplay.Text = "Current Density: " + _scaleSetting.Density.ToString();
             //UpperLimitComboBox.SelectedValue = _scaleSetting.UpperLimit.ToString();
             //LowerLimitComboBox.SelectedValue = _scaleSetting.LowerLimit.ToString();
             InflightComboBox.SelectedValue = _scaleSetting.Inflight.ToString();
@@ -83,7 +86,7 @@ namespace Weighr
 
             _scaleSetting.DisplayUnits = DisplayUnitsComboBox.SelectedValue.ToString();
             _scaleSetting.DecimalPointPrecision = int.Parse(DecimalPointPrecisionComboBox.SelectedValue.ToString());
-            _scaleSetting.ZeroRange = double.Parse(ZeroRangeComboBox.SelectedValue.ToString());
+            _scaleSetting.ZeroRange = decimal.Parse(ZeroRangeComboBox.SelectedValue.ToString());
 
             string mode = PrintModeComboBox.SelectedValue.ToString();
             if (mode == "Auto")
@@ -95,9 +98,9 @@ namespace Weighr
                 _scaleSetting.PrintMode = false;
             }
             
-            _scaleSetting.MinimumDivision = double.Parse(MinimumDivisionComboBox.SelectedValue.ToString());
-            _scaleSetting.MaximumCapacity = MaximumCapacitySlider.Value;
-            _scaleSetting.Density = densitySlider.Value;
+            _scaleSetting.MinimumDivision = decimal.Parse(MinimumDivisionComboBox.SelectedValue.ToString());
+            _scaleSetting.MaximumCapacity = Convert.ToDecimal(MaximumCapacitySlider.Value);
+            _scaleSetting.Density = Convert.ToDecimal(densitySlider.Value);
            // _scaleSetting.UpperLimit = decimal.Parse(UpperLimitComboBox.SelectedValue.ToString());
            // _scaleSetting.LowerLimit = decimal.Parse(LowerLimitComboBox.SelectedValue.ToString());
             //_scaleSetting.Inflight = double.Parse(InflightComboBox.SelectedValue.ToString());
@@ -134,14 +137,14 @@ namespace Weighr
         private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             decimal val = Convert.ToDecimal(e.NewValue);
-            string msg = "Density: " + val.ToString("0.00");
+            string msg = "Current Density: " + val.ToString("0.00");
             tblSliderDisplay.Text = msg;
         }
 
         private void MaximumCapacitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             decimal val = Convert.ToDecimal(e.NewValue);
-            string msg = "Max Capacity: " +val.ToString("0.00");
+            string msg = "Current Max Cap: " +val.ToString("0.00");
             tblMaximumCapacity.Text = msg;
         }
     }

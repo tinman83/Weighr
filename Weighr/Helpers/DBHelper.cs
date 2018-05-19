@@ -11,6 +11,11 @@ namespace Weighr.Helpers
    public class DBHelper
     {
 
+        public void zeroScale()
+        {
+
+        }
+      
         public void InitialiseTables()
         {
             /*** Initialise Calibration Settings***/
@@ -18,7 +23,7 @@ namespace Weighr.Helpers
 
             var config = ScaleConfigComp.GetScaleConfig();
 
-            ScaleConfig scaleCon = new ScaleConfig() { Gradient = -0.00000497, Resolution = 200, YIntercept = -1.15, offset = 0 };
+            ScaleConfig scaleCon = new ScaleConfig() { Gradient = -0.00000497M, Resolution = 200, YIntercept = -1.15M, offset = 0 };
 
             if (config == null)
             {
@@ -41,12 +46,12 @@ namespace Weighr.Helpers
                 Density = 1,
                 DisplayUnitsWeight = 1,
                 MaximumCapacity = 100,
-                MinimumDivision = 0.5,
+                MinimumDivision = 0.5M,
                 PrintMode = false,
                 ZeroRange = 2,
                 UpperLimit=2,
                 LowerLimit=2,
-                Inflight=0.5
+                Inflight=0.3M
             };
 
             if (setting == null)
@@ -69,13 +74,13 @@ namespace Weighr.Helpers
                 WeighrDAL.Models.Product productA = new WeighrDAL.Models.Product()
                 {
                     ProductCode = "PROA",
-                    Name = "Product A - 3Kg",
+                    Name = "Product A - 5Kg",
                     Density = 1,
-                    Inflight = 0.5,
+                    Inflight = 0.3M,
                     isCurrent = false,
-                    LowerLimit = 2,
-                    UpperLimit = 2,
-                    TargetWeight = 3
+                    LowerLimit = 1,
+                    UpperLimit = 1,
+                    TargetWeight = 5
                 };
 
                 WeighrDAL.Models.Product productB = new WeighrDAL.Models.Product()
@@ -83,7 +88,7 @@ namespace Weighr.Helpers
                     ProductCode = "PROB",
                     Name = "Product B - 20Kg",
                     Density = 1,
-                    Inflight = 0.5,
+                    Inflight = 0.3M,
                     isCurrent = false,
                     LowerLimit = 2,
                     UpperLimit = 2,
@@ -96,7 +101,7 @@ namespace Weighr.Helpers
                     ProductCode = "PROC",
                     Name = "Product C - 10Kg",
                     Density = 0,
-                    Inflight = 0,
+                    Inflight = 0.3M,
                     isCurrent = false,
                     LowerLimit = 2,
                     UpperLimit = 2,

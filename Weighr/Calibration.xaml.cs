@@ -27,12 +27,12 @@ namespace Weighr
     /// </summary>
     public sealed partial class Calibration : Page
     {
-        public double _UserMinimumValue;
-        public double _LoadcellValueAtMinimum;
-        public double _LoadcellOffset;
-        public double _RawMinimumValue;
-        public double _UserMaximumValue, _RawMaximumValue;
-        public double _Gradient, _YIntercept;
+        public decimal _UserMinimumValue;
+        public decimal _LoadcellValueAtMinimum;
+        public decimal _LoadcellOffset;
+        public decimal _RawMinimumValue;
+        public decimal _UserMaximumValue, _RawMaximumValue;
+        public decimal _Gradient, _YIntercept;
 
         public decimal _MinimumValue, _MaximumValue;
         Weighr.Models.Calibration _calibrate = new Weighr.Models.Calibration();
@@ -57,12 +57,10 @@ namespace Weighr
             //{
 
             //}
-            Decimal d_min = Convert.ToDecimal(SetMinimumTextBox.Text);
-            //string min = d_min.ToString("0.00");
-            //double min_value = double.Parse(SetMinimumTextBox.Text);
+           
 
 
-            _UserMinimumValue = Convert.ToDouble(d_min); //Capture User Minimum
+            _UserMinimumValue = Convert.ToDecimal(SetMinimumTextBox.Text); //Capture User Minimum
             _RawMinimumValue = GpioUtility.ReadData();
             _LoadcellOffset = 0;//set offset to zero
         }
@@ -72,9 +70,9 @@ namespace Weighr
             if (SetMaximumTextBox.Text == "") { return; }
             //read Loadcell to get Raw Maximum Value
 
-            _UserMaximumValue = Convert.ToDouble(SetMaximumTextBox.Text); //Capture User Maximum
+            _UserMaximumValue = Convert.ToDecimal(SetMaximumTextBox.Text); //Capture User Maximum
             //_MaximumValue = Convert.ToDecimal(SetMaximumTextBox.Text); //Capture User Minimum
-            _RawMinimumValue = GpioUtility.ReadData();
+            _RawMaximumValue = GpioUtility.ReadData();
 
         }
 

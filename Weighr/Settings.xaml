@@ -64,9 +64,9 @@
             <ComboBoxItem Content="Auto" />
         </ComboBox>
 
-        <TextBlock Grid.Row="5" FontSize="12" Text="Min Division (Kgs)" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="5" FontSize="12" Text="Precision (Kgs)" VerticalAlignment="Center"/>
         <ComboBox Width="200" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"  Name="MinimumDivisionComboBox" SelectedValuePath="Content">
-            <ComboBoxItem Content="0.5" />
+            <ComboBoxItem Content="0.005" />
             <ComboBoxItem Content="1" />
             <ComboBoxItem Content="2" />
             <ComboBoxItem Content="5" />
