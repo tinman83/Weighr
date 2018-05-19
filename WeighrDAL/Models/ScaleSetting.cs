@@ -23,5 +23,6 @@ namespace WeighrDAL.Models
         public decimal LowerLimit { get; set; }
 
         public decimal Inflight { get; set; }
+        public int InflightTiming { get; set; }
     }
 }

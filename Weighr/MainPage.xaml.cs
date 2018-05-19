@@ -54,8 +54,8 @@ namespace Weighr
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             bool IsInitialised = GpioUtility.InitialiseGpio();
-            DBHelper dbhelper = new DBHelper();
-            dbhelper.InitialiseTables();
+            //DBHelper dbhelper = new DBHelper();
+            //dbhelper.InitialiseTables();
         }
 
         private void HamgurgerButton_Click(object sender, RoutedEventArgs e)

@@ -18,6 +18,8 @@ namespace WeighrDAL.Models
         public decimal LowerLimit { get; set; }
         public decimal TargetWeight { get; set; }
         public decimal Inflight { get; set; }
+
+        public decimal DribblePoint { get; set; }
         public bool isCurrent { get; set; }
 
     }

@@ -27,7 +27,7 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Update Product Details" FontSize="36" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
+        <TextBlock Text="Update Product Details" FontSize="30" Grid.ColumnSpan="3" Margin="0,0,0,20"/>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
@@ -58,17 +58,19 @@
 
         <TextBox Name="TargetWeightTextBox" Width="250" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-
-        <TextBlock Grid.Row="6" Text="Upper Limit %" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="6" Text="Upper Limit (g)" VerticalAlignment="Center"/>
 
         <TextBox Name="UpperLimitTextBox" Width="250" Grid.Row="6" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="7" Text="Lower Limit %" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="7" Text="Lower Limit (g)" VerticalAlignment="Center"/>
 
         <TextBox Name="LowerLimitTextBox" Width="250" Grid.Row="7" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-        <TextBlock Grid.Row="8" Text="Inflight (Kgs)" VerticalAlignment="Center"/>
-        <TextBox Width="250" Grid.Row="8" Grid.Column="1"  Name="InflightTextBox" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="8" Grid.Column="0" FontSize="12" Text="Dribble Point (Kgs)" VerticalAlignment="Center"/>
+        <TextBox Name="DribblePointTextBox" Width="250" Grid.Row="8" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+       
+        <!--<TextBlock Grid.Row="8" Text="Inflight (Kgs)" VerticalAlignment="Center"/>
+        <TextBox Width="250" Grid.Row="8" Grid.Column="1"  Name="InflightTextBox" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
 
 
         <Button Name="btnSaveProduct" Grid.Row="9" Grid.Column="1" Content="Save" Margin="0,0,0,10" VerticalAlignment="top" Click="btnSaveProduct_Click"/>

@@ -16,6 +16,8 @@ namespace WeighrDAL
         public DbSet<ScaleSetting> ScaleSettings { get; set; }
         public DbSet<TransactionLog> TransactionLogs { get; set; }
 
+        public DbSet<Batch> Batches { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=weighr.db");

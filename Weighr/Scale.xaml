@@ -47,12 +47,17 @@
 
         <!-- Row 3  Column 0
         <Button Name="btnOk" Grid.Row="3" HorizontalAlignment="left" Margin="500,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnOk_Click" >ENTER</Button>-->
-        <Button Name="btnNetGross" Grid.Row="2" HorizontalAlignment="left" Margin="345,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnNetGross_Click" >NET/GR</Button>
-        <Button Name="btnTareScale" Grid.Row="2"  HorizontalAlignment="left" Margin="190,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnTareScale_Click" >TARE</Button>
-        <Button Name="btnZeroScale" Grid.Row="2"  HorizontalAlignment="Left" Margin="35,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnZeroScale_Click">ZERO</Button>
+        <StackPanel Grid.Row="2"  Orientation="Horizontal">
+            <Button Name="btnNetGross" Grid.Row="2" HorizontalAlignment="left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnNetGross_Click" >NET/GR</Button>
+            <Button Name="btnTareScale" Grid.Row="2"  HorizontalAlignment="left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnTareScale_Click" >TARE</Button>
+            <Button Name="btnZeroScale" Grid.Row="2"  HorizontalAlignment="Left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnZeroScale_Click">ZERO</Button>
+            <Button Name="btnNewBatch" Grid.Row="2" HorizontalAlignment="left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnNewBatch_Click" >NEW BATCH</Button>
+        </StackPanel>
+        
 
         <Button Name="btnEnter" Grid.Row="2" Grid.Column="1" HorizontalAlignment="right" Width="200" Height="100" Margin="0,0,51,35" Background="#FF8E8E8E" Foreground="White" FontSize="30" Click="btnEnter_Click">ENTER</Button>
-
+     
+       
 
     </Grid>
 </Page>

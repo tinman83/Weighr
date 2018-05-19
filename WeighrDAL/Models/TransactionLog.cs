@@ -18,14 +18,20 @@ namespace WeighrDAL.Models
         public string ProductCode { get; set; }
         public string OrderNumber { get; set; }
 
+        [ForeignKey("Batches")]
+        public string BatchCode { get; set; }
+
         [ForeignKey("Shift")]
         public int ShiftId { get; set; }
         public decimal ActualWeight { get; set; }
+        public decimal TargetWeight { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal WeightDifference { get; set; }
         public int WeightStatus { get; set; }  // -1=UnderWeight , 0=Normal , 1=OverWeight
         public string DeviceId { get; set; }
         public string WeightType { get; set; } //NET OR GROSS
+
+        public decimal ProductDensity { get; set; }
 
         public string Units { get; set; }
         public bool Uploaded { get; set; }

@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Weighr.Models;
 using WeighrDAL.Components;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -60,7 +61,8 @@ namespace Weighr
             _product.TargetWeight = Decimal.Parse(TargetWeightTextBox.Text);
             _product.UpperLimit = Decimal.Parse(UpperLimitTextBox.Text);
             _product.LowerLimit = Decimal.Parse(LowerLimitTextBox.Text);
-            _product.Inflight = Decimal.Parse(InflightTextBox.Text);
+            _product.Inflight = 0;// Decimal.Parse(InflightTextBox.Text);
+            _product.DribblePoint = Decimal.Parse(DribblePointTextBox.Text);
 
             ProductComponent productComp = new ProductComponent();
 
@@ -75,12 +77,39 @@ namespace Weighr
 
             ClearProduct();
             LoadProductsList();
+            saveSuccessfullmessage();
 
         }
 
         private bool ValidateSaveProduct()
         {
+            if (ProductCodeTextBox.Text == "") { errorMessageShow("Please enter product code"); return false; }
+            if (ProductNameTextBox.Text == "") { errorMessageShow("Please enter product name"); return false; }
 
+            double num;
+            if (DensityTextBox.Text == "") { errorMessageShow("Please enter product density"); return false; }
+            if (!double.TryParse(DensityTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for product density"); return false;
+            }
+
+            if (UpperLimitTextBox.Text == "") { errorMessageShow("Please enter product upper limit."); return false; }
+            if (!double.TryParse(UpperLimitTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for product upper limit."); return false;
+            }
+
+            if (LowerLimitTextBox.Text == "") { errorMessageShow("Please enter product lower limit."); return false; }
+            if (!double.TryParse(UpperLimitTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for product lower limit."); return false;
+            }
+
+            if (DribblePointTextBox.Text == "") { errorMessageShow("Please enter product dribble point."); return false; }
+            if (!double.TryParse(DribblePointTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for product dribble point."); return false;
+            }
 
             return true;
         }
@@ -97,7 +126,8 @@ namespace Weighr
             TargetWeightTextBox.Text = _product.TargetWeight.ToString();
             UpperLimitTextBox.Text = _product.UpperLimit.ToString();
             LowerLimitTextBox.Text = _product.LowerLimit.ToString();
-            InflightTextBox.Text = _product.Inflight.ToString();
+            DribblePointTextBox.Text = _product.DribblePoint.ToString();
+
         }
 
         private void ClearProduct()
@@ -109,7 +139,8 @@ namespace Weighr
             TargetWeightTextBox.Text = "";
             UpperLimitTextBox.Text = "";
             LowerLimitTextBox.Text = "";
-            InflightTextBox.Text = "";
+            DribblePointTextBox.Text = "";
+
             _product = null; //new WeighrDAL.Models.Product();
         }
 
@@ -130,9 +161,30 @@ namespace Weighr
                 TargetWeightTextBox.Text = _product.TargetWeight.ToString();
                 UpperLimitTextBox.Text = _product.UpperLimit.ToString();
                 LowerLimitTextBox.Text = _product.LowerLimit.ToString();
-                InflightTextBox.Text = _product.Inflight.ToString();
+                DribblePointTextBox.Text = _product.DribblePoint.ToString();
             }
              
+
+        }
+
+        private async void saveSuccessfullmessage()
+        {
+            var dialog = new MessageDialog("Product successfully saved.", "Information");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+        }
+
+        private async void errorMessageShow(string message)
+        {
+            var dialog = new MessageDialog(message, "Validation Error");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+            var res = await dialog.ShowAsync();
 
         }
     }

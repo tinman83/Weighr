@@ -19,6 +19,7 @@ using WeighrDAL.Models;
 using System.Threading;
 using Windows.UI.Core;
 using Weighr.Helpers;
+using Windows.UI.Popups;
 
 
 
@@ -56,6 +57,11 @@ namespace Weighr
         List<WeighrDAL.Models.Product> _ProductsList = new List<WeighrDAL.Models.Product>();
         WeighrDAL.Models.Product _currentProduct = new WeighrDAL.Models.Product();
 
+        private void btnNewBatch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private DispatcherTimer timer;
 
         public Scale()
@@ -70,31 +76,48 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            GetScaleConfigurations();
-            GetScaleSettings();
+            if (GetScaleSettings() == false) { NoSettingsMessage(); }
+            if (GetScaleCalibration()==false) { NoCalibrationMessage(); }
+
             ProductComponent productComp = new ProductComponent();
             _ProductsList = productComp.GetProducts();
             ProductsComboBox.ItemsSource = _ProductsList;
 
-            _currentProduct = productComp.GetLastAddedProduct();
+            _currentProduct = productComp.GetCurrentProduct();
 
-            ProductsComboBox.SelectedValue = _currentProduct.ProductCode;
+            //txtFlyoutMessage.Text = "Confirm. The currently selected product is " + _currentProduct.Name;
+            if (_currentProduct!=null)
+            {
+                ProductsComboBox.SelectedValue = _currentProduct.ProductCode;
+                _normal_cutoff_weight = (_currentProduct.TargetWeight) * Convert.ToDecimal(0.8);
+                _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
 
-            tblWeigherStatus.Text = "Idle";
+                tblWeigherStatus.Text = "Idle";
+                AcknowledgeProductSelection(_currentProduct);
 
-            _normal_cutoff_weight = (_currentProduct.TargetWeight)*Convert.ToDecimal(0.8) ;
-            _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
-            
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
-            timer.Tick += timer_Tick;
-            timer.Start();
+
+                timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
+                timer.Tick += timer_Tick;
+                timer.Start();
+
+
+            }
+            else
+            {
+                //Please configure product
+                NoProductMessage();
+            } 
 
         }
 
+       
         private void ProductsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _currentProduct = (WeighrDAL.Models.Product)ProductsComboBox.SelectedItem;
+
+            ProductComponent productComp = new ProductComponent();
+            _currentProduct= productComp.SetCurrentProduct(_currentProduct.ProductCode);
 
             _normal_cutoff_weight = (_currentProduct.TargetWeight) * Convert.ToDecimal(0.8);
             _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
@@ -121,7 +144,7 @@ namespace Weighr
 
             //_prior_calc_result = _calc_result;
             decimal calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - LoadcellOffset);
-            calc_result = calc_result - (calc_result % _min_div);
+            calc_result = calc_result - (calc_result % (_scaleSetting.MinimumDivision/1000)); //divide by 1000 to convert minimum division to Kgs
 
             _counter_values[_filter_counter] = calc_result;
             _filter_counter++;
@@ -156,7 +179,8 @@ namespace Weighr
                 // GpioUtility.openDribbleFeedValve(); //open dribble feed valve
                 _normal_cutoff_reached = false;
                 _final_setpoint_reached = false;
-                LoadcellOffset = _calc_result;
+                //LoadcellOffset = _calc_result;
+                ZeroScale();
                 startProcessLocked = true;
                 _checkWeightProcess = true;
                 _runprocess = false;
@@ -268,18 +292,22 @@ namespace Weighr
             TransactionLogComp.AddTransactionLog(trans_log);
             //
         }
-        public void GetScaleConfigurations()
+        public Boolean GetScaleCalibration()
         {
             ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
 
             _scaleConfig = ScaleConfigComp.GetScaleConfig();
+
+            if (_scaleConfig != null) { return true; } else { return false; }
      
         }
 
-        public void GetScaleSettings()
+        public Boolean GetScaleSettings()
         {
             ScaleSettingComponent ScaleSettingComp = new ScaleSettingComponent();
             _scaleSetting = ScaleSettingComp.GetScaleSetting();
+
+            if (_scaleSetting != null) { return true; } else { return false; }
 
         }
 
@@ -338,7 +366,7 @@ namespace Weighr
             //ScaleConfigComp.UpdateScaleConfig(scaleCon);
             //GetScaleConfigurations();
 
-            LoadcellOffset = _calc_result;
+            LoadcellOffset = LoadcellOffset + _calc_result;
 
 
         }
@@ -353,7 +381,7 @@ namespace Weighr
             //GetScaleConfigurations();
 
             
-                LoadcellOffset = (_calc_result);
+                LoadcellOffset = LoadcellOffset + _calc_result;
            
 
             
@@ -380,6 +408,78 @@ namespace Weighr
 
         }
 
+        private async void NoProductMessage()
+        {
+            var dialog = new MessageDialog("There are no configured products. Please enter product(s).");
 
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+            if ((int)res.Id == 0)
+            {
+                //redirect to products page
+                this.Frame.Navigate(typeof(Product));
+
+            }
+        }
+
+        private async void AcknowledgeProductSelection(WeighrDAL.Models.Product product)
+        {
+            var dialog = new MessageDialog(product.Name + " : " + product.TargetWeight + " is the currently selected product");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+        }
+
+        private async void NoSettingsMessage()
+        {
+            var dialog = new MessageDialog("There are no configured settings. Please configure system.");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+            if ((int)res.Id == 0)
+            {
+                //redirect to products page
+                this.Frame.Navigate(typeof(Settings));
+
+            }
+        }
+
+        private async void NoCalibrationMessage()
+        {
+            var dialog = new MessageDialog("Scale not calibrated. Please calibrate scale.");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+            if ((int)res.Id == 0)
+            {
+                //redirect to products page
+                this.Frame.Navigate(typeof(Calibration));
+
+            }
+        }
+
+        private async void InputBatchNumberDialog()
+        {
+            var dialog = new MessageDialog("Please enter Batch Number.");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Enter", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+            if ((int)res.Id == 0)
+            {
+                //redirect to products page
+                this.Frame.Navigate(typeof(Calibration));
+
+            }
+        }
     }
 }

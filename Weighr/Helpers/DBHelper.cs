@@ -77,7 +77,7 @@ namespace Weighr.Helpers
                     Name = "Product A - 5Kg",
                     Density = 1,
                     Inflight = 0.3M,
-                    isCurrent = false,
+                    isCurrent = true,
                     LowerLimit = 1,
                     UpperLimit = 1,
                     TargetWeight = 5
