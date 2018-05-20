@@ -37,7 +37,7 @@ namespace Weighr
         /// </summary>
         private bool available = false;
 
-        
+        public Batch _batch;
         
         public MainPage()
         {
@@ -53,7 +53,10 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            bool IsInitialised = GpioUtility.InitialiseGpio();
+            //bool IsInitialised = GpioUtility.InitialiseGpio();
+
+            BatchComponent batchComp = new BatchComponent();
+            _batch = batchComp.GetCurrentBatch();
             //DBHelper dbhelper = new DBHelper();
             //dbhelper.InitialiseTables();
         }

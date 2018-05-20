@@ -20,6 +20,7 @@ using System.Threading;
 using Windows.UI.Core;
 using Weighr.Helpers;
 using Windows.UI.Popups;
+using Weighr.Controls;
 
 
 
@@ -56,10 +57,11 @@ namespace Weighr
 
         List<WeighrDAL.Models.Product> _ProductsList = new List<WeighrDAL.Models.Product>();
         WeighrDAL.Models.Product _currentProduct = new WeighrDAL.Models.Product();
+        Batch _currentBatch = new Batch();
 
         private void btnNewBatch_Click(object sender, RoutedEventArgs e)
         {
-
+            InputBatchNumberDialog();
         }
 
         private DispatcherTimer timer;
@@ -76,8 +78,8 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (GetScaleSettings() == false) { NoSettingsMessage(); }
-            if (GetScaleCalibration()==false) { NoCalibrationMessage(); }
+            //if (GetScaleSettings() == false) { NoSettingsMessage();return; }
+            //if (GetScaleCalibration()==false) { NoCalibrationMessage(); return; }
 
             ProductComponent productComp = new ProductComponent();
             _ProductsList = productComp.GetProducts();
@@ -95,11 +97,15 @@ namespace Weighr
                 tblWeigherStatus.Text = "Idle";
                 AcknowledgeProductSelection(_currentProduct);
 
+                ProductNameTextBox.Text = _currentProduct.Name;
+                TargetWeightTextBox.Text = _currentProduct.TargetWeight.ToString();
+
+
 
                 timer = new DispatcherTimer();
                 timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
                 timer.Tick += timer_Tick;
-                timer.Start();
+                //timer.Start();
 
 
             }
@@ -107,7 +113,14 @@ namespace Weighr
             {
                 //Please configure product
                 NoProductMessage();
-            } 
+            }
+
+            BatchComponent batchComp = new BatchComponent();
+            _currentBatch = batchComp.GetCurrentBatch();
+            if (_currentBatch != null)
+            {
+                BatchNumberTextBox.Text = _currentBatch.BatchCode;
+            }
 
         }
 
@@ -118,7 +131,7 @@ namespace Weighr
 
             ProductComponent productComp = new ProductComponent();
             _currentProduct= productComp.SetCurrentProduct(_currentProduct.ProductCode);
-
+             productComp.SetCurrentProduct(_currentProduct.ProductCode);
             _normal_cutoff_weight = (_currentProduct.TargetWeight) * Convert.ToDecimal(0.8);
             _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
 
@@ -408,13 +421,13 @@ namespace Weighr
 
         }
 
-        private async void NoProductMessage()
+        private  async void NoProductMessage()
         {
             var dialog = new MessageDialog("There are no configured products. Please enter product(s).");
 
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
-            var res = await dialog.ShowAsync();
+            var res =await  dialog.ShowAsync();
 
             if ((int)res.Id == 0)
             {
@@ -424,13 +437,13 @@ namespace Weighr
             }
         }
 
-        private async void AcknowledgeProductSelection(WeighrDAL.Models.Product product)
+        private async  void AcknowledgeProductSelection(WeighrDAL.Models.Product product)
         {
             var dialog = new MessageDialog(product.Name + " : " + product.TargetWeight + " is the currently selected product");
 
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
-            var res = await dialog.ShowAsync();
+            var res =await dialog.ShowAsync();
 
         }
 
@@ -468,16 +481,29 @@ namespace Weighr
 
         private async void InputBatchNumberDialog()
         {
-            var dialog = new MessageDialog("Please enter Batch Number.");
 
-            dialog.Commands.Clear();
-            dialog.Commands.Add(new UICommand { Label = "Enter", Id = 0 });
-            var res = await dialog.ShowAsync();
-
-            if ((int)res.Id == 0)
+            var batchDialog = new NewBatchDialog();
+            var result = await batchDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
             {
-                //redirect to products page
-                this.Frame.Navigate(typeof(Calibration));
+                if (batchDialog.Cancel == false)
+                {
+                    var batchNumber = batchDialog.Text;
+
+                    BatchComponent batchComp = new BatchComponent();
+                    Batch batch = new Batch();
+
+                    batch.BatchCode = batchNumber;
+                    batch.StartTime = DateTime.Now;
+                    batch.isCurrent = true;
+
+                    batchComp.AddBatch(batch);
+                    BatchNumberTextBox.Text = batchNumber;
+                }
+               
+            }
+            else
+            {
 
             }
         }

@@ -48,10 +48,25 @@
         <!-- Row 3  Column 0
         <Button Name="btnOk" Grid.Row="3" HorizontalAlignment="left" Margin="500,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnOk_Click" >ENTER</Button>-->
         <StackPanel Grid.Row="2"  Orientation="Horizontal">
-            <Button Name="btnNetGross" Grid.Row="2" HorizontalAlignment="left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnNetGross_Click" >NET/GR</Button>
-            <Button Name="btnTareScale" Grid.Row="2"  HorizontalAlignment="left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnTareScale_Click" >TARE</Button>
             <Button Name="btnZeroScale" Grid.Row="2"  HorizontalAlignment="Left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnZeroScale_Click">ZERO</Button>
             <Button Name="btnNewBatch" Grid.Row="2" HorizontalAlignment="left" Margin="10,0,0,35" Width="120" Height="60" Background="#FF8E8E8E" Foreground="White" Click="btnNewBatch_Click" >NEW BATCH</Button>
+            <Grid Margin="20,0,0,35" Height="70">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Batch #" Width="100" Margin="10,0,0,0" ></TextBlock>
+                <TextBlock Name="BatchNumberTextBox" Width="100" Grid.Row="1" Margin="10,0,0,10" Height="60"></TextBlock>
+                <TextBlock Text="Product" Width="100" Margin="10,0,0,10" Grid.Column="1"  ></TextBlock>
+                <TextBlock Name="ProductNameTextBox" Width="100"  Grid.Column="1" Grid.Row="1" Margin="10,0,0,10" Height="60"></TextBlock>
+                <TextBlock Text="Target Weight" Width="100" Margin="10,0,0,0" Grid.Column="2" ></TextBlock>
+                <TextBlock Name="TargetWeightTextBox" Width="100"  Grid.Column="2" Grid.Row="1" Margin="10,0,0,10" Height="60"></TextBlock>
+            </Grid>
         </StackPanel>
         
 

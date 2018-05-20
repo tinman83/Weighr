@@ -24,6 +24,22 @@ namespace WeighrDAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Batches",
+                columns: table => new
+                {
+                    BatchId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BatchCode = table.Column<string>(nullable: true),
+                    EndTime = table.Column<DateTime>(nullable: false),
+                    StartTime = table.Column<DateTime>(nullable: false),
+                    isCurrent = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Batches", x => x.BatchId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
                 {
@@ -62,7 +78,8 @@ namespace WeighrDAL.Migrations
                     ProductId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Density = table.Column<decimal>(nullable: false),
-                    Inflight = table.Column<double>(nullable: false),
+                    DribblePoint = table.Column<decimal>(nullable: false),
+                    Inflight = table.Column<decimal>(nullable: false),
                     LowerLimit = table.Column<decimal>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     ProductCode = table.Column<string>(nullable: true),
@@ -81,10 +98,10 @@ namespace WeighrDAL.Migrations
                 {
                     ScaleConfigId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Gradient = table.Column<double>(nullable: false),
+                    Gradient = table.Column<decimal>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
-                    YIntercept = table.Column<double>(nullable: false),
-                    offset = table.Column<double>(nullable: false)
+                    YIntercept = table.Column<decimal>(nullable: false),
+                    offset = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,16 +116,17 @@ namespace WeighrDAL.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     DecimalPointPositionName = table.Column<string>(nullable: true),
                     DecimalPointPrecision = table.Column<int>(nullable: false),
-                    Density = table.Column<double>(nullable: false),
+                    Density = table.Column<decimal>(nullable: false),
                     DisplayUnits = table.Column<string>(nullable: true),
-                    DisplayUnitsWeight = table.Column<double>(nullable: false),
-                    Inflight = table.Column<double>(nullable: false),
+                    DisplayUnitsWeight = table.Column<decimal>(nullable: false),
+                    Inflight = table.Column<decimal>(nullable: false),
+                    InflightTiming = table.Column<int>(nullable: false),
                     LowerLimit = table.Column<decimal>(nullable: false),
-                    MaximumCapacity = table.Column<double>(nullable: false),
-                    MinimumDivision = table.Column<double>(nullable: false),
+                    MaximumCapacity = table.Column<decimal>(nullable: false),
+                    MinimumDivision = table.Column<decimal>(nullable: false),
                     PrintMode = table.Column<bool>(nullable: false),
                     UpperLimit = table.Column<decimal>(nullable: false),
-                    ZeroRange = table.Column<double>(nullable: false)
+                    ZeroRange = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,12 +174,16 @@ namespace WeighrDAL.Migrations
                     TransactionLogId = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ActualWeight = table.Column<decimal>(nullable: false),
+                    BatchCode = table.Column<string>(nullable: true),
                     DateUploaded = table.Column<DateTime>(nullable: false),
                     DeviceId = table.Column<string>(nullable: true),
+                    LineNumber = table.Column<string>(nullable: true),
                     OrderNumber = table.Column<string>(nullable: true),
                     ProductCode = table.Column<string>(nullable: true),
+                    ProductDensity = table.Column<decimal>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     ShiftId = table.Column<int>(nullable: false),
+                    TargetWeight = table.Column<decimal>(nullable: false),
                     TransactionDate = table.Column<DateTime>(nullable: false),
                     Units = table.Column<string>(nullable: true),
                     Uploaded = table.Column<bool>(nullable: false),
@@ -180,6 +202,9 @@ namespace WeighrDAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AccumulatedWeights");
+
+            migrationBuilder.DropTable(
+                name: "Batches");
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");

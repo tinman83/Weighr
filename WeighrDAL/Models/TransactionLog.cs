@@ -34,6 +34,8 @@ namespace WeighrDAL.Models
         public decimal ProductDensity { get; set; }
 
         public string Units { get; set; }
+
+        public string LineNumber { get; set; }
         public bool Uploaded { get; set; }
         public DateTime DateUploaded { get; set; }
 

@@ -53,6 +53,7 @@ namespace WeighrDAL.Components
 
                 if (previousCurrent != null)
                 {
+                    previousCurrent.EndTime = DateTime.Now;
                     previousCurrent.isCurrent = false;
                     db.Batches.Update(previousCurrent);
                 }
@@ -66,6 +67,16 @@ namespace WeighrDAL.Components
                 db.SaveChanges();
 
                 return current;
+            }
+        }
+
+        public Batch GetCurrentBatch()
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.Batches
+                      .Where(p => p.isCurrent == true).FirstOrDefault();
+
             }
         }
     }

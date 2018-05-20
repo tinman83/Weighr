@@ -40,7 +40,6 @@
             <ComboBoxItem Content="Grams" />
             <ComboBoxItem Content="Kgs"/>
             <ComboBoxItem Content="Tonnes" />
-           
         </ComboBox>
 
         <!--<TextBlock Grid.Row="2" FontSize="12" Text="Decimal Point" VerticalAlignment="Center"/>
@@ -65,15 +64,8 @@
         </ComboBox>-->
 
         <TextBlock Grid.Row="2" FontSize="12" Text="Precision (g)" VerticalAlignment="Center"/>
-        <ComboBox Width="200" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10"  Name="MinimumDivisionComboBox" SelectedValuePath="Content">
-            <ComboBoxItem Content="5" />
-            <ComboBoxItem Content="10" />
-            <ComboBoxItem Content="50" />
-            <ComboBoxItem Content="100" />
-            <ComboBoxItem Content="1000" />
-        </ComboBox>
+        <TextBox Name="PrecisionTextBox" Width="200" Grid.Row="2" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-       
         <!--<TextBlock Text="Density" Grid.Row="4" Grid.Column="2" FontSize="12" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>
         <Slider Grid.Row="4" Grid.Column="3" StepFrequency="0.1" VerticalAlignment="Bottom" HorizontalAlignment="left" Margin="0,0,0,10"  x:Name="densitySlider" Width="200" ValueChanged="Slider_ValueChanged"/>
         <TextBlock Name="tblSliderDisplay" Grid.Row="5" Grid.Column="3" HorizontalAlignment="left" Margin="0,0,0,10" VerticalAlignment="Center"/>-->

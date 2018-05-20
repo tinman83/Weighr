@@ -17,6 +17,7 @@ using Weighr.Helpers;
 using WeighrDAL.Models;
 using WeighrDAL.Components;
 using System.Globalization;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -35,7 +36,12 @@ namespace Weighr
         public decimal _Gradient, _YIntercept;
 
         public decimal _MinimumValue, _MaximumValue;
-        Weighr.Models.Calibration _calibrate = new Weighr.Models.Calibration();
+
+        public ScaleConfig _scaleConfig = new ScaleConfig();
+
+        public bool _step1 = false;
+        public bool step2 = false;
+        
 
         public Calibration()
         {
@@ -45,34 +51,51 @@ namespace Weighr
             
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void SetMinimumButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SetMinimumTextBox.Text == "") { return; }
-            //read Loadcell to get Raw Minimum Value
-            //if (SetMinimumTextBox.Text == "0")
-            //{
-            //    _UserMinimumValue = 0.00;
-            //}
-            //else
-            //{
+            double num;
 
-            //}
-           
-
+            if (SetMinimumTextBox.Text == "") { errorMessageShow("Please enter minimum value, then press Enter button"); return; }
+            if (!double.TryParse(SetMinimumTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for minimum value"); return;
+            }
 
             _UserMinimumValue = Convert.ToDecimal(SetMinimumTextBox.Text); //Capture User Minimum
             _RawMinimumValue = GpioUtility.ReadData();
             _LoadcellOffset = 0;//set offset to zero
+
+            string message = "Minimum value set, move to step 3.";
+            successMessageShow(message);
+            SetMinimumButton.IsEnabled = false;
+            SetMaximumButton.IsEnabled = true;
+            SetMaximumTextBox.Focus(FocusState.Programmatic);
+
         }
 
         private void SetMaximumButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SetMaximumTextBox.Text == "") { return; }
+            double num;
             //read Loadcell to get Raw Maximum Value
+            if (SetMaximumTextBox.Text == "") { errorMessageShow("Please enter weight value, then press Calibrate button"); return; }
+            if (!double.TryParse(SetMaximumTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for weight value"); return;
+            }
 
             _UserMaximumValue = Convert.ToDecimal(SetMaximumTextBox.Text); //Capture User Maximum
             //_MaximumValue = Convert.ToDecimal(SetMaximumTextBox.Text); //Capture User Minimum
             _RawMaximumValue = GpioUtility.ReadData();
+
+            string message = "Wieght value set. Press Finish button to complete calibration.";
+            successMessageShow(message);
+            SetMaximumButton.IsEnabled = false;
+            FinishButton.Focus(FocusState.Programmatic);
 
         }
 
@@ -88,13 +111,56 @@ namespace Weighr
             ScaleConfigComponent scaleConfigComp = new ScaleConfigComponent();
             var scaleConfig = scaleConfigComp.GetScaleConfig();
 
-            scaleConfig.Gradient = _Gradient;
-            scaleConfig.YIntercept = _YIntercept;
-            scaleConfig.offset = _LoadcellOffset;
+            if (scaleConfig != null)
+            {
+               scaleConfig.Gradient = _Gradient;
+               scaleConfig.YIntercept = _YIntercept;
+               scaleConfig.offset = _LoadcellOffset;
+               scaleConfigComp.UpdateScaleConfig(scaleConfig);
+            }
+            else
+            {
+                scaleConfig = new ScaleConfig();
+                scaleConfig.Gradient = _Gradient;
+                scaleConfig.YIntercept = _YIntercept;
+                scaleConfig.offset = _LoadcellOffset;
+                scaleConfigComp.AddScaleConfig(scaleConfig);
+            }
 
-            scaleConfigComp.UpdateScaleConfig(scaleConfig);
+            saveSuccessfullmessage();
 
-            messageCalibrationResult.Text = "Calibration Successful";
+        }
+
+        private async void saveSuccessfullmessage()
+        {
+            var dialog = new MessageDialog("Calibration Successful.", "Information");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+            var res = await dialog.ShowAsync();
+
+        }
+
+        private async void errorMessageShow(string message)
+        {
+            var dialog = new MessageDialog(message, "Validation Error");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+            var res = await dialog.ShowAsync();
+
+        }
+
+        private async void successMessageShow(string message)
+        {
+            var dialog = new MessageDialog(message, "Information");
+
+            dialog.Commands.Clear();
+            dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
+
+            var res = await dialog.ShowAsync();
+
         }
 
 

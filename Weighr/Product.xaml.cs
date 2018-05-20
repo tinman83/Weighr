@@ -66,6 +66,13 @@ namespace Weighr
 
             ProductComponent productComp = new ProductComponent();
 
+            var curProduct = productComp.GetCurrentProduct();
+            if (curProduct == null)
+            {
+                _product.isCurrent = true;
+            }
+
+
             if (_product.ProductId == 0)
             {
                 productComp.AddProduct(_product);

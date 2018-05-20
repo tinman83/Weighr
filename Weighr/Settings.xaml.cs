@@ -66,9 +66,10 @@ namespace Weighr
                 //ZeroRangeComboBox.SelectedValue = _scaleSetting.ZeroRange.ToString();
 
 
-                MinimumDivisionComboBox.SelectedValue = _scaleSetting.MinimumDivision.ToString();
+                PrecisionTextBox.Text = _scaleSetting.MinimumDivision.ToString();
                 InflightTextBox.Text = _scaleSetting.Inflight.ToString();
                 InflightTimingTextBox.Text = _scaleSetting.InflightTiming.ToString();
+                MaximumCapacityTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
                 //MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
                 //densitySlider.Value = _scaleSetting.Density;
 
@@ -80,7 +81,7 @@ namespace Weighr
             }
             else
             {
-
+                _scaleSetting = new ScaleSetting();
             }
 
            
@@ -99,7 +100,7 @@ namespace Weighr
             _scaleSetting.ZeroRange = 0; // decimal.Parse(ZeroRangeComboBox.SelectedValue.ToString());
 
             
-            _scaleSetting.MinimumDivision = decimal.Parse(MinimumDivisionComboBox.SelectedValue.ToString());
+            _scaleSetting.MinimumDivision = decimal.Parse(PrecisionTextBox.Text);
             _scaleSetting.MaximumCapacity = Convert.ToDecimal(MaximumCapacityTextBox.Text);
             _scaleSetting.Density = 1;
             _scaleSetting.Inflight = decimal.Parse(InflightTextBox.Text);
@@ -119,6 +120,12 @@ namespace Weighr
 
             double num;
             int numInt;
+
+            if (PrecisionTextBox.Text == "") { errorMessageShow("Please enter precision"); return false; }
+            if (!int.TryParse(PrecisionTextBox.Text, out numInt))
+            {
+                errorMessageShow("Please enter integer value for precision"); return false;
+            }
 
             if (InflightTextBox.Text == "") { errorMessageShow("Please enter inflight"); return false; }
             if (!double.TryParse(InflightTextBox.Text, out num))

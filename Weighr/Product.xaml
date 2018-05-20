@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
-
+    <ScrollViewer ZoomMode="Enabled" MaxZoomFactor="10"
+              HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Visible" Height="400">
     <Grid Margin="10,0,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -75,4 +76,5 @@
 
         <Button Name="btnSaveProduct" Grid.Row="9" Grid.Column="1" Content="Save" Margin="0,0,0,10" VerticalAlignment="top" Click="btnSaveProduct_Click"/>
     </Grid>
+    </ScrollViewer>
 </Page>
