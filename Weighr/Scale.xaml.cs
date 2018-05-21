@@ -21,6 +21,7 @@ using Windows.UI.Core;
 using Weighr.Helpers;
 using Windows.UI.Popups;
 using Weighr.Controls;
+using System.Threading.Tasks;
 
 
 
@@ -300,9 +301,47 @@ namespace Weighr
             {
                 GpioUtility.switchOnNormalWeightLight();
             }
+
             TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
-            TransactionLog trans_log = new TransactionLog() { ProductId = _currentProduct.ProductId, ProductCode = _currentProduct.ProductCode, ActualWeight = Convert.ToDecimal(_calc_result), TransactionDate = DateTime.Now, WeightDifference = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight };
+            TransactionLog trans_log = new TransactionLog() { ProductId = _currentProduct.ProductId, ProductCode = _currentProduct.ProductCode, ActualWeight = Convert.ToDecimal(_calc_result), TransactionDate = DateTime.Now, WeightDifference = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight,DeviceId=DeviceInfo.Instance.Id };
             TransactionLogComp.AddTransactionLog(trans_log);
+
+           // LogTransaction(trans_log);
+
+           
+        }
+
+        private void LogTransaction(TransactionLog trans_log)
+        {
+            if (_scaleSetting.pushToCloud == true)
+            {
+
+                CloudInterface.PushToCloud(_scaleSetting.iotHubUri, _scaleSetting.iotHubDeviceKey, trans_log).ContinueWith(result => {
+                    if (result.Equals(false))
+                    {
+                        // set transaction log persisted state to false;
+                    }
+                    else
+                    {
+                        // set transaction log persisted state to true;
+                    }
+                });
+            }
+            else if (_scaleSetting.pushToWebApi == true)
+            {
+
+                CloudInterface.PushToWebApi(_scaleSetting.ServerUrl, trans_log).ContinueWith(result => {
+                    if (result.Equals(false))
+                    {
+                        // set transaction log persisted state to false;
+                    }
+                    else
+                    {
+                        // set transaction log persisted state to true;
+                    }
+                });
+
+            }
             //
         }
         public Boolean GetScaleCalibration()

@@ -39,5 +39,7 @@ namespace WeighrDAL.Models
         public bool Uploaded { get; set; }
         public DateTime DateUploaded { get; set; }
 
+        public bool persistedServer { get; set; }
+
     }
 }

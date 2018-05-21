@@ -101,8 +101,10 @@
     <Compile Include="Controls\NewBatchDialog.xaml.cs">
       <DependentUpon>NewBatchDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CloudInterface.cs" />
     <Compile Include="Helpers\CustomMessages.cs" />
     <Compile Include="Helpers\DBHelper.cs" />
+    <Compile Include="Helpers\DeviceInfo.cs" />
     <Compile Include="Helpers\GpioUtility.cs" />
     <Compile Include="Helpers\Utility.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -186,6 +188,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Devices.Client">
+      <Version>1.7.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore">
       <Version>2.0.2</Version>
     </PackageReference>
