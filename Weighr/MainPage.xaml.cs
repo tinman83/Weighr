@@ -38,7 +38,8 @@ namespace Weighr
         private bool available = false;
 
         public Batch _batch;
-        
+        DeviceInfo _deviceInfo = new DeviceInfo();
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -54,6 +55,24 @@ namespace Weighr
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //bool IsInitialised = GpioUtility.InitialiseGpio();
+
+            DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
+            _deviceInfo = deviceInfoComp.GetDeviceInfo();
+            if (_deviceInfo == null)
+            {
+                _deviceInfo = new DeviceInfo
+                {
+                    Model = DeviceInfoHelper.Instance.Model,
+                    Manufacturer = DeviceInfoHelper.Instance.Manufacturer,
+                    Name = DeviceInfoHelper.Instance.Id,
+                    OSName = DeviceInfoHelper.OSName,
+                    DeviceKey = "",
+                    SerialNumber = "123456789",
+                    ClientId = "test@techcentre.cloresol.com"
+                };
+
+                deviceInfoComp.AddDeviceInfo(_deviceInfo);
+            }
 
             BatchComponent batchComp = new BatchComponent();
             _batch = batchComp.GetCurrentBatch();

@@ -8,15 +8,15 @@ using Windows.System.Profile;
 
 namespace Weighr.Helpers
 {
-    public sealed class DeviceInfo
+    public sealed class DeviceInfoHelper
     {
-        private static DeviceInfo _Instance;
-        public static DeviceInfo Instance
+        private static DeviceInfoHelper _Instance;
+        public static DeviceInfoHelper Instance
         {
             get
             {
                 if (_Instance == null)
-                    _Instance = new DeviceInfo();
+                    _Instance = new DeviceInfoHelper();
                 return _Instance;
             }
 
@@ -24,16 +24,16 @@ namespace Weighr.Helpers
 
         public string Id { get; private set; }
         public string Model { get; private set; }
-        public string Manufracturer { get; private set; }
+        public string Manufacturer { get; private set; }
         public string Name { get; private set; }
         public static string OSName { get; set; }
 
-        private DeviceInfo()
+        private DeviceInfoHelper()
         {
             Id = GetId();
             var deviceInformation = new EasClientDeviceInformation();
             Model = deviceInformation.SystemProductName;
-            Manufracturer = deviceInformation.SystemManufacturer;
+            Manufacturer = deviceInformation.SystemManufacturer;
             Name = deviceInformation.FriendlyName;
             OSName = deviceInformation.OperatingSystem;
         }

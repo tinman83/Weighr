@@ -70,6 +70,9 @@ namespace Weighr
                 InflightTextBox.Text = _scaleSetting.Inflight.ToString();
                 InflightTimingTextBox.Text = _scaleSetting.InflightTiming.ToString();
                 MaximumCapacityTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
+                PushToCloudCheckBox.IsChecked = _scaleSetting.pushToCloud;
+                PushToWebApiCheckBox.IsChecked = _scaleSetting.pushToWebApi;
+
                 //MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
                 //densitySlider.Value = _scaleSetting.Density;
 
@@ -105,6 +108,8 @@ namespace Weighr
             _scaleSetting.Density = 1;
             _scaleSetting.Inflight = decimal.Parse(InflightTextBox.Text);
             _scaleSetting.InflightTiming = int.Parse(InflightTimingTextBox.Text);
+            _scaleSetting.pushToCloud =(bool) PushToCloudCheckBox.IsChecked;
+            _scaleSetting.pushToWebApi = (bool)PushToWebApiCheckBox.IsChecked;
 
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 

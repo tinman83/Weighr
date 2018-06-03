@@ -46,6 +46,7 @@ namespace Weighr
         string _display_units, _current_product_code, _curent_product_name;
         string _current_status;
         int _decimal_position,_divider, _weight, _current_product_id, _filter_counter, _j;
+        decimal _ActualFillTime = 0;
 
         decimal[] _counter_values = new decimal[3];
 
@@ -59,6 +60,7 @@ namespace Weighr
         List<WeighrDAL.Models.Product> _ProductsList = new List<WeighrDAL.Models.Product>();
         WeighrDAL.Models.Product _currentProduct = new WeighrDAL.Models.Product();
         Batch _currentBatch = new Batch();
+        DeviceInfo _deviceInfo = new DeviceInfo();
 
         private void btnNewBatch_Click(object sender, RoutedEventArgs e)
         {
@@ -79,8 +81,11 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //if (GetScaleSettings() == false) { NoSettingsMessage();return; }
-            //if (GetScaleCalibration()==false) { NoCalibrationMessage(); return; }
+            DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
+            _deviceInfo = deviceInfoComp.GetDeviceInfo();
+
+            if (GetScaleSettings() == false) { NoSettingsMessage();return; }
+            if (GetScaleCalibration()==false) { NoCalibrationMessage(); return; }
 
             ProductComponent productComp = new ProductComponent();
             _ProductsList = productComp.GetProducts();
@@ -148,7 +153,7 @@ namespace Weighr
             timer.Stop();
             //read scale and update ui
             Int32 result = GpioUtility.ReadData();
-            //_calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - _scaleConfig.offset);
+            //_calc_result = _currentProduct.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - _scaleConfig.offset);
             //_calc_result = _calc_result - (_calc_result % _scaleSetting.MinimumDivision);
 
 
@@ -157,7 +162,7 @@ namespace Weighr
             //RadialGaugeControl.Value = Convert.ToInt64((_calc_result / _currentProduct.TargetWeight) * 100);
 
             //_prior_calc_result = _calc_result;
-            decimal calc_result = _scaleSetting.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - LoadcellOffset);
+            decimal calc_result = _currentProduct.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - LoadcellOffset);
             calc_result = calc_result - (calc_result % (_scaleSetting.MinimumDivision/1000)); //divide by 1000 to convert minimum division to Kgs
 
             _counter_values[_filter_counter] = calc_result;
@@ -302,11 +307,56 @@ namespace Weighr
                 GpioUtility.switchOnNormalWeightLight();
             }
 
+            Decimal percDiffFillTime = 0;
+
+            if(_currentProduct.ExpectedFillTime == 0)
+            {
+                percDiffFillTime = 0;
+            }
+            else
+            {
+                percDiffFillTime = (_currentProduct.ExpectedFillTime - _ActualFillTime) / 100;
+            }
+
+            Decimal weightDiff = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight;
+            int weightStatus = 0;
+
+            if (weightDiff > 0) { weightStatus = 1; }else if (weightDiff < 0) { weightStatus = -1; }
+
+
             TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
-            TransactionLog trans_log = new TransactionLog() { ProductId = _currentProduct.ProductId, ProductCode = _currentProduct.ProductCode, ActualWeight = Convert.ToDecimal(_calc_result), TransactionDate = DateTime.Now, WeightDifference = Convert.ToDecimal(_calc_result) - _currentProduct.TargetWeight,DeviceId=DeviceInfo.Instance.Id };
+            TransactionLog trans_log = new TransactionLog() {
+                ProductId = _currentProduct.ProductId,
+                ProductCode = _currentProduct.ProductCode,
+                BatchCode = _currentBatch.BatchCode,
+                OrderNumber = "",
+                ProductDensity = _currentProduct.Density,
+                ShiftId = 1,
+                TargetWeight = _currentProduct.TargetWeight,
+                ActualWeight = Convert.ToDecimal(_calc_result),
+                TransactionDate = DateTime.Now.ToUniversalTime(),
+                WeightDifference = weightDiff,
+                Units = "Kgs",
+                WeightStatus = weightStatus,               // -1=UnderWeight , 0=Normal , 1=OverWeight
+                WeightType = "NET",
+                persistedServer = false,
+                DeviceId = DeviceInfoHelper.Instance.Id,
+                ClientId = _deviceInfo.ClientId,
+                PlantId = _deviceInfo.PlantId,
+                MachineName = _deviceInfo.MachineName,
+                ExpectedFillTime = _currentProduct.ExpectedFillTime,
+                ActualFillTime = _ActualFillTime,
+                PercDiffFillTime = percDiffFillTime,
+                BaseUnitOfMeasure = "Kgs",
+                Uploaded=false,
+                rowguid=Guid.NewGuid(),
+                ModifiedDate=DateTime.Now.ToUniversalTime(),
+            
+            };
+
             TransactionLogComp.AddTransactionLog(trans_log);
 
-           // LogTransaction(trans_log);
+            LogTransaction(trans_log);
 
            
         }
@@ -533,7 +583,7 @@ namespace Weighr
                     Batch batch = new Batch();
 
                     batch.BatchCode = batchNumber;
-                    batch.StartTime = DateTime.Now;
+                    batch.StartTime = DateTime.Now.ToUniversalTime();
                     batch.isCurrent = true;
 
                     batchComp.AddBatch(batch);

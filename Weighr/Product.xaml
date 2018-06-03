@@ -7,9 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
     <ScrollViewer ZoomMode="Enabled" MaxZoomFactor="10"
-              HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Visible" Height="400">
+              HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Visible" MinHeight="400">
     <Grid Margin="10,0,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -43,7 +44,11 @@
             <ComboBox MinWidth="250"  Grid.Row="1" Grid.Column="1"  Margin="0,0,0,10"  Name="ProductsComboBox" 
                   ItemsSource="{Binding}" DisplayMemberPath="Name" VerticalAlignment="Center" SelectionChanged="ProductsComboBox_SelectionChanged">
             </ComboBox>
-            <Button Name="btnNewProduct" Grid.Row="1" Grid.Column="2" Content="New Product" Margin="0,0,0,10" VerticalAlignment="Center" Click="btnNewProduct_Click"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
+                    <Button Name="btnNewProduct"  Content="New Product" Margin="0,0,0,10" VerticalAlignment="Center" Click="btnNewProduct_Click"/>
+                    <Button Name="btnSaveProduct" Grid.Row="10" Grid.Column="1" Content="Save" Margin="10,0,0,10" VerticalAlignment="top" Click="btnSaveProduct_Click" MinWidth="100"/>
+                </StackPanel>
         </Grid>
         
         <TextBlock Grid.Row="2" Text="Product Code" VerticalAlignment="Center"/>
@@ -69,12 +74,15 @@
 
         <TextBlock Grid.Row="8" Grid.Column="0" FontSize="12" Text="Dribble Point (Kgs)" VerticalAlignment="Center"/>
         <TextBox Name="DribblePointTextBox" Width="250" Grid.Row="8" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-       
-        <!--<TextBlock Grid.Row="8" Text="Inflight (Kgs)" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="9" Grid.Column="0" FontSize="12" Text="Fill Time (s)" VerticalAlignment="Center"/>
+        <TextBox Name="ExpectedFillTimeTextBox" Width="250" Grid.Row="9" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+            <!--<TextBlock Grid.Row="8" Text="Inflight (Kgs)" VerticalAlignment="Center"/>
         <TextBox Width="250" Grid.Row="8" Grid.Column="1"  Name="InflightTextBox" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
 
 
-        <Button Name="btnSaveProduct" Grid.Row="9" Grid.Column="1" Content="Save" Margin="0,0,0,10" VerticalAlignment="top" Click="btnSaveProduct_Click"/>
+        
     </Grid>
     </ScrollViewer>
 </Page>

@@ -95,6 +95,11 @@
         <TextBlock Grid.Row="5" Grid.Column="0" FontSize="12" Text="Max Capacity (Kgs)" VerticalAlignment="Center"/>
         <TextBox Name="MaximumCapacityTextBox" Width="200" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
+        <TextBlock Grid.Row="1" Grid.Column="2" FontSize="12" Text="Push To Cloud" VerticalAlignment="Center"/>
+        <CheckBox Name="PushToCloudCheckBox" Width="200" Grid.Row="1" Grid.Column="3" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="2" FontSize="12" Text="Push To Web Api" VerticalAlignment="Center"/>
+        <CheckBox Name="PushToWebApiCheckBox" Width="200" Grid.Row="2" Grid.Column="3" Margin="0,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <!--<ComboBox Width="200" Grid.Row="1" Grid.Column="3" Margin="0,0,0,10"  Name="InflightComboBox" SelectedValuePath="Content">
             <ComboBoxItem Content="0.25" />

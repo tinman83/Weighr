@@ -63,6 +63,7 @@ namespace Weighr
             _product.LowerLimit = Decimal.Parse(LowerLimitTextBox.Text);
             _product.Inflight = 0;// Decimal.Parse(InflightTextBox.Text);
             _product.DribblePoint = Decimal.Parse(DribblePointTextBox.Text);
+            _product.ExpectedFillTime = decimal.Parse(ExpectedFillTimeTextBox.Text);
 
             ProductComponent productComp = new ProductComponent();
 
@@ -118,6 +119,12 @@ namespace Weighr
                 errorMessageShow("Please enter numeric value for product dribble point."); return false;
             }
 
+            if (ExpectedFillTimeTextBox.Text == "") { errorMessageShow("Please enter product Expected fill time."); return false; }
+            if (!double.TryParse(ExpectedFillTimeTextBox.Text, out num))
+            {
+                errorMessageShow("Please enter numeric value for product expected fill time."); return false;
+            }
+
             return true;
         }
 
@@ -134,6 +141,7 @@ namespace Weighr
             UpperLimitTextBox.Text = _product.UpperLimit.ToString();
             LowerLimitTextBox.Text = _product.LowerLimit.ToString();
             DribblePointTextBox.Text = _product.DribblePoint.ToString();
+            ExpectedFillTimeTextBox.Text = _product.ExpectedFillTime.ToString();
 
         }
 
@@ -147,6 +155,7 @@ namespace Weighr
             UpperLimitTextBox.Text = "";
             LowerLimitTextBox.Text = "";
             DribblePointTextBox.Text = "";
+            ExpectedFillTimeTextBox.Text = "";
 
             _product = null; //new WeighrDAL.Models.Product();
         }
@@ -169,6 +178,7 @@ namespace Weighr
                 UpperLimitTextBox.Text = _product.UpperLimit.ToString();
                 LowerLimitTextBox.Text = _product.LowerLimit.ToString();
                 DribblePointTextBox.Text = _product.DribblePoint.ToString();
+                ExpectedFillTimeTextBox.Text = _product.ExpectedFillTime.ToString();
             }
              
 

@@ -104,7 +104,7 @@
     <Compile Include="Helpers\CloudInterface.cs" />
     <Compile Include="Helpers\CustomMessages.cs" />
     <Compile Include="Helpers\DBHelper.cs" />
-    <Compile Include="Helpers\DeviceInfo.cs" />
+    <Compile Include="Helpers\DeviceInfoHelper.cs" />
     <Compile Include="Helpers\GpioUtility.cs" />
     <Compile Include="Helpers\Utility.cs" />
     <Compile Include="MainPage.xaml.cs">

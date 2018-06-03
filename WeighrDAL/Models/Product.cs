@@ -11,6 +11,7 @@ namespace WeighrDAL.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int ProductId { get; set; }
+        public Guid rowguid { get; set; }
         public string ProductCode { get; set; }
         public string Name { get; set; }
         public decimal Density { get; set; }
@@ -20,7 +21,10 @@ namespace WeighrDAL.Models
         public decimal Inflight { get; set; }
 
         public decimal DribblePoint { get; set; }
+        public decimal ExpectedFillTime { get; set; }
         public bool isCurrent { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
 
     }
 }

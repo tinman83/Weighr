@@ -35,10 +35,17 @@ namespace WeighrDAL.Models
 
         public string Units { get; set; }
 
-        public string LineNumber { get; set; }
+        public decimal ExpectedFillTime { get; set; }
+        public decimal ActualFillTime { get; set; }
+        public decimal PercDiffFillTime { get; set; }
+
+        public string ClientId { get; set; }
+        public string PlantId { get; set; }
+        public string MachineName { get; set; }
+        public string BaseUnitOfMeasure { get; set; }
         public bool Uploaded { get; set; }
         public DateTime DateUploaded { get; set; }
-
+        public DateTime ModifiedDate { get; set; }
         public bool persistedServer { get; set; }
 
     }

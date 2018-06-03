@@ -53,7 +53,7 @@ namespace WeighrDAL.Components
 
                 if (previousCurrent != null)
                 {
-                    previousCurrent.EndTime = DateTime.Now;
+                    previousCurrent.EndTime = DateTime.Now.ToUniversalTime();
                     previousCurrent.isCurrent = false;
                     db.Batches.Update(previousCurrent);
                 }

@@ -40,6 +40,27 @@ namespace WeighrDAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeviceInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ClientId = table.Column<string>(nullable: true),
+                    DeviceKey = table.Column<string>(nullable: true),
+                    MachineName = table.Column<string>(nullable: true),
+                    Manufacturer = table.Column<string>(nullable: true),
+                    Model = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    OSName = table.Column<string>(nullable: true),
+                    PlantId = table.Column<string>(nullable: true),
+                    SerialNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
                 {
@@ -79,13 +100,16 @@ namespace WeighrDAL.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Density = table.Column<decimal>(nullable: false),
                     DribblePoint = table.Column<decimal>(nullable: false),
+                    ExpectedFillTime = table.Column<decimal>(nullable: false),
                     Inflight = table.Column<decimal>(nullable: false),
                     LowerLimit = table.Column<decimal>(nullable: false),
+                    ModifiedDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     ProductCode = table.Column<string>(nullable: true),
                     TargetWeight = table.Column<decimal>(nullable: false),
                     UpperLimit = table.Column<decimal>(nullable: false),
-                    isCurrent = table.Column<bool>(nullable: false)
+                    isCurrent = table.Column<bool>(nullable: false),
+                    rowguid = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,8 +149,13 @@ namespace WeighrDAL.Migrations
                     MaximumCapacity = table.Column<decimal>(nullable: false),
                     MinimumDivision = table.Column<decimal>(nullable: false),
                     PrintMode = table.Column<bool>(nullable: false),
+                    ServerUrl = table.Column<string>(nullable: true),
                     UpperLimit = table.Column<decimal>(nullable: false),
-                    ZeroRange = table.Column<decimal>(nullable: false)
+                    ZeroRange = table.Column<decimal>(nullable: false),
+                    iotHubDeviceKey = table.Column<string>(nullable: true),
+                    iotHubUri = table.Column<string>(nullable: true),
+                    pushToCloud = table.Column<bool>(nullable: false),
+                    pushToWebApi = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,12 +202,19 @@ namespace WeighrDAL.Migrations
                 {
                     TransactionLogId = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ActualFillTime = table.Column<decimal>(nullable: false),
                     ActualWeight = table.Column<decimal>(nullable: false),
+                    BaseUnitOfMeasure = table.Column<string>(nullable: true),
                     BatchCode = table.Column<string>(nullable: true),
+                    ClientId = table.Column<string>(nullable: true),
                     DateUploaded = table.Column<DateTime>(nullable: false),
                     DeviceId = table.Column<string>(nullable: true),
-                    LineNumber = table.Column<string>(nullable: true),
+                    ExpectedFillTime = table.Column<decimal>(nullable: false),
+                    MachineName = table.Column<string>(nullable: true),
+                    ModifiedDate = table.Column<DateTime>(nullable: false),
                     OrderNumber = table.Column<string>(nullable: true),
+                    PercDiffFillTime = table.Column<decimal>(nullable: false),
+                    PlantId = table.Column<string>(nullable: true),
                     ProductCode = table.Column<string>(nullable: true),
                     ProductDensity = table.Column<decimal>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
@@ -190,6 +226,7 @@ namespace WeighrDAL.Migrations
                     WeightDifference = table.Column<decimal>(nullable: false),
                     WeightStatus = table.Column<int>(nullable: false),
                     WeightType = table.Column<string>(nullable: true),
+                    persistedServer = table.Column<bool>(nullable: false),
                     rowguid = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -205,6 +242,9 @@ namespace WeighrDAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Batches");
+
+            migrationBuilder.DropTable(
+                name: "DeviceInfos");
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");

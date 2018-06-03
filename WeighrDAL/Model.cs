@@ -18,6 +18,8 @@ namespace WeighrDAL
 
         public DbSet<Batch> Batches { get; set; }
 
+        public DbSet<DeviceInfo> DeviceInfos { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=weighr.db");

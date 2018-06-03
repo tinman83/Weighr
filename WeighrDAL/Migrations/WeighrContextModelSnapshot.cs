@@ -53,6 +53,34 @@ namespace WeighrDAL.Migrations
                     b.ToTable("Batches");
                 });
 
+            modelBuilder.Entity("WeighrDAL.Models.DeviceInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClientId");
+
+                    b.Property<string>("DeviceKey");
+
+                    b.Property<string>("MachineName");
+
+                    b.Property<string>("Manufacturer");
+
+                    b.Property<string>("Model");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OSName");
+
+                    b.Property<string>("PlantId");
+
+                    b.Property<string>("SerialNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeviceInfos");
+                });
+
             modelBuilder.Entity("WeighrDAL.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -98,9 +126,13 @@ namespace WeighrDAL.Migrations
 
                     b.Property<decimal>("DribblePoint");
 
+                    b.Property<decimal>("ExpectedFillTime");
+
                     b.Property<decimal>("Inflight");
 
                     b.Property<decimal>("LowerLimit");
+
+                    b.Property<DateTime>("ModifiedDate");
 
                     b.Property<string>("Name");
 
@@ -111,6 +143,8 @@ namespace WeighrDAL.Migrations
                     b.Property<decimal>("UpperLimit");
 
                     b.Property<bool>("isCurrent");
+
+                    b.Property<Guid>("rowguid");
 
                     b.HasKey("ProductId");
 
@@ -162,9 +196,19 @@ namespace WeighrDAL.Migrations
 
                     b.Property<bool>("PrintMode");
 
+                    b.Property<string>("ServerUrl");
+
                     b.Property<decimal>("UpperLimit");
 
                     b.Property<decimal>("ZeroRange");
+
+                    b.Property<string>("iotHubDeviceKey");
+
+                    b.Property<string>("iotHubUri");
+
+                    b.Property<bool>("pushToCloud");
+
+                    b.Property<bool>("pushToWebApi");
 
                     b.HasKey("ScaleSettingId");
 
@@ -216,17 +260,31 @@ namespace WeighrDAL.Migrations
                     b.Property<long>("TransactionLogId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<decimal>("ActualFillTime");
+
                     b.Property<decimal>("ActualWeight");
 
+                    b.Property<string>("BaseUnitOfMeasure");
+
                     b.Property<string>("BatchCode");
+
+                    b.Property<string>("ClientId");
 
                     b.Property<DateTime>("DateUploaded");
 
                     b.Property<string>("DeviceId");
 
-                    b.Property<string>("LineNumber");
+                    b.Property<decimal>("ExpectedFillTime");
+
+                    b.Property<string>("MachineName");
+
+                    b.Property<DateTime>("ModifiedDate");
 
                     b.Property<string>("OrderNumber");
+
+                    b.Property<decimal>("PercDiffFillTime");
+
+                    b.Property<string>("PlantId");
 
                     b.Property<string>("ProductCode");
 
@@ -249,6 +307,8 @@ namespace WeighrDAL.Migrations
                     b.Property<int>("WeightStatus");
 
                     b.Property<string>("WeightType");
+
+                    b.Property<bool>("persistedServer");
 
                     b.Property<Guid>("rowguid");
 
