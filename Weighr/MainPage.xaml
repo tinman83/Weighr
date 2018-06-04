@@ -116,6 +116,14 @@
                             <TextBlock FontSize="24" Margin="20,0,0,0">Calibration</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
+                    <ListBoxItem Name="Diagnostics">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="36"
+                                       Text="&#xE90F;"/>
+                            <TextBlock FontSize="24" Margin="20,0,0,0">Diagnostics</TextBlock>
+                        </StackPanel>
+                    </ListBoxItem>
                 </ListBox>
             </SplitView.Pane>
 

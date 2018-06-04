@@ -34,7 +34,22 @@ namespace WeighrDAL.Components
 
             }
         }
-      
-      
+
+        public void DeleteDeviceInfo()
+        {
+            using (var db = new WeighrContext())
+            {
+                var dev= db.DeviceInfos.FirstOrDefault();
+
+                if (dev != null)
+                {
+                    db.DeviceInfos.Remove(dev);
+                    db.SaveChanges();
+                }
+                
+            }
+        }
+
+
     }
 }

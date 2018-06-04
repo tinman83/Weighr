@@ -11,7 +11,7 @@ using WeighrDAL;
 namespace WeighrDAL.Migrations
 {
     [DbContext(typeof(WeighrContext))]
-    [Migration("20180603103446_InitialCreate")]
+    [Migration("20180604154229_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,8 +61,6 @@ namespace WeighrDAL.Migrations
 
                     b.Property<string>("ClientId");
 
-                    b.Property<string>("DeviceKey");
-
                     b.Property<string>("MachineName");
 
                     b.Property<string>("Manufacturer");
@@ -76,6 +74,16 @@ namespace WeighrDAL.Migrations
                     b.Property<string>("PlantId");
 
                     b.Property<string>("SerialNumber");
+
+                    b.Property<string>("ServerUrl");
+
+                    b.Property<string>("iotHubDeviceKey");
+
+                    b.Property<string>("iotHubUri");
+
+                    b.Property<bool>("pushToCloud");
+
+                    b.Property<bool>("pushToWebApi");
 
                     b.HasKey("Id");
 
@@ -197,19 +205,9 @@ namespace WeighrDAL.Migrations
 
                     b.Property<bool>("PrintMode");
 
-                    b.Property<string>("ServerUrl");
-
                     b.Property<decimal>("UpperLimit");
 
                     b.Property<decimal>("ZeroRange");
-
-                    b.Property<string>("iotHubDeviceKey");
-
-                    b.Property<string>("iotHubUri");
-
-                    b.Property<bool>("pushToCloud");
-
-                    b.Property<bool>("pushToWebApi");
 
                     b.HasKey("ScaleSettingId");
 
@@ -292,6 +290,8 @@ namespace WeighrDAL.Migrations
                     b.Property<decimal>("ProductDensity");
 
                     b.Property<int>("ProductId");
+
+                    b.Property<string>("SerialNumber");
 
                     b.Property<int>("ShiftId");
 

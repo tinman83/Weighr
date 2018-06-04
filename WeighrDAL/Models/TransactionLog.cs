@@ -28,6 +28,7 @@ namespace WeighrDAL.Models
         public DateTime TransactionDate { get; set; }
         public decimal WeightDifference { get; set; }
         public int WeightStatus { get; set; }  // -1=UnderWeight , 0=Normal , 1=OverWeight
+        public string SerialNumber { get; set; }
         public string DeviceId { get; set; }
         public string WeightType { get; set; } //NET OR GROSS
 

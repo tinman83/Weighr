@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Gpio;
 using WeighrDAL.Models;
 using Weighr.Helpers;
+using System.Threading.Tasks;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -54,31 +55,47 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //bool IsInitialised = GpioUtility.InitialiseGpio();
+            bool IsInitialised = GpioUtility.InitialiseGpio();
 
             DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
+            //deviceInfoComp.DeleteDeviceInfo();
             _deviceInfo = deviceInfoComp.GetDeviceInfo();
             if (_deviceInfo == null)
             {
+                //string key = CreateDeviceFunc(DeviceInfoHelper.Instance.SerialNumber).Result;
                 _deviceInfo = new DeviceInfo
                 {
                     Model = DeviceInfoHelper.Instance.Model,
                     Manufacturer = DeviceInfoHelper.Instance.Manufacturer,
                     Name = DeviceInfoHelper.Instance.Id,
                     OSName = DeviceInfoHelper.OSName,
-                    DeviceKey = "",
-                    SerialNumber = "123456789",
-                    ClientId = "test@techcentre.cloresol.com"
+                    SerialNumber = DeviceInfoHelper.Instance.SerialNumber,
+                    iotHubDeviceKey = DeviceInfoHelper.Instance.iotHubDeviceKey,
+                    ClientId = DeviceInfoHelper.Instance.ClientId,
+                    pushToCloud = DeviceInfoHelper.Instance.pushToCloud,
+                    iotHubUri = DeviceInfoHelper.Instance.iotHubUri,
+                    pushToWebApi = DeviceInfoHelper.Instance.pushToWebApi,
+                    ServerUrl = DeviceInfoHelper.Instance.ServerUrl,
+                    PlantId= DeviceInfoHelper.Instance.PlantId,
+                    MachineName= DeviceInfoHelper.Instance.MachineName
                 };
 
                 deviceInfoComp.AddDeviceInfo(_deviceInfo);
             }
-
+            
             BatchComponent batchComp = new BatchComponent();
             _batch = batchComp.GetCurrentBatch();
             //DBHelper dbhelper = new DBHelper();
             //dbhelper.InitialiseTables();
         }
+
+        public async Task<string> CreateDeviceFunc(string deviceId)
+        {
+            await MyDevice.AddDeviceAsync(deviceId);
+            string key = MyDevice.device_key;
+
+            return key;
+        } 
 
         private void HamgurgerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -118,6 +135,12 @@ namespace Weighr
                 BackButton.Visibility = Visibility.Visible;
                 MyFrame.Navigate(typeof(Settings));
                 TitleTextBlock.Text = "Settings";
+            }
+            else if (Diagnostics.IsSelected)
+            {
+                BackButton.Visibility = Visibility.Visible;
+                MyFrame.Navigate(typeof(WeighrDiagnostics));
+                TitleTextBlock.Text = "Diagnostics";
             }
             //else if (Shift.IsSelected)
             //{

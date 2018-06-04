@@ -13,12 +13,12 @@ namespace Weighr.Helpers
    public static class CloudInterface
     {
         static DeviceClient deviceClient;
-        //static string iotHubUri = "CugnusIotHub.azure-devices.net";
+        //static string iotHubUri = "CloresolIotHub.azure-devices.net";
 
-        public static async Task<bool> PushToCloud(string iotHubUri, string iotHubDeviceKey, TransactionLog transactionLog)
+        public static async Task<bool> PushToCloud(string iotHubUri,string iotHubDeviceName, string iotHubDeviceKey, TransactionLog transactionLog)
         {
 
-            deviceClient = DeviceClient.Create(iotHubUri, new DeviceAuthenticationWithRegistrySymmetricKey(iotHubUri, iotHubDeviceKey), TransportType.Mqtt);
+            deviceClient = DeviceClient.Create(iotHubUri, new DeviceAuthenticationWithRegistrySymmetricKey(iotHubDeviceName, iotHubDeviceKey), TransportType.Mqtt);
             var res= await SendDeviceToCloudMessagesAsync(transactionLog);
 
             return res;
@@ -36,9 +36,9 @@ namespace Weighr.Helpers
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                var message = ex.Message;
                 return false;
             }
            

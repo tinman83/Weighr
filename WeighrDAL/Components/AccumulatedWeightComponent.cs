@@ -26,12 +26,11 @@ namespace WeighrDAL.Components
             }
         }
 
-        public AccumulatedWeight GetAccumulatedWeight(int accumulatedWeightId)
+        public AccumulatedWeight GetAccumulatedWeight()
         {
             using (var db = new WeighrContext())
             {
-                return db.AccumulatedWeights
-                    .Where(p => p.AccumulatedWeightId == accumulatedWeightId).FirstOrDefault();
+                return db.AccumulatedWeights.Take(1).FirstOrDefault();
 
             }
         }

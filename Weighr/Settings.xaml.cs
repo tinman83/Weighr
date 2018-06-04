@@ -26,6 +26,7 @@ namespace Weighr
     public sealed partial class Settings : Page
     {
         ScaleSetting _scaleSetting = new ScaleSetting();
+        DeviceInfo _deviceInfo = new DeviceInfo();
 
         private enum Units
         {
@@ -55,6 +56,15 @@ namespace Weighr
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
+            DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
+            _deviceInfo = deviceInfoComp.GetDeviceInfo();
+
+            if (_deviceInfo != null)
+            {
+                PlantNameTextBox.Text = _deviceInfo.PlantId;
+                MachineNameTextBox.Text = _deviceInfo.MachineName;
+            }
+
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 
             _scaleSetting = scaleSettingComp.GetScaleSettingDefault();
@@ -62,24 +72,12 @@ namespace Weighr
             if (_scaleSetting != null)
             {
                 DisplayUnitsComboBox.SelectedIndex = GetUnitIndex(_scaleSetting.DisplayUnits);
-                //DecimalPointPrecisionComboBox.SelectedValue = _scaleSetting.DecimalPointPrecision.ToString();
-                //ZeroRangeComboBox.SelectedValue = _scaleSetting.ZeroRange.ToString();
-
 
                 PrecisionTextBox.Text = _scaleSetting.MinimumDivision.ToString();
                 InflightTextBox.Text = _scaleSetting.Inflight.ToString();
                 InflightTimingTextBox.Text = _scaleSetting.InflightTiming.ToString();
                 MaximumCapacityTextBox.Text = _scaleSetting.MaximumCapacity.ToString();
-                PushToCloudCheckBox.IsChecked = _scaleSetting.pushToCloud;
-                PushToWebApiCheckBox.IsChecked = _scaleSetting.pushToWebApi;
 
-                //MaximumCapacitySlider.Value = _scaleSetting.MaximumCapacity;
-                //densitySlider.Value = _scaleSetting.Density;
-
-                //tblMaximumCapacity.Text = "Current Max Cap: " + _scaleSetting.MaximumCapacity.ToString();
-                // tblSliderDisplay.Text = "Current Density: " + _scaleSetting.Density.ToString();
-                //UpperLimitComboBox.SelectedValue = _scaleSetting.UpperLimit.ToString();
-                //LowerLimitComboBox.SelectedValue = _scaleSetting.LowerLimit.ToString();
 
             }
             else
@@ -108,14 +106,13 @@ namespace Weighr
             _scaleSetting.Density = 1;
             _scaleSetting.Inflight = decimal.Parse(InflightTextBox.Text);
             _scaleSetting.InflightTiming = int.Parse(InflightTimingTextBox.Text);
-            _scaleSetting.pushToCloud =(bool) PushToCloudCheckBox.IsChecked;
-            _scaleSetting.pushToWebApi = (bool)PushToWebApiCheckBox.IsChecked;
 
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 
             scaleSettingComp.UpdateScaleSetting(_scaleSetting);
 
-            saveSuccessfullmessage();
+            string msg = "Scale Settings successfully saved";
+            saveSuccessfullmessage(msg);
 
 
         }
@@ -153,23 +150,41 @@ namespace Weighr
             return true;
         }
 
-        //private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        //{
-        //    decimal val = Convert.ToDecimal(e.NewValue);
-        //    string msg = "Current Density: " + val.ToString("0.00");
-        //    tblSliderDisplay.Text = msg;
-        //}
-
-        //private void MaximumCapacitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        //{
-        //    decimal val = Convert.ToDecimal(e.NewValue);
-        //    string msg = "Current Max Cap: " +val.ToString("0.00");
-        //    tblMaximumCapacity.Text = msg;
-        //}
-
-        private async void saveSuccessfullmessage()
+        private bool ValidateDeviceInfoInput()
         {
-            var dialog = new MessageDialog("Scale Settings successfully saved.","Information");
+
+            if (PlantNameTextBox.Text == "") { errorMessageShow("Please enter plant name"); return false; }
+           
+            if (MachineNameTextBox.Text == "") { errorMessageShow("Please enter machine name"); return false; }
+            
+            return true;
+        }
+
+
+        private void btnSaveDeviceInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if (ValidateDeviceInfoInput() == false)
+            {
+                return;
+            }
+
+           
+            DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
+
+            var deviceInfo = deviceInfoComp.GetDeviceInfo();
+
+            deviceInfo.PlantId = PlantNameTextBox.Text;
+            deviceInfo.MachineName = MachineNameTextBox.Text;
+
+            deviceInfoComp.UpdateDeviceInfo(deviceInfo);
+
+            string msg = "Device information saved";
+            saveSuccessfullmessage(msg);
+        }
+
+        private async void saveSuccessfullmessage(string message)
+        {
+            var dialog = new MessageDialog(message,"Information");
 
             dialog.Commands.Clear();
             dialog.Commands.Add(new UICommand { Label = "Ok", Id = 0 });
@@ -187,5 +202,6 @@ namespace Weighr
             var res = await dialog.ShowAsync();
 
         }
+
     }
 }

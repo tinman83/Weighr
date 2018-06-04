@@ -18,11 +18,11 @@ namespace Weighr.Helpers
         private static int stopPinNumber = 26;
         private static int estopPinNumber = 7;
         //private static int pressurePinNumber = 12;
-        private static int normalFeedPinNumber = 20;
-        private static int dribbleFeedPinNumber = 19;
-        private static int underWeightPinNumber = 13;
-        private static int overWeightPinNumber = 16;
-        private static int normalWeightPinNumber = 6;
+        private static int normalFeedPinNumber = 6;  //20
+        private static int dribbleFeedPinNumber = 13; //19
+        private static int underWeightPinNumber = 20;  //13
+        private static int overWeightPinNumber = 16;   //16
+        private static int normalWeightPinNumber = 19;  //6
         private static int airSupplyPinNumber = 12;
 
         private static GpioPin clockPin;
@@ -59,6 +59,88 @@ namespace Weighr.Helpers
         {
             GpioPinValue pinValue = stopPin.Read();
             if (pinValue == GpioPinValue.High)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public static bool GetNormalFeedState()
+        {
+            GpioPinValue pinValue = normalFeedPin.Read();
+            if (pinValue == GpioPinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public static bool GetDribbleFeedState()
+        {
+            GpioPinValue pinValue = dribbleFeedPin.Read();
+            if (pinValue == GpioPinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public static bool GetAirSupplyState()
+        {
+            GpioPinValue pinValue = airSupplyPin.Read();
+            if (pinValue == GpioPinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public static bool GetUnderWeightState()
+        {
+            GpioPinValue pinValue = underWeightPin.Read();
+            if (pinValue == GpioPinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        public static bool GetOverWeightState()
+        {
+            GpioPinValue pinValue = overWeightPin.Read();
+            if (pinValue == GpioPinValue.Low)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        public static bool GetNormalWeightState()
+        {
+            GpioPinValue pinValue = normalFeedPin.Read();
+            if (pinValue == GpioPinValue.Low)
             {
                 return true;
             }

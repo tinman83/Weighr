@@ -12,11 +12,16 @@ namespace WeighrDAL.Models
         public string Manufacturer { get;  set; }
         public string Name { get;  set; }
         public string OSName { get; set; }
-        public string DeviceKey { get; set; }
         public string SerialNumber { get; set; }
         public string  ClientId { get; set; }
         public string PlantId { get; set; }
         public string MachineName { get; set; }
+
+        public bool pushToCloud { get; set; }
+        public string iotHubUri { get; set; }
+        public string iotHubDeviceKey { get; set; }
+        public bool pushToWebApi { get; set; }
+        public string ServerUrl { get; set; }
 
     }
 }

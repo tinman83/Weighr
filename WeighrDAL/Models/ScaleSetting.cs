@@ -25,10 +25,5 @@ namespace WeighrDAL.Models
         public decimal Inflight { get; set; }
         public int InflightTiming { get; set; }
 
-        public bool pushToCloud { get; set; }
-        public string iotHubUri { get; set; }
-        public string iotHubDeviceKey { get; set; }
-        public bool pushToWebApi { get; set; }
-        public string ServerUrl { get; set; }
     }
 }

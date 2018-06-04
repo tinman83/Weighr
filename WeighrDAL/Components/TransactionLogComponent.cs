@@ -18,12 +18,29 @@ namespace WeighrDAL.Components
             }
         }
 
+        public void UpdateTransactionLog(TransactionLog transactionLog)
+        {
+            using (var db = new WeighrContext())
+            {
+                db.TransactionLogs.Update(transactionLog);
+                db.SaveChanges();
+            }
+        }
         public TransactionLog GetTransactionLog(int transactionLogId)
         {
             using (var db = new WeighrContext())
             {
                 return db.TransactionLogs
                     .Where(p => p.TransactionLogId == transactionLogId).FirstOrDefault();
+
+            }
+        }
+        public TransactionLog GetTransactionLogByRowGuid(Guid rowguid)
+        {
+            using (var db = new WeighrContext())
+            {
+                return db.TransactionLogs
+                    .Where(p => p.rowguid == rowguid).FirstOrDefault();
 
             }
         }

@@ -28,6 +28,18 @@ namespace Weighr.Helpers
         public string Name { get; private set; }
         public static string OSName { get; set; }
 
+        public string ClientId { get; set; }
+        public string SerialNumber { get; set; }
+        public bool pushToCloud { get; set; }
+        public string iotHubUri { get; set; }
+        public string iotHubDeviceKey { get; set; }
+        public string iotHubDeviceName { get; set; }
+        public bool pushToWebApi { get; set; }
+        public string ServerUrl { get; set; }
+
+        public string PlantId { get; set; }
+        public string MachineName { get; set; }
+
         private DeviceInfoHelper()
         {
             Id = GetId();
@@ -36,6 +48,17 @@ namespace Weighr.Helpers
             Manufacturer = deviceInformation.SystemManufacturer;
             Name = deviceInformation.FriendlyName;
             OSName = deviceInformation.OperatingSystem;
+
+            PlantId = "Plant1";
+            MachineName= "line1";
+            ClientId = "test@techcentre.cloresol.com";
+            SerialNumber = "123456789";
+            pushToCloud = true;
+            iotHubUri = "CloresolIotHub.azure-devices.net";
+            iotHubDeviceKey = "ULEN7xEO+1ahF8epUeMoRTpnqgVDVgzu0ZOhvQeW75w=";
+            iotHubDeviceName = SerialNumber;
+            pushToWebApi = false;
+            ServerUrl = "";
         }
 
         private static string GetId()

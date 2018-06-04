@@ -61,6 +61,10 @@ namespace Weighr
         WeighrDAL.Models.Product _currentProduct = new WeighrDAL.Models.Product();
         Batch _currentBatch = new Batch();
         DeviceInfo _deviceInfo = new DeviceInfo();
+        TransactionLogComponent _transactionLogComp = new TransactionLogComponent();
+        AccumulatedWeightComponent _accumulatedWeightComp = new AccumulatedWeightComponent();
+
+        System.Diagnostics.Stopwatch _stopWatch = new System.Diagnostics.Stopwatch();
 
         private void btnNewBatch_Click(object sender, RoutedEventArgs e)
         {
@@ -106,12 +110,10 @@ namespace Weighr
                 ProductNameTextBox.Text = _currentProduct.Name;
                 TargetWeightTextBox.Text = _currentProduct.TargetWeight.ToString();
 
-
-
                 timer = new DispatcherTimer();
                 timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
                 timer.Tick += timer_Tick;
-                //timer.Start();
+                timer.Start();
 
 
             }
@@ -195,6 +197,9 @@ namespace Weighr
 
                     GpioUtility.openNormalFeedValve();  //open normal feed valve 
                     Thread.Sleep(1000);
+
+                _stopWatch.Start();
+
                 // GpioUtility.openDribbleFeedValve(); //open dribble feed valve
                 _normal_cutoff_reached = false;
                 _final_setpoint_reached = false;
@@ -240,7 +245,20 @@ namespace Weighr
                             GpioUtility.closeNormalFeedValve();
                             _final_setpoint_reached = true;
 
-                            Thread.Sleep(2000);
+                            _stopWatch.Stop();
+                            var elapsedMs = _stopWatch.ElapsedMilliseconds;
+                            if (elapsedMs > 0)
+                            {
+                               _ActualFillTime = Convert.ToDecimal(elapsedMs / 1000);
+                            }
+                            else
+                            {
+                                _ActualFillTime = 0;
+                            }
+
+                            _stopWatch.Reset();
+
+                            Thread.Sleep(1000);
                             LogFinalValues();
                             ResetProcess();
                         }
@@ -323,12 +341,14 @@ namespace Weighr
 
             if (weightDiff > 0) { weightStatus = 1; }else if (weightDiff < 0) { weightStatus = -1; }
 
+            string batchCode = "";
 
-            TransactionLogComponent TransactionLogComp = new TransactionLogComponent();
+            batchCode = (_currentBatch == null) ? "b001" : _currentBatch.BatchCode;
+
             TransactionLog trans_log = new TransactionLog() {
                 ProductId = _currentProduct.ProductId,
                 ProductCode = _currentProduct.ProductCode,
-                BatchCode = _currentBatch.BatchCode,
+                BatchCode = batchCode,
                 OrderNumber = "",
                 ProductDensity = _currentProduct.Density,
                 ShiftId = 1,
@@ -341,6 +361,7 @@ namespace Weighr
                 WeightType = "NET",
                 persistedServer = false,
                 DeviceId = DeviceInfoHelper.Instance.Id,
+                SerialNumber=_deviceInfo.SerialNumber,
                 ClientId = _deviceInfo.ClientId,
                 PlantId = _deviceInfo.PlantId,
                 MachineName = _deviceInfo.MachineName,
@@ -354,41 +375,63 @@ namespace Weighr
             
             };
 
-            TransactionLogComp.AddTransactionLog(trans_log);
+            _transactionLogComp.AddTransactionLog(trans_log);
 
-            LogTransaction(trans_log);
+            LogTransactionRemote(trans_log);
+
+            var accumWeight = _accumulatedWeightComp.GetAccumulatedWeight();
+            if (accumWeight != null)
+            {
+                accumWeight.Weight = accumWeight.Weight + trans_log.ActualWeight;
+                accumWeight.CurrentDate = DateTime.Now.ToUniversalTime();
+                _accumulatedWeightComp.UpdateAccumulatedWeight(accumWeight);
+            }
+            else
+            {
+                AccumulatedWeight accumulatedWeight = new AccumulatedWeight
+                {
+                    Weight = trans_log.ActualWeight,
+                    StartDate = DateTime.Now.ToUniversalTime(),
+                    CurrentDate = DateTime.Now.ToUniversalTime(),
+                };
+                _accumulatedWeightComp.AddAccumulatedWeight(accumulatedWeight);
+            }
+            
 
            
         }
 
-        private void LogTransaction(TransactionLog trans_log)
+        private void LogTransactionRemote(TransactionLog trans_log)
         {
-            if (_scaleSetting.pushToCloud == true)
+            if (_deviceInfo.pushToCloud == true)
             {
 
-                CloudInterface.PushToCloud(_scaleSetting.iotHubUri, _scaleSetting.iotHubDeviceKey, trans_log).ContinueWith(result => {
-                    if (result.Equals(false))
+                CloudInterface.PushToCloud(_deviceInfo.iotHubUri,_deviceInfo.SerialNumber, _deviceInfo.iotHubDeviceKey, trans_log).ContinueWith(result => {
+                    if (result.Equals(true))
                     {
-                        // set transaction log persisted state to false;
-                    }
-                    else
-                    {
+
+                        var transaction = _transactionLogComp.GetTransactionLogByRowGuid(trans_log.rowguid);
+                        transaction.Uploaded = true;
+                        transaction.DateUploaded = DateTime.Now.ToUniversalTime();
+                        _transactionLogComp.UpdateTransactionLog(transaction);
                         // set transaction log persisted state to true;
                     }
+                    
                 });
             }
-            else if (_scaleSetting.pushToWebApi == true)
+            else if (_deviceInfo.pushToWebApi == true)
             {
 
-                CloudInterface.PushToWebApi(_scaleSetting.ServerUrl, trans_log).ContinueWith(result => {
-                    if (result.Equals(false))
+                CloudInterface.PushToWebApi(_deviceInfo.ServerUrl, trans_log).ContinueWith(result => {
+                    if (result.Equals(true))
                     {
+                        var transaction = _transactionLogComp.GetTransactionLogByRowGuid(trans_log.rowguid);
+                        transaction.persistedServer = true;
+                        transaction.DateUploaded = DateTime.Now.ToUniversalTime();
+                        _transactionLogComp.UpdateTransactionLog(transaction);
                         // set transaction log persisted state to false;
                     }
-                    else
-                    {
-                        // set transaction log persisted state to true;
-                    }
+                    
                 });
 
             }

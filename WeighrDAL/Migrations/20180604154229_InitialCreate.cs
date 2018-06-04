@@ -46,14 +46,18 @@ namespace WeighrDAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ClientId = table.Column<string>(nullable: true),
-                    DeviceKey = table.Column<string>(nullable: true),
                     MachineName = table.Column<string>(nullable: true),
                     Manufacturer = table.Column<string>(nullable: true),
                     Model = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     OSName = table.Column<string>(nullable: true),
                     PlantId = table.Column<string>(nullable: true),
-                    SerialNumber = table.Column<string>(nullable: true)
+                    SerialNumber = table.Column<string>(nullable: true),
+                    ServerUrl = table.Column<string>(nullable: true),
+                    iotHubDeviceKey = table.Column<string>(nullable: true),
+                    iotHubUri = table.Column<string>(nullable: true),
+                    pushToCloud = table.Column<bool>(nullable: false),
+                    pushToWebApi = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,13 +153,8 @@ namespace WeighrDAL.Migrations
                     MaximumCapacity = table.Column<decimal>(nullable: false),
                     MinimumDivision = table.Column<decimal>(nullable: false),
                     PrintMode = table.Column<bool>(nullable: false),
-                    ServerUrl = table.Column<string>(nullable: true),
                     UpperLimit = table.Column<decimal>(nullable: false),
-                    ZeroRange = table.Column<decimal>(nullable: false),
-                    iotHubDeviceKey = table.Column<string>(nullable: true),
-                    iotHubUri = table.Column<string>(nullable: true),
-                    pushToCloud = table.Column<bool>(nullable: false),
-                    pushToWebApi = table.Column<bool>(nullable: false)
+                    ZeroRange = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,6 +217,7 @@ namespace WeighrDAL.Migrations
                     ProductCode = table.Column<string>(nullable: true),
                     ProductDensity = table.Column<decimal>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
+                    SerialNumber = table.Column<string>(nullable: true),
                     ShiftId = table.Column<int>(nullable: false),
                     TargetWeight = table.Column<decimal>(nullable: false),
                     TransactionDate = table.Column<DateTime>(nullable: false),
