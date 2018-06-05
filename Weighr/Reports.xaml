@@ -5,9 +5,83 @@
     xmlns:local="using:Weighr"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Loaded="Page_Loaded">
 
-    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Gray" BorderThickness="1">
+            <Grid Margin="20,50,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Product:" VerticalAlignment="Center"/>
+                <ComboBox MinWidth="250"  Grid.Column="1"  Margin="0,0,0,5"  Name="ProductsComboBox" 
+                  ItemsSource="{Binding}" DisplayMemberPath="Name" VerticalAlignment="Center">
+                </ComboBox>
 
-  
+                <TextBlock Text="From:" VerticalAlignment="Center" Grid.Row="1"/>
+                <CalendarDatePicker x:Name="dtpDateFrom" Grid.Row="1" Grid.Column="1" Margin="0,10,0,5"/>
+                <TimePicker x:Name="dtpTimeFrom" Grid.Row="2" Grid.Column="1" Margin="0,10,0,5"/>
+
+                <TextBlock Text="To:" VerticalAlignment="Center" Grid.Row="3"/>
+                <CalendarDatePicker x:Name="dtpDateTo" Grid.Row="3" Grid.Column="1" Margin="0,10,0,5"/>
+                <TimePicker x:Name="dtpTimeTo" Grid.Row="4" Grid.Column="1" Margin="0,10,0,5"/>
+
+                <Button Grid.Row="5" Grid.Column="1" Name="btnView"  Content="View" Margin="0,10,0,10" MinWidth="200" VerticalAlignment="Center" Click="btnView_Click"/>
+            </Grid>
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1">
+            <Grid Margin="20,50,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock  Text="Units:" VerticalAlignment="Center"/>
+                <TextBox   Grid.Column="1" Margin="10,10,0,10"  Name="UnitsTextBox"  HorizontalAlignment="Stretch"/>
+
+                <TextBlock Grid.Row="1"  Text="Required Weight:" VerticalAlignment="Center"/>
+                <TextBox  Grid.Row="1" Grid.Column="1" Margin="10,10,0,10"  Name="RequiredWeightTextBox"  HorizontalAlignment="Stretch"/>
+
+                <TextBlock Grid.Row="2" Text="Actual Weight:" VerticalAlignment="Center"/>
+                <TextBox  Grid.Row="2" Grid.Column="1" Margin="10,10,0,10"  Name="ActualWeightTextBox"  HorizontalAlignment="Stretch"/>
+
+                <TextBlock Grid.Row="3" Text="Average Weight:" VerticalAlignment="Center"/>
+                <TextBox  Grid.Row="3" Grid.Column="1" Margin="10,10,0,10"  Name="AverageWeightTextBox"  HorizontalAlignment="Stretch"/>
+
+                <TextBlock Grid.Row="4" Text="% Diff:" VerticalAlignment="Center"/>
+                <TextBox  Grid.Row="4" Grid.Column="1" Margin="10,10,0,10"  Name="PercDiffTextBox"  HorizontalAlignment="Stretch"/>
+
+                <TextBlock Grid.Row="5" Text="Average Filltime:" VerticalAlignment="Center"/>
+                <TextBox  Grid.Row="5" Grid.Column="1" Margin="10,10,0,10"  Name="AverageFillTimeTextBox"  HorizontalAlignment="Stretch"/>
+
+            </Grid>
+        </Border>
+    </Grid>
+
 </Page>
