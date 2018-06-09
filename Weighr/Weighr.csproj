@@ -129,6 +129,9 @@
     <Compile Include="Shift.xaml.cs">
       <DependentUpon>Shift.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StyleTemplates.xaml.cs">
+      <DependentUpon>StyleTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WeighrDiagnostics.xaml.cs">
       <DependentUpon>WeighrDiagnostics.xaml</DependentUpon>
     </Compile>
@@ -187,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shift.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StyleTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

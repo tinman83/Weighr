@@ -7,10 +7,24 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="DiagButton">
+
+
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="FontSize"  Value="15"/>
+            <Setter Property="BorderBrush" Value="#c2c3c9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+
+        </Style>
+
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
@@ -24,14 +38,14 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Outputs" FontSize="30" Grid.ColumnSpan="3" Margin="50,0,0,20"/>
-        
-        <Button Name="btnFastFeedValve" Grid.Row="1"  Content="Fast Feed Valve" Margin="50,50,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnFastFeedValve_Click"/>
-        <Button Name="btnDribbleFeedValve" Grid.Row="1" Grid.Column="1"  Content="Dribble Feed Valve" Margin="50,50,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnDribbleFeedValve_Click"/>
-        <Button Name="btnAirSupplyValve" Grid.Row="1" Grid.Column="2"  Content="Air Supply Valve" Margin="50,50,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnAirSupplyValve_Click"/>
-        
-        <Button Name="btnOverWeightLight" Grid.Row="2" Grid.Column="0"  Content="Over Weight Light" Margin="50,50,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnOverWeightLight_Click"/>
-        <Button Name="btnNormalWeightLight" Grid.Row="2" Grid.Column="1"  Content="Normal Weight Light" Margin="50,50,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnNormalWeightLight_Click"/>
-        <Button Name="btnUnderWeightLight" Grid.Row="2" Grid.Column="2"  Content="Under Weight Light" Margin="50,50,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnUnderWeightLight_Click"/>
+
+        <Button Name="btnFastFeedValve" Style="{StaticResource DiagButton}" Grid.Row="1"  Content="Fast Feed Valve" Margin="50,0,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnFastFeedValve_Click"/>
+        <Button Name="btnDribbleFeedValve" Style="{StaticResource DiagButton}" Grid.Row="1" Grid.Column="1"  Content="Dribble Feed Valve" Margin="50,0,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnDribbleFeedValve_Click"/>
+        <Button Name="btnAirSupplyValve" Style="{StaticResource DiagButton}" Grid.Row="1" Grid.Column="2"  Content="Air Supply Valve" Margin="50,0,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnAirSupplyValve_Click"/>
+
+        <Button Name="btnOverWeightLight" Style="{StaticResource DiagButton}" Grid.Row="2" Grid.Column="0"  Content="Over Weight Light" Margin="50,20,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnOverWeightLight_Click"/>
+        <Button Name="btnNormalWeightLight" Style="{StaticResource DiagButton}" Grid.Row="2" Grid.Column="1"  Content="Normal Weight Light" Margin="50,20,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnNormalWeightLight_Click"/>
+        <Button Name="btnUnderWeightLight" Style="{StaticResource DiagButton}" Grid.Row="2" Grid.Column="2"  Content="Under Weight Light" Margin="50,20,0,10" Background="Green" Foreground="white" VerticalAlignment="Center" Click="btnUnderWeightLight_Click"/>
 
         <TextBlock Text="Communications" FontSize="30" Grid.Row="3" Grid.ColumnSpan="3" Margin="50,30,0,20"/>
         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="3"  Margin="50,0,0,20">

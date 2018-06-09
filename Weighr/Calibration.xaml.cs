@@ -131,6 +131,11 @@ namespace Weighr
 
         }
 
+        private void btnZeroScale_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private async void saveSuccessfullmessage()
         {
             var dialog = new MessageDialog("Calibration Successful.", "Information");

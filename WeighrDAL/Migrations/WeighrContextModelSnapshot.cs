@@ -60,6 +60,10 @@ namespace WeighrDAL.Migrations
 
                     b.Property<string>("ClientId");
 
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longitude");
+
                     b.Property<string>("MachineName");
 
                     b.Property<string>("Manufacturer");
@@ -274,6 +278,8 @@ namespace WeighrDAL.Migrations
 
                     b.Property<decimal>("ExpectedFillTime");
 
+                    b.Property<decimal>("LowerLimit");
+
                     b.Property<string>("MachineName");
 
                     b.Property<DateTime>("ModifiedDate");
@@ -290,6 +296,8 @@ namespace WeighrDAL.Migrations
 
                     b.Property<int>("ProductId");
 
+                    b.Property<string>("ProductName");
+
                     b.Property<string>("SerialNumber");
 
                     b.Property<int>("ShiftId");
@@ -301,6 +309,8 @@ namespace WeighrDAL.Migrations
                     b.Property<string>("Units");
 
                     b.Property<bool>("Uploaded");
+
+                    b.Property<decimal>("UpperLimit");
 
                     b.Property<decimal>("WeightDifference");
 

@@ -109,6 +109,8 @@ namespace Weighr
 
             ScaleSettingComponent scaleSettingComp = new ScaleSettingComponent();
 
+            MainPage._inflight_setpoint = _scaleSetting.Inflight; 
+
             scaleSettingComp.UpdateScaleSetting(_scaleSetting);
 
             string msg = "Scale Settings successfully saved";

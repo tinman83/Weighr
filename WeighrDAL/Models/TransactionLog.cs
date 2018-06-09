@@ -24,6 +24,8 @@ namespace WeighrDAL.Models
         [ForeignKey("Shift")]
         public int ShiftId { get; set; }
         public decimal ActualWeight { get; set; }
+        public decimal UpperLimit { get; set; }
+        public decimal LowerLimit { get; set; }
         public decimal TargetWeight { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal WeightDifference { get; set; }
@@ -43,6 +45,8 @@ namespace WeighrDAL.Models
         public string ClientId { get; set; }
         public string PlantId { get; set; }
         public string MachineName { get; set; }
+
+        public string ProductName { get; set; }
         public string BaseUnitOfMeasure { get; set; }
         public bool Uploaded { get; set; }
         public DateTime DateUploaded { get; set; }
