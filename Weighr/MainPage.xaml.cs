@@ -18,6 +18,7 @@ using Windows.Devices.Gpio;
 using WeighrDAL.Models;
 using Weighr.Helpers;
 using System.Threading.Tasks;
+using SDKTemplate;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -29,6 +30,8 @@ namespace Weighr
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public static MainPage Current;
+
         public decimal product_weight;
         public decimal current_weight;
         public decimal LoadcellOffset;
@@ -163,7 +166,29 @@ namespace Weighr
             }
         }
 
-       
+        public void NotifyUser(string strMessage, NotifyType type)
+        {
+            switch (type)
+            {
+                case NotifyType.StatusMessage:
+                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Green);
+                    break;
+                case NotifyType.ErrorMessage:
+                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Red);
+                    break;
+            }
+            StatusBlock.Text = strMessage;
+
+            //Collapse the StatusBlock if it has no text to conserve real estate.
+           StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
+        }
 
     }
+
+    public enum NotifyType
+    {
+        StatusMessage,
+        ErrorMessage
+    };
+
 }

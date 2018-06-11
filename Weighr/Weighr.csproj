@@ -101,6 +101,7 @@
     <Compile Include="Controls\NewBatchDialog.xaml.cs">
       <DependentUpon>NewBatchDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DisplayHelpers.cs" />
     <Compile Include="Helpers\CloudInterface.cs" />
     <Compile Include="Helpers\CustomMessages.cs" />
     <Compile Include="Helpers\DBHelper.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SampleConfiguration.cs" />
     <Compile Include="Scale.xaml.cs">
       <DependentUpon>Scale.xaml</DependentUpon>
     </Compile>
@@ -131,6 +133,9 @@
     </Compile>
     <Compile Include="WeighrDiagnostics.xaml.cs">
       <DependentUpon>WeighrDiagnostics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WifiConnect.xaml.cs">
+      <DependentUpon>WifiConnect.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WeighrDiagnostics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WifiConnect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

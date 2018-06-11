@@ -124,6 +124,14 @@
                             <TextBlock FontSize="24" Margin="20,0,0,0">Diagnostics</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
+                    <ListBoxItem Name="WifiConnect">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="36"
+                                       Text="&#xE90F;"/>
+                            <TextBlock FontSize="24" Margin="20,0,0,0">Wifi Connect</TextBlock>
+                        </StackPanel>
+                    </ListBoxItem>
                 </ListBox>
             </SplitView.Pane>
 
@@ -131,5 +139,8 @@
                 <Frame Name="MyFrame"></Frame>
             </SplitView.Content>
         </SplitView>
+        <Border x:Name="StatusBorder" Margin="0,0,0,0" Visibility="Collapsed" >
+            <TextBlock x:Name="StatusBlock" FontWeight="Bold" MaxHeight="200" MinWidth="{Binding ElementName=Splitter, Path=ActualWidth}" TextTrimming="CharacterEllipsis"  Margin="20,10,10,20" TextWrapping="Wrap"/>
+        </Border>
     </Grid>
 </Page>
