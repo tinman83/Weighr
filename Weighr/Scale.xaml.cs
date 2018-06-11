@@ -49,6 +49,8 @@ namespace Weighr
         decimal _ActualFillTime = 0;
 
         decimal[] _counter_values = new decimal[3];
+        public bool _isNewIteration = true;
+        int position = 0;
 
         private Boolean _checkWeightProcess = false;
         private Boolean _runprocess = false, _normal_cutoff_reached = false, _final_setpoint_reached = false;
@@ -83,6 +85,19 @@ namespace Weighr
 
         }
 
+        private void btnZeroScale_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnClearTotals_Click(object sender, RoutedEventArgs e)
+        {
+            //AccumulatedWeight accumulated_weight = new AccumulatedWeight();
+            //accumulated_weight.Weight = 0M;
+           
+          
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
@@ -101,14 +116,24 @@ namespace Weighr
             if (_currentProduct!=null)
             {
                 ProductsComboBox.SelectedValue = _currentProduct.ProductCode;
-                _normal_cutoff_weight = (_currentProduct.TargetWeight) * Convert.ToDecimal(0.8);
-                _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
+                //_normal_cutoff_weight = (_currentProduct.TargetWeight) * Convert.ToDecimal(0.8);
+                _normal_cutoff_weight = _currentProduct.DribblePoint;
+                if (MainPage._inflight_setpoint == 0)
+                {
+                    _final_setpoint_weight = _currentProduct.TargetWeight - _scaleSetting.Inflight;
+                }
+                else
+                {
+                    _final_setpoint_weight = _currentProduct.TargetWeight - MainPage._inflight_setpoint;
+                }
+               
 
-                tblWeigherStatus.Text = "Idle";
+
+                tblWeigherStatus.Text = "Ready To Fill";
                 AcknowledgeProductSelection(_currentProduct);
 
-                ProductNameTextBox.Text = _currentProduct.Name;
-                TargetWeightTextBox.Text = _currentProduct.TargetWeight.ToString();
+                ProductNameTextBox.Text = _currentProduct.Name + " : " + _currentProduct.TargetWeight + " Kgs";
+                BatchNumberTextBox.Text = "Batch No:" + _currentBatch.BatchCode;
 
                 timer = new DispatcherTimer();
                 timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
@@ -143,6 +168,33 @@ namespace Weighr
             _normal_cutoff_weight = (_currentProduct.TargetWeight) * Convert.ToDecimal(0.8);
             _final_setpoint_weight = _currentProduct.TargetWeight - Convert.ToDecimal(_currentProduct.Inflight);
 
+            ProductNameTextBox.Text = _currentProduct.Name + " : " + _currentProduct.TargetWeight + " Kgs";
+
+            
+
+
+        }
+
+        private void InsertionSort(decimal value)
+        {
+            if(_isNewIteration == true)
+            {
+                _counter_values[position] = value; 
+            }
+            else
+            {
+                if(value > _counter_values[position-1])
+                {
+                    _counter_values[position] = value;
+                }
+                else
+                {
+                    _counter_values[position] = _counter_values[position - 1];
+                    _counter_values[position - 1] = value;
+                }
+            }
+
+            _isNewIteration = false;
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -167,20 +219,35 @@ namespace Weighr
             decimal calc_result = _currentProduct.Density * (((_scaleConfig.Gradient) * result) + _scaleConfig.YIntercept - LoadcellOffset);
             calc_result = calc_result - (calc_result % (_scaleSetting.MinimumDivision/1000)); //divide by 1000 to convert minimum division to Kgs
 
-            _counter_values[_filter_counter] = calc_result;
-            _filter_counter++;
-
-            if (_filter_counter == 3)
+            InsertionSort(calc_result);
+            position++;
+            if(position > 2)
             {
-                _filter_counter = 0;
-                sortValues();
-                _calc_result = _counter_values[1] ;
+                position = 0;
+                _isNewIteration = true;
+                _calc_result = _counter_values[1];
                 tblWeightDisplay.Text = _calc_result.ToString("0.000"); // returns "0"  when decimalVar == 0
 
                 RadialGaugeControl.Unit = "%";
                 RadialGaugeControl.Value = Convert.ToInt64((_calc_result / _currentProduct.TargetWeight) * 100);
 
             }
+
+            
+            //_counter_values[_filter_counter] = calc_result;
+            //_filter_counter++;
+
+            //if (_filter_counter == 3)
+            //{
+            //    _filter_counter = 0;
+            //    sortValues();
+            //    _calc_result = _counter_values[1] ;
+            //    tblWeightDisplay.Text = _calc_result.ToString("0.000"); // returns "0"  when decimalVar == 0
+
+            //    RadialGaugeControl.Unit = "%";
+            //    RadialGaugeControl.Value = Convert.ToInt64((_calc_result / _currentProduct.TargetWeight) * 100);
+
+            //}
 
 
 
@@ -195,8 +262,8 @@ namespace Weighr
             if (_runprocess == true || GpioUtility.isRunButtonPressed() == true)
             {
 
-                    GpioUtility.openNormalFeedValve();  //open normal feed valve 
-                    Thread.Sleep(1000);
+                GpioUtility.openNormalFeedValve();  //open normal feed valve 
+                Thread.Sleep(1000);
 
                 _stopWatch.Start();
 
@@ -208,21 +275,21 @@ namespace Weighr
                 startProcessLocked = true;
                 _checkWeightProcess = true;
                 _runprocess = false;
-                tblWeigherStatus.Text = "button press detected";
+               // tblWeigherStatus.Text = "button press detected";
                 GpioUtility.openAirSupplyValve();
-                    GpioUtility.switchOffOverweightLight();
-                    GpioUtility.switchOffUnderweightLight();
-                    GpioUtility.switchOffNormalweightLight();
+                GpioUtility.switchOffOverweightLight();
+                GpioUtility.switchOffUnderweightLight();
+                GpioUtility.switchOffNormalweightLight();
                     
 
             }
 
             if (startProcessLocked)    //checked if starting is locked
             {
-                tblWeigherStatus.Text = "process locked";
+                //tblWeigherStatus.Text = "process locked";
                 if (_checkWeightProcess == true)  //if check weight in progress
                 {
-                    tblWeigherStatus.Text = "checking weight";
+                   // tblWeigherStatus.Text = "checking weight";
                     if (_normal_cutoff_reached == false)   //check if normal cuoff is reached
                     {
                         tblWeigherStatus.Text = "Filling to dribble point";
@@ -257,10 +324,13 @@ namespace Weighr
                             }
 
                             _stopWatch.Reset();
-
-                            Thread.Sleep(1000);
+                            tblWeigherStatus.Text = "Filling Complete";
+                            Thread.Sleep(_scaleSetting.InflightTiming);
                             LogFinalValues();
                             ResetProcess();
+                            decimal inflight_error = _calc_result - _currentProduct.TargetWeight;
+                            MainPage._inflight_setpoint = MainPage._inflight_setpoint + inflight_error;
+                            _final_setpoint_weight = _currentProduct.TargetWeight - MainPage._inflight_setpoint ;
                         }
 
                     }
@@ -303,19 +373,24 @@ namespace Weighr
             _checkWeightProcess = false;
             _runprocess = false;
         }
+
+        public void RefreshUI()
+        {
+           
+        }
        
         public void  LogFinalValues()
         {
-            tblWeigherStatus.Text = "Status: Filling Complete";
+           
             //display filling status
             _checkWeightProcess = false;
 
-            if (_calc_result > ((_currentProduct.TargetWeight) + _currentProduct.UpperLimit))   //if overpacked
+            if (_calc_result > ((_currentProduct.TargetWeight) + (_currentProduct.UpperLimit/1000)))   //if overpacked
             {
                 GpioUtility.switchOnOverWeightLight();
             }
 
-            else if (_calc_result < ((_currentProduct.TargetWeight) - _currentProduct.LowerLimit))    //if underpacke
+            else if (_calc_result < ((_currentProduct.TargetWeight) - (_currentProduct.LowerLimit/1000)))    //if underpacke
             {
                 GpioUtility.switchOnUnderWeightLight();
             }
@@ -353,6 +428,8 @@ namespace Weighr
                 ProductDensity = _currentProduct.Density,
                 ShiftId = 1,
                 TargetWeight = _currentProduct.TargetWeight,
+                UpperLimit = _currentProduct.UpperLimit,
+                LowerLimit = _currentProduct.LowerLimit,
                 ActualWeight = Convert.ToDecimal(_calc_result),
                 TransactionDate = DateTime.Now.ToUniversalTime(),
                 WeightDifference = weightDiff,
@@ -361,10 +438,11 @@ namespace Weighr
                 WeightType = "NET",
                 persistedServer = false,
                 DeviceId = DeviceInfoHelper.Instance.Id,
-                SerialNumber=_deviceInfo.SerialNumber,
+                SerialNumber = _deviceInfo.SerialNumber,
                 ClientId = _deviceInfo.ClientId,
                 PlantId = _deviceInfo.PlantId,
                 MachineName = _deviceInfo.MachineName,
+                ProductName = _currentProduct.Name,
                 ExpectedFillTime = _currentProduct.ExpectedFillTime,
                 ActualFillTime = _ActualFillTime,
                 PercDiffFillTime = percDiffFillTime,
@@ -376,15 +454,16 @@ namespace Weighr
             };
 
             _transactionLogComp.AddTransactionLog(trans_log);
-
+            
             LogTransactionRemote(trans_log);
-
+            LastWeightTextblock.Text = "Last Weight : " + _calc_result.ToString("0.00");
             var accumWeight = _accumulatedWeightComp.GetAccumulatedWeight();
             if (accumWeight != null)
             {
                 accumWeight.Weight = accumWeight.Weight + trans_log.ActualWeight;
                 accumWeight.CurrentDate = DateTime.Now.ToUniversalTime();
                 _accumulatedWeightComp.UpdateAccumulatedWeight(accumWeight);
+                TotalAccumulatedWeightTextblock.Text = "Total Accum : " +  accumWeight.Weight.ToString("0.00");
             }
             else
             {
@@ -395,11 +474,14 @@ namespace Weighr
                     CurrentDate = DateTime.Now.ToUniversalTime(),
                 };
                 _accumulatedWeightComp.AddAccumulatedWeight(accumulatedWeight);
+                TotalAccumulatedWeightTextblock.Text ="Total Accum : " + accumulatedWeight.Weight.ToString("0.00");
             }
-            
+           // AccumulatedWeightTextbox.Text = accumWeight.Weight.ToString();
+            tblWeigherStatus.Text = "Status: Ready To Fill";
+          
 
-           
         }
+
 
         private void LogTransactionRemote(TransactionLog trans_log)
         {
@@ -499,22 +581,22 @@ namespace Weighr
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            //checkWeightProcess = false;
+            timer.Stop();
         }
 
-        private void btnZeroScale_Click(object sender, RoutedEventArgs e)
-        {
-            //ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
+        //private void btnZeroScale_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //ScaleConfigComponent ScaleConfigComp = new ScaleConfigComponent();
 
-            //ScaleConfig scaleCon = new ScaleConfig() { offset = (_calc_result - _scaleConfig.offset) };
-            //scaleCon.ScaleConfigId = 1;
-            //ScaleConfigComp.UpdateScaleConfig(scaleCon);
-            //GetScaleConfigurations();
+        //    //ScaleConfig scaleCon = new ScaleConfig() { offset = (_calc_result - _scaleConfig.offset) };
+        //    //scaleCon.ScaleConfigId = 1;
+        //    //ScaleConfigComp.UpdateScaleConfig(scaleCon);
+        //    //GetScaleConfigurations();
 
-            LoadcellOffset = LoadcellOffset + _calc_result;
+        //    LoadcellOffset = LoadcellOffset + _calc_result;
 
 
-        }
+        //}
 
         public void ZeroScale()
         {
@@ -525,11 +607,11 @@ namespace Weighr
             //ScaleConfigComp.UpdateScaleConfig(scaleCon);
             //GetScaleConfigurations();
 
-            
-                LoadcellOffset = LoadcellOffset + _calc_result;
-           
 
-            
+            LoadcellOffset = LoadcellOffset + _calc_result;
+
+
+
 
         }
 

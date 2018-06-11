@@ -11,7 +11,7 @@ using WeighrDAL;
 namespace WeighrDAL.Migrations
 {
     [DbContext(typeof(WeighrContext))]
-    [Migration("20180604154229_InitialCreate")]
+    [Migration("20180609094852_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,10 @@ namespace WeighrDAL.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClientId");
+
+                    b.Property<string>("Latitude");
+
+                    b.Property<string>("Longitude");
 
                     b.Property<string>("MachineName");
 
@@ -275,6 +279,8 @@ namespace WeighrDAL.Migrations
 
                     b.Property<decimal>("ExpectedFillTime");
 
+                    b.Property<decimal>("LowerLimit");
+
                     b.Property<string>("MachineName");
 
                     b.Property<DateTime>("ModifiedDate");
@@ -291,6 +297,8 @@ namespace WeighrDAL.Migrations
 
                     b.Property<int>("ProductId");
 
+                    b.Property<string>("ProductName");
+
                     b.Property<string>("SerialNumber");
 
                     b.Property<int>("ShiftId");
@@ -302,6 +310,8 @@ namespace WeighrDAL.Migrations
                     b.Property<string>("Units");
 
                     b.Property<bool>("Uploaded");
+
+                    b.Property<decimal>("UpperLimit");
 
                     b.Property<decimal>("WeightDifference");
 

@@ -16,7 +16,8 @@ namespace WeighrDAL.Models
         public string  ClientId { get; set; }
         public string PlantId { get; set; }
         public string MachineName { get; set; }
-
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
         public bool pushToCloud { get; set; }
         public string iotHubUri { get; set; }
         public string iotHubDeviceKey { get; set; }

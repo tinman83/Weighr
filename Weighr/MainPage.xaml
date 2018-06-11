@@ -30,15 +30,17 @@
             
             <TextBlock Name="TitleTextBlock"
                        RelativePanel.RightOf="BackButton"
-                       FontSize="28"
+                       FontSize="25"
+                       FontFamily="Bebas"
                        FontWeight="Bold"
-                       Margin="35,5,0,0"/>
+                       Margin="10,5,0,0"/>
 
             <Button Name="SearchButton"
                     RelativePanel.AlignRightWithPanel="True"
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="36"
-                    Content="&#xE1A3;"/>
+                    Content="&#xE1A3;"
+                     Background="#00c0c5"/>
 
             <Button Name="SearchTextBox"
                         RelativePanel.LeftOf="SearchButton"
@@ -46,6 +48,7 @@
                         Width="200"
                         FontSize="24"
                         Content="WEIGHR"
+                        Background="#00c0c5"
                      /> 
 
         </RelativePanel>
@@ -64,7 +67,7 @@
                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                        FontSize="36"
                                        Text="&#xE80F;"/>
-                            <TextBlock FontSize="24" Margin="20,0,0,0">Scale</TextBlock>
+                            <TextBlock FontSize="24" Margin="20,0,0,0">Filling</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
                     
@@ -86,14 +89,6 @@
                         </StackPanel>
                     </ListBoxItem>-->
 
-                    <ListBoxItem Name="Reports">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontFamily="Segoe MDL2 Assets"
-                                       FontSize="36"
-                                       Text="&#xE77F;"/>
-                            <TextBlock FontSize="24" Margin="20,0,0,0">Reports</TextBlock>
-                        </StackPanel>
-                    </ListBoxItem>
 
                     <ListBoxItem Name="Settings">
                         <StackPanel Orientation="Horizontal">
@@ -124,6 +119,16 @@
                             <TextBlock FontSize="24" Margin="20,0,0,0">Diagnostics</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
+                    
+                    <ListBoxItem Name="Reports">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="36"
+                                       Text="&#xE77F;"/>
+                            <TextBlock FontSize="24" Margin="20,0,0,0">Reports</TextBlock>
+                        </StackPanel>
+                    </ListBoxItem>
+                    
                     <ListBoxItem Name="WifiConnect">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets"

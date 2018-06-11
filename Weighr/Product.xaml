@@ -6,6 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GeneralButton">
+            <Setter Property="Background" Value="#00c0c5" />
+            <Setter Property="FontFamily" Value="Bebas"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize"  Value="20"/>
+            <Setter Property="BorderBrush" Value="#c2c3c9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+
+        </Style>
+
+    </Page.Resources>
     <ScrollViewer ZoomMode="Enabled" MaxZoomFactor="10"
               HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Visible" MinHeight="400">
     <Grid Margin="10,0,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -46,8 +59,8 @@
             </ComboBox>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
-                    <Button Name="btnNewProduct"  Content="New Product" Margin="0,0,0,10" VerticalAlignment="Center" Click="btnNewProduct_Click"/>
-                    <Button Name="btnSaveProduct" Grid.Row="10" Grid.Column="1" Content="Save" Margin="10,0,0,10" VerticalAlignment="top" Click="btnSaveProduct_Click" MinWidth="100"/>
+                    <Button Name="btnNewProduct"  Content="New Product" Style="{StaticResource GeneralButton}" Margin="0,0,0,10" VerticalAlignment="Center" Click="btnNewProduct_Click"/>
+                    <Button Name="btnSaveProduct" Grid.Row="10" Grid.Column="1" Style="{StaticResource GeneralButton}" Content="Save" Margin="10,0,0,10" VerticalAlignment="top" Click="btnSaveProduct_Click" MinWidth="100"/>
                 </StackPanel>
         </Grid>
         

@@ -35,6 +35,7 @@ namespace Weighr
         public decimal product_weight;
         public decimal current_weight;
         public decimal LoadcellOffset;
+        public static decimal _inflight_setpoint=0;
 
         /// <summary>
         /// Used to signal that the device is properly initialized and ready to use

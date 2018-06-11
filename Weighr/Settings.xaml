@@ -6,7 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="GeneralButton">
+            <Setter Property="Background" Value="#00c0c5" />
+            <Setter Property="FontFamily" Value="Bebas"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize"  Value="20"/>
+            <Setter Property="BorderBrush" Value="#c2c3c9"/>
+            <Setter Property="BorderThickness" Value="1"/>
 
+
+        </Style>
+
+    </Page.Resources>
     <Grid Margin="10,0,0,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.RowDefinitions>
@@ -68,8 +80,8 @@
 
 
 
-        <Button Name="btnSaveSettings" Grid.Row="6" Grid.Column="1" Click="btnSaveSettings_Click">Save</Button>
-        <Button Name="btnSaveDeviceInfo" Grid.Row="3" Grid.Column="3" Click="btnSaveDeviceInfo_Click">Save</Button>
+        <Button Name="btnSaveSettings" Grid.Row="6" Grid.Column="1" Style="{StaticResource GeneralButton}" Height="50" Width="100" Click="btnSaveSettings_Click" VerticalAlignment="Top">Save</Button>
+        <Button Name="btnSaveDeviceInfo" Grid.Row="3" Grid.Column="3" Style="{StaticResource GeneralButton}" Height="50" Width="100" Click="btnSaveDeviceInfo_Click">Save</Button>
 
         <TextBlock Name="ErrorMessage" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="" VerticalAlignment="Center" Foreground="Red"/>
 
