@@ -53,13 +53,13 @@ namespace Weighr
             MyFrame.Navigate(typeof(Scale));
                 TitleTextBlock.Text = "Scale";
                 Scale.IsSelected = true;
-               
+            Current = this;
 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            bool IsInitialised = GpioUtility.InitialiseGpio();
+            //bool IsInitialised = GpioUtility.InitialiseGpio();
 
             DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
             //deviceInfoComp.DeleteDeviceInfo();
@@ -127,30 +127,35 @@ namespace Weighr
                 BackButton.Visibility = Visibility.Collapsed;
                 MyFrame.Navigate(typeof(Scale));
                 TitleTextBlock.Text = "Scale";
+                StatusBorder.Visibility = Visibility.Collapsed;
             }
             else if (Product.IsSelected)
             {
                 BackButton.Visibility = Visibility.Visible;
                 MyFrame.Navigate(typeof(Product));
                 TitleTextBlock.Text = "Product";
+                StatusBorder.Visibility = Visibility.Collapsed;
             }
             else if (Settings.IsSelected)
             {
                 BackButton.Visibility = Visibility.Visible;
                 MyFrame.Navigate(typeof(Settings));
                 TitleTextBlock.Text = "Settings";
+                StatusBorder.Visibility = Visibility.Collapsed;
             }
             else if (Diagnostics.IsSelected)
             {
                 BackButton.Visibility = Visibility.Visible;
                 MyFrame.Navigate(typeof(WeighrDiagnostics));
                 TitleTextBlock.Text = "Diagnostics";
+                StatusBorder.Visibility = Visibility.Collapsed;
             }
             else if (Reports.IsSelected)
             {
                 BackButton.Visibility = Visibility.Visible;
                 MyFrame.Navigate(typeof(Reports));
                 TitleTextBlock.Text = "Reports";
+                StatusBorder.Visibility = Visibility.Collapsed;
             }
             //else if (Shift.IsSelected)
             //{
@@ -158,12 +163,20 @@ namespace Weighr
             //    MyFrame.Navigate(typeof(Shift));
             //    TitleTextBlock.Text = "Shift";
             //}
-
+             
             else if (Calibration.IsSelected)
             {
                 BackButton.Visibility = Visibility.Visible;
                 MyFrame.Navigate(typeof(Calibration));
                 TitleTextBlock.Text = "Calibration";
+                StatusBorder.Visibility = Visibility.Collapsed;
+            }
+
+            else if (WifiConnect.IsSelected)
+            {
+                BackButton.Visibility = Visibility.Visible;
+                MyFrame.Navigate(typeof(WifiConnect));
+                TitleTextBlock.Text = "Wifi Connector";
             }
         }
 

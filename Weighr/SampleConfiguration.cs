@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
-using WiFiConnect;
+using Weighr;
 
 namespace SDKTemplate
 {
@@ -14,7 +14,7 @@ namespace SDKTemplate
 
         List<Scenario> scenarios = new List<Scenario>
         {
-            new Scenario() { Title="WiFi Connect", ClassType=typeof(WiFiConnect_Scenario)}
+            new Scenario() { Title="WiFi Connect", ClassType=typeof(WifiConnect)}
         };
     }
 
