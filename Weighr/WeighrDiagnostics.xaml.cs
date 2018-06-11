@@ -120,7 +120,7 @@ namespace Weighr
             }
             else
             {
-                GpioUtility.switchOnOverWeightLight();
+                GpioUtility.diagnosticsSwitchOnOverWeightLight();
             }
 
             Task.Delay(1000);
@@ -136,7 +136,7 @@ namespace Weighr
             }
             else
             {
-                GpioUtility.switchOnNormalWeightLight();
+                GpioUtility.diagnosticsSwitchOnNormalWeightLight();
             }
 
             Task.Delay(1000);
@@ -151,7 +151,7 @@ namespace Weighr
             }
             else
             {
-                GpioUtility.switchOnUnderWeightLight();
+                GpioUtility.diagnosticsSwitchOnUnderWeightLight();
             }
 
             Task.Delay(1000);

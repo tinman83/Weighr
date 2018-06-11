@@ -139,7 +139,7 @@ namespace Weighr.Helpers
         }
         public static bool GetNormalWeightState()
         {
-            GpioPinValue pinValue = normalFeedPin.Read();
+            GpioPinValue pinValue = normalWeightPin.Read();
             if (pinValue == GpioPinValue.Low)
             {
                 return true;
@@ -270,6 +270,13 @@ namespace Weighr.Helpers
             normalWeightPin.Write(GpioPinValue.High);
         }
 
+        public static void diagnosticsSwitchOnOverWeightLight()
+        {
+            overWeightPin.Write(GpioPinValue.Low);  //switch on overweight light
+         
+        }
+
+
         public static void switchOnNormalWeightLight()
         {
             normalWeightPin.Write(GpioPinValue.Low);  //switch on normal weight light
@@ -277,11 +284,22 @@ namespace Weighr.Helpers
             underWeightPin.Write(GpioPinValue.High);
         }
 
+        public static void diagnosticsSwitchOnNormalWeightLight()
+        {
+            normalWeightPin.Write(GpioPinValue.Low);  //switch on normal weight light
+         
+        }
+
         public static void switchOnUnderWeightLight()
         {
             underWeightPin.Write(GpioPinValue.Low);  //switch on underweight light
             overWeightPin.Write(GpioPinValue.High);
             normalWeightPin.Write(GpioPinValue.High);
+        }
+
+        public static void diagnosticsSwitchOnUnderWeightLight()
+        {
+            underWeightPin.Write(GpioPinValue.Low);  //switch on underweight light           
         }
         public static int ReadData()
         {
