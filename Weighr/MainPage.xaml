@@ -115,7 +115,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                        FontSize="36"
-                                       Text="&#xE90F;"/>
+                                       Text="&#xE8AF;"/>
                             <TextBlock FontSize="24" Margin="20,0,0,0">Diagnostics</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
@@ -133,8 +133,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontFamily="Segoe MDL2 Assets"
                                        FontSize="36"
-                                       Text="&#xE90F;"/>
-                            <TextBlock FontSize="24" Margin="20,0,0,0">Wifi Connect</TextBlock>
+                                       Text="&#xE907;"/>
+                            <TextBlock FontSize="24" Margin="20,0,0,0">WiFi Connect</TextBlock>
                         </StackPanel>
                     </ListBoxItem>
                 </ListBox>

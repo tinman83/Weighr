@@ -172,7 +172,7 @@
             <StackPanel Margin="0,0,0,10">
                 <TextBlock Text="Description:" />
                 <TextBlock  TextWrapping="Wrap"
-                   Text="View available networks on the first WiFi Adapter and connect to a selected network.&#10;Use browser control to verify connectivity or accept WiFi Hotspot terms and conditions." />
+                   Text="View available WiFi networks and connect to a selected network.&#10;Use browser control to verify connectivity or accept WiFi Hotspot terms and conditions." />
             </StackPanel>
 
             <!-- Row 2 -->

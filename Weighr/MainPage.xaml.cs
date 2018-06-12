@@ -51,7 +51,7 @@ namespace Weighr
             BackButton.Visibility = Visibility.Collapsed;
             
             MyFrame.Navigate(typeof(Scale));
-                TitleTextBlock.Text = "Scale";
+                TitleTextBlock.Text = "Filling";
                 Scale.IsSelected = true;
             Current = this;
 
@@ -59,7 +59,7 @@ namespace Weighr
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //bool IsInitialised = GpioUtility.InitialiseGpio();
+            bool IsInitialised = GpioUtility.InitialiseGpio();
 
             DeviceInfoComponent deviceInfoComp = new DeviceInfoComponent();
             //deviceInfoComp.DeleteDeviceInfo();
@@ -114,7 +114,7 @@ namespace Weighr
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             MyFrame.Navigate(typeof(Scale));
-            TitleTextBlock.Text = "Scale";
+            TitleTextBlock.Text = "Filling";
             Scale.IsSelected = true;
         }
 
@@ -126,7 +126,7 @@ namespace Weighr
             {
                 BackButton.Visibility = Visibility.Collapsed;
                 MyFrame.Navigate(typeof(Scale));
-                TitleTextBlock.Text = "Scale";
+                TitleTextBlock.Text = "Filling";
                 StatusBorder.Visibility = Visibility.Collapsed;
             }
             else if (Product.IsSelected)

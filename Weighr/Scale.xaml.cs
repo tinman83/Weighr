@@ -138,7 +138,7 @@ namespace Weighr
                 timer = new DispatcherTimer();
                 timer.Interval = new TimeSpan(0, 0, 0, 0, 1); // Interval of the timer
                 timer.Tick += timer_Tick;
-                //timer.Start();
+                timer.Start();
 
 
             }
